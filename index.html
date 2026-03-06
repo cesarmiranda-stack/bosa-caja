@@ -3820,14 +3820,14 @@
             let totalIng = 0, totalEgr = 0;
             sorted.forEach(([month, data], i) => {
                 const [year, mon] = month.split('-');
-                const monthName = new Date(year, mon - 1).toLocaleDateString('es-UY', { month: 'long', year: 'numeric' }).replace(/ De /g, ' de ');
+                const monthName = new Date(year, mon - 1).toLocaleDateString('es-UY', { month: 'long', year: 'numeric' });
                 const resultado = data.ing - data.egr;
                 const detId = 'hm-det-' + i;
                 totalIng += data.ing; totalEgr += data.egr;
                 html += `<tr class="hist-table-row">
                     <td colspan="5" style="padding:0;">
                         <div class="hist-table-main" onclick="toggleHistDetail('${detId}', this)">
-                            <span style="font-weight:700;color:#252a2e;text-transform:capitalize;">${monthName}</span>
+                            <span style="font-weight:700;color:#252a2e;">${monthName.charAt(0).toUpperCase() + monthName.slice(1)}</span>
                             <span style="text-align:right;color:#3b82c4;font-weight:600;">+$${formatNumber(data.ing, 0)}</span>
                             <span style="text-align:right;color:#5a616b;">−$${formatNumber(data.egr, 0)}</span>
                             <span style="text-align:right;font-weight:700;color:${resultado>=0?'#24a660':'#c0392b'};">${resultado>=0?'+':'−'}$${formatNumber(Math.abs(resultado),0)}</span>
