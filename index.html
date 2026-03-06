@@ -1317,44 +1317,44 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Itaú — Pesos (UYU)</label>
-                                    <input type="number" id="sbItauPesos" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbItauPesos" placeholder="0" inputmode="numeric" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                                 <div class="form-group">
                                     <label>Itaú — Dólares (USD)</label>
-                                    <input type="number" id="sbItauUSD" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbItauUSD" placeholder="0" inputmode="decimal" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                             </div>
 
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>HSBC — Pesos (UYU)</label>
-                                    <input type="number" id="sbHsbcPesos" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbHsbcPesos" placeholder="0" inputmode="numeric" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                                 <div class="form-group">
                                     <label>HSBC — Dólares (USD)</label>
-                                    <input type="number" id="sbHsbcUSD" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbHsbcUSD" placeholder="0" inputmode="decimal" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                             </div>
 
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Efectivo — Pesos (UYU)</label>
-                                    <input type="number" id="sbEfectivoPesos" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbEfectivoPesos" placeholder="0" inputmode="numeric" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                                 <div class="form-group">
                                     <label>Efectivo — Dólares (USD)</label>
-                                    <input type="number" id="sbEfectivoUSD" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbEfectivoUSD" placeholder="0" inputmode="decimal" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                             </div>
 
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Cheques al Cobro — Pesos (UYU)</label>
-                                    <input type="number" id="sbChequesCobroPesos" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbChequesCobroPesos" placeholder="0" inputmode="numeric" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                                 <div class="form-group">
                                     <label>Cheques al Cobro — Dólares (USD)</label>
-                                    <input type="number" id="sbChequesCobrosUSD" placeholder="0.00" step="0.01" oninput="calcSbTotal()">
+                                    <input type="text" id="sbChequesCobrosUSD" placeholder="0" inputmode="decimal" onfocus="sbFocusIn(this)" onblur="sbFocusOut(this)" oninput="calcSbTotal()">
                                 </div>
                             </div>
 
@@ -1639,9 +1639,7 @@
                     <!-- Sobregiros -->
                     <div class="card">
                         <div class="card-title">Bancos y Límites de Sobregiro <span class="tip-icon" style="font-size:11px;" data-tip="El límite de sobregiro es la línea de crédito que el banco te permite usar cuando el saldo es insuficiente. Ingresá el monto habilitado por cada cuenta — se suma automáticamente al 'Disponible Hoy' del Dashboard.">?</span></div>
-                        <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start;">
-                            <div style="flex: 1; min-width: 220px;">
-                                <div class="grid-2col" style="gap: 12px;">
+                        <div class="grid-2col" style="gap: 12px;">
                                     <div class="form-group" style="margin-bottom: 10px;">
                                         <label>Itaú Pesos — límite (UYU)</label>
                                         <input type="number" id="limItauPesos" placeholder="0" step="1">
@@ -1659,22 +1657,20 @@
                                         <input type="number" id="limHsbcUSD" placeholder="0" step="0.01">
                                     </div>
                                 </div>
-                                <button class="btn btn-primary btn-block" style="margin-top: 8px;" onclick="guardarLimites()">Guardar límites</button>
-                            </div>
-                            <div style="flex: 1.5; min-width: 280px;">
-                                <div style="font-size: 11px; font-weight: 700; color: #5a616b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Historial de cambios</div>
-                                <div id="sobregirosHistorial" style="font-size: 12px; color: #9ba3ab;">cargando...</div>
-                            </div>
+                        <button class="btn btn-primary btn-block" style="margin-top: 8px;" onclick="guardarLimites()">Guardar límites</button>
+                        <div style="margin-top: 16px;">
+                            <div style="font-size: 11px; font-weight: 700; color: #5a616b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Historial de cambios</div>
+                            <div id="sobregirosHistorial" style="font-size: 12px; color: #9ba3ab;">cargando...</div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Reparar vínculos -->
+                    <!-- Reparar vínculos -->
                 <div class="card" style="margin-top:16px;">
                     <div class="card-title">🔧 Reparar vínculos empresa-movimiento</div>
                     <div style="font-size:13px;color:#5a616b;margin-bottom:12px;">Algunos movimientos quedaron huérfanos al renombrar empresas. Este botón corrige los 6 cambios de nombre registrados en tu base de datos.</div>
                     <div id="repararVinculosStatus" style="font-size:12px;color:#9ba3ab;margin-bottom:8px;"></div>
-                    <button class="btn btn-ghost btn-sm" onclick="repararVinculosEmpresas()">⚡ Ejecutar reparación (solo 1 vez)</button>
+                        <button class="btn btn-ghost btn-sm" onclick="repararVinculosEmpresas()">⚡ Ejecutar reparación (solo 1 vez)</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2150,16 +2146,43 @@
             document.getElementById('saldoTotal').value = total.toFixed(2);
         }
 
+        // Caja y Bancos: currency formatting helpers
+        function sbParseNum(val) {
+            if (!val) return 0;
+            return parseFloat(String(val).replace(/\./g, '').replace(',', '.')) || 0;
+        }
+        function sbFormatCurrency(num) {
+            if (!num && num !== 0) return '0';
+            const isNeg = num < 0;
+            const abs = Math.abs(num);
+            const parts = abs.toFixed(0).split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            return (isNeg ? '-' : '') + parts.join(',');
+        }
+        function sbFocusIn(el) {
+            const num = sbParseNum(el.value);
+            el.value = num !== 0 ? num : '';
+        }
+        function sbFocusOut(el) {
+            const num = sbParseNum(el.value);
+            el.value = sbFormatCurrency(num);
+            calcSbTotal();
+        }
+        function sbSetFormatted(id, num) {
+            const el = document.getElementById(id);
+            if (el) el.value = sbFormatCurrency(num || 0);
+        }
+
         function calcSbTotal() {
             const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-            const itauP  = parseFloat(document.getElementById('sbItauPesos')?.value)  || 0;
-            const itauU  = parseFloat(document.getElementById('sbItauUSD')?.value)   || 0;
-            const hsbcP  = parseFloat(document.getElementById('sbHsbcPesos')?.value)  || 0;
-            const hsbcU  = parseFloat(document.getElementById('sbHsbcUSD')?.value)   || 0;
-            const efecP  = parseFloat(document.getElementById('sbEfectivoPesos')?.value)  || 0;
-            const efecU  = parseFloat(document.getElementById('sbEfectivoUSD')?.value)    || 0;
-            const cheqP  = parseFloat(document.getElementById('sbChequesCobroPesos')?.value) || 0;
-            const cheqU  = parseFloat(document.getElementById('sbChequesCobrosUSD')?.value)  || 0;
+            const itauP  = sbParseNum(document.getElementById('sbItauPesos')?.value);
+            const itauU  = sbParseNum(document.getElementById('sbItauUSD')?.value);
+            const hsbcP  = sbParseNum(document.getElementById('sbHsbcPesos')?.value);
+            const hsbcU  = sbParseNum(document.getElementById('sbHsbcUSD')?.value);
+            const efecP  = sbParseNum(document.getElementById('sbEfectivoPesos')?.value);
+            const efecU  = sbParseNum(document.getElementById('sbEfectivoUSD')?.value);
+            const cheqP  = sbParseNum(document.getElementById('sbChequesCobroPesos')?.value);
+            const cheqU  = sbParseNum(document.getElementById('sbChequesCobrosUSD')?.value);
             const total  = itauP/tc + itauU + hsbcP/tc + hsbcU + efecP/tc + efecU + cheqP/tc + cheqU;
             const el = document.getElementById('sbTotalUSD');
             if (el) {
@@ -3797,7 +3820,7 @@
             let totalIng = 0, totalEgr = 0;
             sorted.forEach(([month, data], i) => {
                 const [year, mon] = month.split('-');
-                const monthName = new Date(year, mon - 1).toLocaleDateString('es-UY', { month: 'long', year: 'numeric' });
+                const monthName = new Date(year, mon - 1).toLocaleDateString('es-UY', { month: 'long', year: 'numeric' }).replace(/ De /g, ' de ');
                 const resultado = data.ing - data.egr;
                 const detId = 'hm-det-' + i;
                 totalIng += data.ing; totalEgr += data.egr;
@@ -4114,14 +4137,14 @@
         async function handleSaveSaldo(e) {
             e.preventDefault();
             const data = {
-                itauPesos: parseFloat(document.getElementById('sbItauPesos').value) || 0,
-                itauUSD: parseFloat(document.getElementById('sbItauUSD').value) || 0,
-                hsbcPesos: parseFloat(document.getElementById('sbHsbcPesos').value) || 0,
-                hsbcUSD: parseFloat(document.getElementById('sbHsbcUSD').value) || 0,
-                efectivoPesos: parseFloat(document.getElementById('sbEfectivoPesos').value) || 0,
-                efectivoUSD: parseFloat(document.getElementById('sbEfectivoUSD').value) || 0,
-                chequesCobroPesos: parseFloat(document.getElementById('sbChequesCobroPesos').value) || 0,
-                chequesCobrosUSD: parseFloat(document.getElementById('sbChequesCobrosUSD').value) || 0,
+                itauPesos: sbParseNum(document.getElementById('sbItauPesos').value),
+                itauUSD: sbParseNum(document.getElementById('sbItauUSD').value),
+                hsbcPesos: sbParseNum(document.getElementById('sbHsbcPesos').value),
+                hsbcUSD: sbParseNum(document.getElementById('sbHsbcUSD').value),
+                efectivoPesos: sbParseNum(document.getElementById('sbEfectivoPesos').value),
+                efectivoUSD: sbParseNum(document.getElementById('sbEfectivoUSD').value),
+                chequesCobroPesos: sbParseNum(document.getElementById('sbChequesCobroPesos').value),
+                chequesCobrosUSD: sbParseNum(document.getElementById('sbChequesCobrosUSD').value),
                 fecha: new Date().toISOString()
             };
 
@@ -4147,14 +4170,14 @@
 
             // Load first record into form for editing
             const h = historial[0];
-            document.getElementById('sbItauPesos').value = h.itauPesos || 0;
-            document.getElementById('sbItauUSD').value = h.itauUSD || 0;
-            document.getElementById('sbHsbcPesos').value = h.hsbcPesos || 0;
-            document.getElementById('sbHsbcUSD').value = h.hsbcUSD || 0;
-            document.getElementById('sbEfectivoPesos').value = h.efectivoPesos || 0;
-            document.getElementById('sbEfectivoUSD').value = h.efectivoUSD || 0;
-            document.getElementById('sbChequesCobroPesos').value = h.chequesCobroPesos || 0;
-            document.getElementById('sbChequesCobrosUSD').value = h.chequesCobrosUSD || 0;
+            sbSetFormatted('sbItauPesos', h.itauPesos);
+            sbSetFormatted('sbItauUSD', h.itauUSD);
+            sbSetFormatted('sbHsbcPesos', h.hsbcPesos);
+            sbSetFormatted('sbHsbcUSD', h.hsbcUSD);
+            sbSetFormatted('sbEfectivoPesos', h.efectivoPesos);
+            sbSetFormatted('sbEfectivoUSD', h.efectivoUSD);
+            sbSetFormatted('sbChequesCobroPesos', h.chequesCobroPesos);
+            sbSetFormatted('sbChequesCobrosUSD', h.chequesCobrosUSD);
             calcSbTotal();
 
             histDiv.innerHTML = '<div style="font-size: 13px;">' + historial.map(h => {
