@@ -1967,6 +1967,8 @@
                         localStorage.setItem('bancosLimitesHistorial', JSON.stringify(data.bancos_limites_historial));
                     if (data.tc_default)
                         localStorage.setItem('tcDefault', data.tc_default.toString());
+                    if (data.config_alertas && Object.keys(data.config_alertas).length)
+                        localStorage.setItem('configAlertas', JSON.stringify(data.config_alertas));
                 }
             } catch(e) { /* tabla no existe aún → usa localStorage local */ }
         }
@@ -1980,6 +1982,7 @@
                     bancos_limites: JSON.parse(localStorage.getItem('bancosLimites') || '{}'),
                     bancos_limites_historial: JSON.parse(localStorage.getItem('bancosLimitesHistorial') || '[]'),
                     tc_default: parseFloat(localStorage.getItem('tcDefault')) || 43.5,
+                    config_alertas: JSON.parse(localStorage.getItem('configAlertas') || '{}'),
                     updated_at: new Date().toISOString()
                 }, { onConflict: 'id' });
             } catch(e) { /* silencioso — localStorage ya tiene el dato */ }
@@ -4353,7 +4356,8 @@
                 saldoMax: parseFloat(document.getElementById('alertaSaldoMax').value) || 0
             };
             localStorage.setItem('configAlertas', JSON.stringify(alertas));
-            alert('Umbrales de alerta guardados.\n\nNota: las notificaciones automáticas por email requieren configuración adicional de servidor (Supabase Edge Functions). Por ahora se guardan los valores de referencia.');
+            saveConfigToSupabase();
+            showToast('✓ Alertas guardadas y sincronizadas', 'ok');
         }
 
         function invitarUsuario() {
