@@ -300,24 +300,24 @@
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .kpi {
             background: #ffffff;
             border-radius: 8px;
-            padding: 20px;
+            padding: 10px 14px;
             box-shadow: 0 1px 3px rgba(0,0,0,.08);
         }
 
         .kpi-lbl {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: #5a616b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -398,15 +398,15 @@
         label .tip-icon { vertical-align: middle; margin-left: 4px; }
 
         .kpi-val {
-            font-size: 32px;
+            font-size: 20px;
             font-weight: 700;
             color: #252a2e;
             line-height: 1;
-            margin-bottom: 8px;
+            margin-bottom: 3px;
         }
 
         .kpi-sub {
-            font-size: 12px;
+            font-size: 11px;
             color: #9ba3ab;
         }
 
@@ -414,6 +414,8 @@
         .k-blue { color: #3b82c4; }
         .k-gray { color: #5a616b; }
         .k-red { color: #c0392b; }
+        .active-toggle { background: #3b82c4 !important; color: #fff !important; }
+        .trimViewBtn { background: #f8f9fa; color: #5a616b; cursor: pointer; }
 
         .card {
             background: #ffffff;
@@ -1395,8 +1397,32 @@
 
                 <!-- PROYECCIÓN TRIMESTRAL SCREEN -->
                 <div id="sc-proyTrim" class="screen">
-                    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <div id="trimViewToggle" style="display:inline-flex;border:1px solid #e3e6e9;border-radius:6px;overflow:hidden;">
+                            <button class="btn btn-sm trimViewBtn active-toggle" onclick="setTrimView('conservador')" style="border-radius:6px 0 0 6px;border:none;">Conservador</button>
+                            <button class="btn btn-sm trimViewBtn" onclick="setTrimView('optimista')" style="border-radius:0 6px 6px 0;border:none;">Optimista</button>
+                        </div>
                         <button class="btn btn-primary btn-sm" onclick="proyectarGastosFijos()">⚡ Proyectar gastos fijos</button>
+                    </div>
+                    <div id="proyTrimKPIs" class="card" style="padding:10px 14px;margin-bottom:12px;">
+                        <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
+                            <div style="text-align:center;padding-right:24px;border-right:1px solid #e3e6e9;">
+                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Disponible Hoy</div>
+                                <div style="font-size:17px;font-weight:700;" id="trimSaldoHoy">$0</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Ingresos Trim.</div>
+                                <div style="font-size:17px;font-weight:700;color:#24a660;" id="trimTotalIng">$0</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Egresos Trim.</div>
+                                <div style="font-size:17px;font-weight:700;color:#c0392b;" id="trimTotalEgr">$0</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Resultado Trim.</div>
+                                <div style="font-size:17px;font-weight:700;" id="trimTotalRes">$0</div>
+                            </div>
+                        </div>
                     </div>
                     <div id="proyTrimContent"></div>
                 </div>
@@ -1447,30 +1473,43 @@
 
                 <!-- PROYECCION INGRESOS SCREEN -->
                 <div id="sc-proyIng" class="screen">
-                    <!-- Bloque 1: KPIs -->
-                    <div class="kpi-grid" style="margin-bottom:16px;">
+                    <!-- Bloque 1: KPIs Conservador -->
+                    <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Escenario Conservador (solo confirmados)</div>
+                    <div class="kpi-grid" style="margin-bottom:8px;">
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.04));border:1px solid rgba(36,166,96,0.2);">
-                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Ingresos confirmados (certeza = Confirmado) esperados en los próximos 30 días.">?</span></div>
+                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon tip-down" data-tip="Ingresos confirmados esperados en 30 dias, incluyendo atrasados.">?</span></div>
                             <div class="kpi-val k-green" id="piKpi30">$0</div>
-                            <div class="kpi-sub">confirmados</div>
-                            <div id="piKpi30pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
-                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Ingresos confirmados esperados en los próximos 90 días. Los montos A Confirmar se muestran como referencia.">?</span></div>
+                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon tip-down" data-tip="Ingresos confirmados esperados en 90 dias.">?</span></div>
                             <div class="kpi-val k-green" id="piKpi90">$0</div>
-                            <div class="kpi-sub">confirmados</div>
-                            <div id="piKpi90pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));border:1px solid rgba(59,130,196,0.2);">
-                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro sin límite de fecha, incluyendo los A Confirmar. Refleja el potencial máximo de cobranza.">?</span></div>
+                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon tip-down" data-tip="Total ingresos pendientes confirmados.">?</span></div>
                             <div class="kpi-val" id="piKpiTotal" style="color:#3b82c4;">$0</div>
-                            <div class="kpi-sub">confirmado</div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.25);">
-                            <div class="kpi-lbl">Sin Cobranza Futura <span class="tip-icon" data-tip="Clientes activos que no tienen ningún ingreso futuro registrado. Son oportunidades de venta o seguimiento comercial a gestionar.">?</span></div>
+                            <div class="kpi-lbl">Sin Cobranza <span class="tip-icon tip-down" data-tip="Clientes activos sin ingresos futuros.">?</span></div>
                             <div class="kpi-val" id="piKpiSinCobr" style="color:#b87400;">0</div>
-                            <div class="kpi-sub" style="color:#b87400;">clientes — oportunidad</div>
+                            <div class="kpi-sub" style="color:#b87400;">clientes</div>
                         </div>
+                    </div>
+                    <!-- Bloque 1b: KPIs Optimista -->
+                    <div style="font-size:10px;font-weight:700;color:#b87400;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Escenario Optimista (confirmados + a confirmar)</div>
+                    <div class="kpi-grid" style="margin-bottom:16px;">
+                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.06),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.2);">
+                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon tip-down" data-tip="Todos los ingresos (confirmados + a confirmar) en 30 dias.">?</span></div>
+                            <div class="kpi-val" id="piKpi30opt" style="color:#b87400;">$0</div>
+                        </div>
+                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.06),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.2);">
+                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon tip-down" data-tip="Todos los ingresos en 90 dias.">?</span></div>
+                            <div class="kpi-val" id="piKpi90opt" style="color:#b87400;">$0</div>
+                        </div>
+                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.06),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.2);">
+                            <div class="kpi-lbl">Pipeline Total Opt. <span class="tip-icon tip-down" data-tip="Total ingresos pendientes incluyendo no confirmados.">?</span></div>
+                            <div class="kpi-val" id="piKpiTotalOpt" style="color:#b87400;">$0</div>
+                        </div>
+                        <div class="kpi" style="opacity:0;pointer-events:none;"></div>
                     </div>
 
                     <!-- Bloque 2+3: Tablas pipeline -->
@@ -1693,7 +1732,7 @@
                     <div id="repararVinculosStatus" style="font-size:12px;color:#9ba3ab;margin-bottom:8px;"></div>
                         <button class="btn btn-ghost btn-sm" onclick="repararVinculosEmpresas()">⚡ Ejecutar reparación (solo 1 vez)</button>
                     </div>
-                </div>
+                
             </div>
 
         <!-- Log de Actividad -->
@@ -1732,6 +1771,7 @@
                 <p style="color:#6b7280;font-size:13px;">Presioná "Buscar" para cargar el log.</p>
             </div>
         </div>
+                </div>
 
 
         
@@ -2748,7 +2788,11 @@
                 saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
                              + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
                              + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
-                const disponibleReal = saldoInicial + overdraftLimit;
+                const todayStrD = today.toISOString().split('T')[0];
+                const overdueMoves = allMovimientos.filter(m => !m.hecho && m.fecha < todayStrD);
+                const overdueIng = overdueMoves.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+                const overdueEgr = overdueMoves.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+                const disponibleReal = saldoInicial + overdraftLimit + overdueIng - overdueEgr;
                 document.getElementById('kpiSaldoHoy').textContent = formatUSD(disponibleReal);
                 document.getElementById('kpiSaldoHoy').className = disponibleReal > 0 ? 'kpi-val k-green' : disponibleReal < 0 ? 'kpi-val k-red' : 'kpi-val k-gray';
             }
@@ -2863,7 +2907,8 @@
                 }
             });
 
-            const sortedDays = Object.keys(dailyData).sort();
+            const todayStrChart = today.toISOString().split('T')[0];
+            const sortedDays = Object.keys(dailyData).sort().filter(d => d >= todayStrChart);
             const chartLabels = sortedDays.map(d => {
                 const [y,mo,dy] = d.split('-');
                 return `${parseInt(dy)}/${parseInt(mo)}`;
@@ -2872,7 +2917,10 @@
             const egressesData = sortedDays.map(d => dailyData[d].egr);
 
             // Cumulative balance line
-            let cum = saldoInicial;
+            const overdueForChart = allMovimientos.filter(m => !m.hecho && m.fecha < todayStrChart);
+            const overdueIngChart = overdueForChart.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const overdueEgrChart = overdueForChart.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            let cum = saldoInicial + overdraftLimit + overdueIngChart - overdueEgrChart;
             const cumulativeData = sortedDays.map(d => {
                 cum += dailyData[d].ing - dailyData[d].egr;
                 return Math.round(cum * 100) / 100;
@@ -3054,6 +3102,14 @@
             showToast(`✓ ${count} movimiento${count>1?'s':''} proyectado${count>1?'s':''} correctamente`, 'ok');
         }
 
+        let trimViewMode = 'conservador';
+        function setTrimView(mode) {
+            trimViewMode = mode;
+            document.querySelectorAll('.trimViewBtn').forEach(b => b.classList.remove('active-toggle'));
+            event.target.classList.add('active-toggle');
+            renderProyTrim();
+        }
+
         function renderProyTrim() {
             const months = ['Marzo', 'Abril', 'Mayo'];
             const monthNums = [3, 4, 5];
@@ -3075,7 +3131,10 @@
             monthNums.forEach((monthNum, idx) => {
                 const monthMovs = allMovimientos.filter(m => {
                     const movDate = new Date(m.fecha + 'T12:00:00');
-                    return !m.hecho && movDate.getMonth() + 1 === monthNum && movDate.getFullYear() === 2026;
+                    const inMonth = !m.hecho && movDate.getMonth() + 1 === monthNum && movDate.getFullYear() === 2026;
+                    if (!inMonth) return false;
+                    if (trimViewMode === 'conservador' && m.caja === 'Ingreso' && m.confiable !== true) return false;
+                    return true;
                 });
 
                 // Group by empresa, consolidated
@@ -3108,6 +3167,31 @@
 
                 trimData.push({ month: months[idx], ingresos, egresos, resultado: saldoEsperado, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp });
             });
+
+            // Update ProyTrim KPIs
+            const trimTotIng = trimData.reduce((s,d) => s + d.ingresos, 0);
+            const trimTotEgr = trimData.reduce((s,d) => s + d.egresos, 0);
+            const trimTotRes = trimTotIng - trimTotEgr;
+            const elTI = document.getElementById('trimTotalIng'); if (elTI) elTI.textContent = formatUSD(trimTotIng);
+            const elTE = document.getElementById('trimTotalEgr'); if (elTE) elTE.textContent = formatUSD(trimTotEgr);
+            const elTR = document.getElementById('trimTotalRes');
+            if (elTR) { elTR.textContent = formatUSD(trimTotRes, true); elTR.style.color = trimTotRes >= 0 ? '#24a660' : '#c0392b'; }
+            // Disponible Hoy in ProyTrim
+            {
+                const tcPT = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
+                const shPT = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
+                const limPT = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
+                let bankPT = 0;
+                if (shPT.length > 0) { const hh = shPT[0]; bankPT = (hh.itauUSD||0)+(hh.hsbcUSD||0)+((hh.itauPesos||0)/tcPT)+((hh.hsbcPesos||0)/tcPT)+(hh.efectivoUSD||0)+((hh.efectivoPesos||0)/tcPT)+(hh.chequesCobrosUSD||0)+((hh.chequesCobroPesos||0)/tcPT); }
+                const odPT = (limPT.itauUSD||0)+(limPT.hsbcUSD||0)+((limPT.itauPesos||0)/tcPT)+((limPT.hsbcPesos||0)/tcPT);
+                const todayPT = new Date().toISOString().split('T')[0];
+                const ovdPT = allMovimientos.filter(m => !m.hecho && m.fecha < todayPT);
+                const ovdIngPT = ovdPT.filter(m => m.caja === 'Ingreso').reduce((s,m) => s+Math.abs(m.usd||0), 0);
+                const ovdEgrPT = ovdPT.filter(m => m.caja === 'Egreso').reduce((s,m) => s+Math.abs(m.usd||0), 0);
+                const dispPT = bankPT + odPT + ovdIngPT - ovdEgrPT;
+                const elDPT = document.getElementById('trimSaldoHoy');
+                if (elDPT) { elDPT.textContent = formatUSD(dispPT); elDPT.style.color = dispPT >= 0 ? '#24a660' : '#c0392b'; }
+            }
 
             // Quarterly chart in Dashboard — grouped bars (Ingresos+Egresos per month) + cumulative line
             const trimCtx = document.getElementById('trimesterChart');
@@ -3289,14 +3373,7 @@
             const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
             const overdraft = (limites.itauUSD||0) + (limites.hsbcUSD||0) + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
 
-            // Update Saldo Inicial KPI — muestra disponible real (rawBalance + overdraftLimit)
-            const saldoIniEl = document.getElementById('proy30SaldoIni');
-            if (saldoIniEl) {
-                const disponibleRealProy = fondosPropios + overdraft;
-                saldoIniEl.textContent = formatUSD(disponibleRealProy);
-                saldoIniEl.style.color = disponibleRealProy > 0 ? '#24a660' : disponibleRealProy < 0 ? '#c0392b' : '#9ba3ab';
-            }
-            const totalDisp = fondosPropios + overdraft;
+            // KPI update moved below after overdue calc
 
             const today = new Date(); today.setHours(0,0,0,0);
             const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -3306,6 +3383,20 @@
                 const d = new Date(m.fecha + 'T12:00:00');
                 return !m.hecho && d < today;
             });
+
+            // Overdue impact on opening balance
+            const overdueIngPD = vencidas.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const overdueEgrPD = vencidas.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const fondosConOverdue = fondosPropios + overdueIngPD - overdueEgrPD;
+
+            // Update Disponible Hoy KPI with overdue included
+            const saldoIniEl = document.getElementById('proy30SaldoIni');
+            if (saldoIniEl) {
+                const disponibleRealProy = fondosConOverdue + overdraft;
+                saldoIniEl.textContent = formatUSD(disponibleRealProy);
+                saldoIniEl.style.color = disponibleRealProy > 0 ? '#24a660' : disponibleRealProy < 0 ? '#c0392b' : '#9ba3ab';
+            }
+            const totalDisp = fondosConOverdue + overdraft;
 
             const pending = allMovimientos.filter(m => {
                 const d = new Date(m.fecha + 'T12:00:00');
@@ -3325,9 +3416,12 @@
             // Group by day
             const byDay = {};
             pending.forEach(m => { if (!byDay[m.fecha]) byDay[m.fecha] = []; byDay[m.fecha].push(m); });
+            // Include overdue items in today's bucket
+            const todayStrPD = today.toISOString().split('T')[0];
+            vencidas.forEach(m => { if (!byDay[todayStrPD]) byDay[todayStrPD] = []; byDay[todayStrPD].push(m); });
 
             // Running balance per day — iterate every day in range so empty days carry forward
-            let runBal = fondosPropios;
+            let runBal = fondosConOverdue;
             const saldoByDay = {};
             const rangeStart = new Date(today);
             const rangeEnd = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -3722,7 +3816,7 @@
                     const tb = windows.reduce((s,w) => s+b[1][w], 0);
                     return tb - ta;
                 });
-                const totals = {'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0};
+                const totals = {'Vencidos':0,'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0};
                 rows.forEach(([,v]) => windows.forEach(w => totals[w] += v[w]));
                 const grandTotal = windows.reduce((s,w) => s+totals[w], 0);
 
@@ -3780,6 +3874,14 @@
             const clientesConHistorial = new Set(allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente')).map(m => m.empresa));
             const sinCobranza = [...clientesConHistorial].filter(e => !clientesConFuturo.has(e));
             document.getElementById('piKpiSinCobr').textContent = sinCobranza.length;
+
+            // Optimistic KPIs (all items, confirmed + unconfirmed)
+            const all30 = pendingIngs.filter(m => m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const all90 = pendingIngs.filter(m => m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const allTotalOpt = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const el30opt = document.getElementById('piKpi30opt'); if (el30opt) el30opt.textContent = formatUSD(all30);
+            const el90opt = document.getElementById('piKpi90opt'); if (el90opt) el90opt.textContent = formatUSD(all90);
+            const elTotalOpt = document.getElementById('piKpiTotalOpt'); if (elTotalOpt) elTotalOpt.textContent = formatUSD(allTotalOpt);
 
             // Chart: stacked bar by period, stacked by empresa (top 5 + others)
             const topEmps = Object.entries(clientes).sort((a,b) => {
