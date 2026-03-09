@@ -3192,6 +3192,7 @@
 
                 // Warning box
                 
+            const monthMovs = allMovimientos.filter(m => { const d = new Date(m.fecha); return !m.hecho && d.getMonth() + 1 === monthNums[idx] && d.getFullYear() === 2026; });
         // A Confirmar summary
         const ingAConfTrim = monthMovs.filter(m => m.caja === 'Ingreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
         const egrAConfTrim = monthMovs.filter(m => m.caja === 'Egreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
