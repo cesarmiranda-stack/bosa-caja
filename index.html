@@ -1095,13 +1095,21 @@
                             </div>
                             <div class="kpi-sub" id="kpiSobreHoySub">del límite total</div>
                         </div>
-                        <div class="kpi" id="kpiCobranzaBox" style="border:1px solid rgba(59,130,196,0.25);background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));">
-                            <div class="kpi-lbl">Cobranza Confirmada 30d <span class="tip-icon" data-tip="De todos los cobros a clientes del próximo mes, este es el porcentaje que ya está confirmado. Un porcentaje alto indica mayor certeza de ingreso.">?</span></div>
+                        <div class="kpi" id="kpiIngConfBox" style="border:1px solid rgba(36,166,96,0.25);background:linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02));">
+                            <div class="kpi-lbl">Ingresos Confirmados 30d <span class="tip-icon" data-tip="Suma de ingresos pendientes con certeza 'Confirmado' en los próximos 30 días.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
-                                <div class="kpi-val" id="kpiCobranzaMonto" style="color:#3b82c4;">$0</div>
-                                <div style="font-size:18px;font-weight:700;" id="kpiCobranzaPct">—</div>
+                                <div class="kpi-val" id="kpiIngConfMonto" style="color:#24a660;">$0</div>
+                                <div class="kpi-val" id="kpiIngConfPct" style="font-size:18px;font-weight:600;color:#24a660;">–</div>
                             </div>
-                            <div class="kpi-sub" id="kpiCobranzaSub">de ingresos clientes</div>
+                            <div class="kpi-sub" id="kpiIngConfSub">confirmados</div>
+                        </div>
+                        <div class="kpi" id="kpiIngAConfBox" style="border:1px solid rgba(217,169,25,0.25);background:linear-gradient(135deg,rgba(217,169,25,0.07),rgba(217,169,25,0.02));">
+                            <div class="kpi-lbl">Ingresos a Confirmar 30d <span class="tip-icon" data-tip="Suma de ingresos pendientes con certeza 'A Confirmar' en los próximos 30 días.">?</span></div>
+                            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+                                <div class="kpi-val" id="kpiIngAConfMonto" style="color:#d9a919;">$0</div>
+                                <div class="kpi-val" id="kpiIngAConfPct" style="font-size:18px;font-weight:600;color:#d9a919;">–</div>
+                            </div>
+                            <div class="kpi-sub" id="kpiIngAConfSub">a confirmar</div>
                         </div>
                     </div>
 
@@ -1165,7 +1173,7 @@
 
                         <!-- Banner auto dirección -->
                         <div id="nmDirBanner" style="border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;background:rgba(36,166,96,0.08);border:2px solid rgba(36,166,96,0.3);">
-                            <span id="nmDirIcon" style="font-size:22px;">📥</span>
+                            <span id="nmDirIcon" style="font-size:22px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg></span>
                             <div>
                                 <div id="nmDirLabel" style="font-size:15px;font-weight:800;color:#24a660;letter-spacing:0.3px;">INGRESO</div>
                                 <div id="nmDirSub" style="font-size:11px;color:#5a616b;margin-top:2px;">Seleccioná una empresa para auto-detectar la dirección</div>
@@ -1221,7 +1229,7 @@
                                     <input type="number" id="nmTC" placeholder="43.50" step="0.01" value="43.50" style="width:80px;padding:10px 12px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;display:none;" oninput="nmCalcMonto()">
                                     <span style="font-size:13px;color:#9ba3ab;white-space:nowrap;">= USD <strong id="nmUSDEquiv" style="color:#252a2e;">0</strong></span>
                                 </div>
-                                <div style="font-size:11px;color:#9ba3ab;margin-top:5px;">🔄 TC del día tomado automáticamente de BCU · editable si es necesario</div>
+                                <div style="font-size:11px;color:#9ba3ab;margin-top:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>TC del día tomado automáticamente de BCU · editable si es necesario</div>
                             </div>
                             <!-- Hidden fields for compatibility -->
                             <input type="hidden" id="nmPesos" value="0">
@@ -1233,12 +1241,12 @@
 
                             <!-- Certeza -->
                             <div class="form-group">
-                                <label>Certeza de fecha <span class="tip-icon" data-tip="'Fecha fija' = la fecha de cobro/pago está confirmada. 'Fecha estimada ±30d' = el monto es seguro pero la fecha puede variar ±30 días.">?</span></label>
+                                <label>Certeza <span class="tip-icon" data-tip="'Confirmado' = monto y fecha confirmados. 'A Confirmar' = monto y fecha estimados, sujetos a confirmación.">?</span></label>
                                 <div class="certeza-toggle">
-                                    <button type="button" id="nmCertConfBtn" class="certeza-btn active-certeza" onclick="setNmCerteza('confirmado')">📌 Fecha fija</button>
-                                    <button type="button" id="nmCertMontoBtn" class="certeza-btn" onclick="setNmCerteza('monto-confirmado')">±30d estimado</button>
+                                    <button type="button" id="nmCertConfBtn" class="certeza-btn active-certeza" onclick="setNmCerteza('confirmado')">Confirmado</button>
+                                    <button type="button" id="nmCertMontoBtn" class="certeza-btn" onclick="setNmCerteza('monto-confirmado')">A Confirmar</button>
                                 </div>
-                                <div style="font-size:11px;color:#9ba3ab;margin-top:6px;">±30d estimado: el monto está confirmado, la fecha puede moverse 30 días.</div>
+                                <div style="font-size:11px;color:#9ba3ab;margin-top:6px;">A Confirmar: el monto está confirmado, la fecha puede moverse 30 días.</div>
                             </div>
 
                             <!-- Detalle -->
@@ -1271,6 +1279,10 @@
 
                 <!-- MOVIMIENTOS SCREEN -->
                 <div id="sc-movimientos" class="screen">
+                    <div id="movPastDueWarning" style="display:none;align-items:center;justify-content:space-between;background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:12px 16px;margin-bottom:16px;">
+                        <div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:600;color:#92400e;">0 operaciones con fecha pasada sin confirmar</span></div>
+                        <span style="font-size:12px;color:#92400e;">Revisalas y marcalas como realizadas o ajusta las fechas.</span>
+                    </div>
                     <div class="card">
                         <div class="card-title">Movimientos</div>
                         
@@ -1438,19 +1450,19 @@
                     <!-- Bloque 1: KPIs -->
                     <div class="kpi-grid" style="margin-bottom:16px;">
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.04));border:1px solid rgba(36,166,96,0.2);">
-                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Total de ingresos con fecha fija (certeza alta) esperados en los próximos 30 días.">?</span></div>
+                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Ingresos confirmados (certeza = Confirmado) esperados en los próximos 30 días.">?</span></div>
                             <div class="kpi-val k-green" id="piKpi30">$0</div>
-                            <div class="kpi-sub">fecha fija</div>
+                            <div class="kpi-sub">confirmados</div>
                             <div id="piKpi30pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
-                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Total de ingresos con fecha fija esperados en los próximos 90 días. El monto ±30d se muestra como referencia.">?</span></div>
+                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Ingresos confirmados esperados en los próximos 90 días. Los montos A Confirmar se muestran como referencia.">?</span></div>
                             <div class="kpi-val k-green" id="piKpi90">$0</div>
-                            <div class="kpi-sub">fecha fija</div>
+                            <div class="kpi-sub">confirmados</div>
                             <div id="piKpi90pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));border:1px solid rgba(59,130,196,0.2);">
-                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro sin límite de fecha, incluyendo los de baja certeza. Refleja el potencial máximo de cobranza.">?</span></div>
+                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro sin límite de fecha, incluyendo los A Confirmar. Refleja el potencial máximo de cobranza.">?</span></div>
                             <div class="kpi-val" id="piKpiTotal" style="color:#3b82c4;">$0</div>
                             <div class="kpi-sub">confirmado</div>
                         </div>
@@ -1498,6 +1510,10 @@
                                 <div class="emp-dd-list" id="histEmpList">
                                     <label><input type="checkbox" id="histEmpAll" onchange="histEmpToggleAll(this)"> <strong>Todas</strong></label>
                                     <hr class="emp-dd-divider">
+                    <div style="display:flex;gap:6px;padding:4px 0;">
+                        <button type="button" onclick="histEmpSelectAll()" style="flex:1;padding:4px 8px;font-size:11px;border:1px solid #e3e6e9;border-radius:4px;background:#f8f9fa;cursor:pointer;">Seleccionar todos</button>
+                        <button type="button" onclick="histEmpClearAll()" style="flex:1;padding:4px 8px;font-size:11px;border:1px solid #e3e6e9;border-radius:4px;background:#f8f9fa;cursor:pointer;">Borrar todos</button>
+                    </div>
                                     <!-- populated by renderHistorial() -->
                                 </div>
                             </div>
@@ -1716,6 +1732,9 @@
                 <p style="color:#6b7280;font-size:13px;">Presioná "Buscar" para cargar el log.</p>
             </div>
         </div>
+
+
+        
         </div>
     </div>
 
@@ -1747,8 +1766,8 @@
                 <div class="form-group">
                     <label>Dirección</label>
                     <div class="tipo-toggle">
-                        <button type="button" id="emCajaIngBtn" class="tipo-btn active-ing" onclick="setEmCaja('Ingreso')">📥 Ingreso</button>
-                        <button type="button" id="emCajaEgrBtn" class="tipo-btn" onclick="setEmCaja('Egreso')">📤 Egreso</button>
+                        <button type="button" id="emCajaIngBtn" class="tipo-btn active-ing" onclick="setEmCaja('Ingreso')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg> Ingreso</button>
+                        <button type="button" id="emCajaEgrBtn" class="tipo-btn" onclick="setEmCaja('Egreso')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg> Egreso</button>
                     </div>
                 </div>
 
@@ -1775,10 +1794,10 @@
 
                 <!-- Certeza -->
                 <div class="form-group">
-                    <label>Certeza de fecha <span class="tip-icon" data-tip="'Fecha fija' = fecha confirmada. '±30d estimado' = fecha puede variar ±30 días.">?</span></label>
+                    <label>Certeza <span class="tip-icon" data-tip="'Confirmado' = monto y fecha confirmados. 'A Confirmar' = monto y fecha estimados, sujetos a confirmación.">?</span></label>
                     <div class="certeza-toggle">
-                        <button type="button" id="emCertConfBtn" class="certeza-btn active-certeza" onclick="setEmCerteza('confirmado')">📌 Fecha fija</button>
-                        <button type="button" id="emCertMontoBtn" class="certeza-btn" onclick="setEmCerteza('monto-confirmado')">±30d estimado</button>
+                        <button type="button" id="emCertConfBtn" class="certeza-btn active-certeza" onclick="setEmCerteza('confirmado')">Confirmado</button>
+                        <button type="button" id="emCertMontoBtn" class="certeza-btn" onclick="setEmCerteza('monto-confirmado')">A Confirmar</button>
                     </div>
                 </div>
 
@@ -2251,13 +2270,13 @@
             if (tipo === 'Ingreso') {
                 banner.style.background = 'rgba(36,166,96,0.08)';
                 banner.style.border = '2px solid rgba(36,166,96,0.3)';
-                icon.textContent = '📥';
+                icon.textContent = '↓';
                 label.textContent = 'INGRESO'; label.style.color = '#24a660';
                 if (sub) sub.textContent = 'Dinero que entra a la empresa';
             } else {
                 banner.style.background = 'rgba(192,57,43,0.08)';
                 banner.style.border = '2px solid rgba(192,57,43,0.3)';
-                icon.textContent = '📤';
+                icon.textContent = '↑';
                 label.textContent = 'EGRESO'; label.style.color = '#c0392b';
                 if (sub) sub.textContent = 'Dinero que sale de la empresa';
             }
@@ -2395,8 +2414,7 @@
                 fecha: document.getElementById('nmFecha').value,
                 empresa: document.getElementById('nmEmpresa').value,
                 caja: document.getElementById('nmCaja').value,
-                clase: document.getElementById('nmClase').value || null,
-                detalle: document.getElementById('nmDetalle').value,
+                                detalle: document.getElementById('nmDetalle').value,
                 documento: '',
                 comentarios: '',
                 pesos: Math.round(pesos * 100) / 100,
@@ -2460,14 +2478,26 @@
             }).sort((a, b) => a.fecha.localeCompare(b.fecha));
 
             const tbody = document.getElementById('movimientosBody');
+            // Advertencia: operaciones con fecha pasada pendientes
+            const today = new Date(); today.setHours(0,0,0,0);
+            const pastDue = filtered.filter(m => !m.hecho && new Date(m.fecha) < today);
+            const warningEl = document.getElementById('movPastDueWarning');
+            if (warningEl) {
+                if (pastDue.length > 0) {
+                    warningEl.style.display = 'flex';
+                    warningEl.querySelector('span').textContent = pastDue.length + ' operaciones con fecha pasada sin confirmar';
+                } else {
+                    warningEl.style.display = 'none';
+                }
+            }
             tbody.innerHTML = filtered.map(mov => {
                 const amount = getMovimientoAmount(mov);
                 const amountClass = mov.caja === 'Ingreso' ? 't-ing' : 't-egr';
                 const estadoBadge = mov.hecho ? '<span class="badge b-green">Realizado</span>' : '<span class="badge b-gray">Pendiente</span>';
                 
-                return `<tr>
+                return `<tr style="${mov.confiable === true ? \'\' : \'background:#fffbeb;\'}">
                     <td>${new Date(mov.fecha).toLocaleDateString('es-UY')}</td>
-                    <td>${mov.empresa || '-'}</td>
+                    <td>${mov.empresa || '-'}${mov.confiable === true ? '' : ' <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:6px;">A Confirmar</span>'}</td>
                     <td><span class="${amountClass}">${mov.caja === 'Ingreso' ? 'Ingreso' : 'Egreso'}</span></td>
                     <td class="text-right">${formatUSD(Math.abs(amount))}</td>
                     <td>${estadoBadge}</td>
@@ -2560,7 +2590,7 @@
             const fecha = document.getElementById('emFecha')?.value || '';
             const caja = document.getElementById('emCaja')?.value || '';
             const usd = parseFloat(document.getElementById('emUSD')?.value) || 0;
-            const icon = caja === 'Ingreso' ? '📥' : '📤';
+            const icon = caja === 'Ingreso' ? '↓' : '↑';
             const fechaFmt = fecha ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'numeric',month:'short'}) : '';
             const ctx = document.getElementById('emHeaderCtx');
             if (ctx) ctx.textContent = `${empresa} · ${icon} ${caja || '—'} · USD ${formatNumber(usd,0)} · ${fechaFmt}`;
@@ -2622,8 +2652,7 @@
                 fecha: document.getElementById('emFecha').value,
                 empresa: document.getElementById('emEmpresa').value,
                 caja: document.getElementById('emCaja').value,
-                clase: document.getElementById('emClase').value || null,
-                detalle: document.getElementById('emDetalle').value,
+                                detalle: document.getElementById('emDetalle').value,
                 documento: document.getElementById('emDocumento').value || '',
                 comentarios: document.getElementById('emComentarios').value || '',
                 pesos: Math.round(pesosVal * 100) / 100,
@@ -2741,22 +2770,20 @@
                 document.getElementById('kpiSobreHoyBox').style.borderColor = sobreBorder;
             }
 
-            // KPI Cobranza Confirmada 30d (categoria=Cliente, confiable=true vs total clientes)
+            // KPI Ingresos Confirmados 30d + A Confirmar 30d
             {
-                const clientesPending = next30Pending.filter(m => m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente'));
-                const totalClientes30 = clientesPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const confirmados30 = clientesPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const pctCobr = totalClientes30 > 0 ? Math.round((confirmados30 / totalClientes30) * 100) : null;
-                document.getElementById('kpiCobranzaMonto').textContent = formatUSD(confirmados30);
-                document.getElementById('kpiCobranzaPct').textContent = pctCobr !== null ? pctCobr + '%' : '—';
-                document.getElementById('kpiCobranzaSub').textContent = totalClientes30 > 0 ? `de ${formatUSD(totalClientes30)} total clientes` : 'sin ingresos de clientes';
-                const cobColor = pctCobr === null ? '#9ba3ab' : pctCobr >= 70 ? '#24a660' : pctCobr >= 40 ? '#b87400' : '#c0392b';
-                const cobBg = pctCobr === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctCobr >= 70 ? 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))' : pctCobr >= 40 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
-                const cobBorder = pctCobr === null ? 'rgba(90,97,107,0.15)' : pctCobr >= 70 ? 'rgba(36,166,96,0.25)' : pctCobr >= 40 ? 'rgba(245,166,35,0.3)' : 'rgba(192,57,43,0.25)';
-                document.getElementById('kpiCobranzaMonto').style.color = cobColor;
-                document.getElementById('kpiCobranzaPct').style.color = cobColor;
-                document.getElementById('kpiCobranzaBox').style.background = cobBg;
-                document.getElementById('kpiCobranzaBox').style.borderColor = cobBorder;
+                const ingresosPending = next30Pending.filter(m => m.caja === 'Ingreso');
+                const totalIng30 = ingresosPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const confirmados30 = ingresosPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const aConfirmar30 = totalIng30 - confirmados30;
+                const pctConf = totalIng30 > 0 ? Math.round((confirmados30 / totalIng30) * 100) : null;
+                const pctAConf = totalIng30 > 0 ? Math.round((aConfirmar30 / totalIng30) * 100) : null;
+                document.getElementById('kpiIngConfMonto').textContent = formatUSD(confirmados30);
+                document.getElementById('kpiIngConfPct').textContent = pctConf !== null ? pctConf + '%' : '\u2013';
+                document.getElementById('kpiIngConfSub').textContent = totalIng30 > 0 ? 'de ' + formatUSD(totalIng30) + ' total ingresos' : 'sin ingresos pendientes';
+                document.getElementById('kpiIngAConfMonto').textContent = formatUSD(aConfirmar30);
+                document.getElementById('kpiIngAConfPct').textContent = pctAConf !== null ? pctAConf + '%' : '\u2013';
+                document.getElementById('kpiIngAConfSub').textContent = totalIng30 > 0 ? 'de ' + formatUSD(totalIng30) + ' total ingresos' : 'sin ingresos pendientes';
             }
 
             // KPI Ingresos 30d vs YTD (promedio mensual últimos 12 meses)
@@ -3131,8 +3158,8 @@
                 // Ingresos rows
                 let ingHtml = '';
                 Object.entries(ingEmp).sort((a,b) => b[1].total - a[1].total).forEach(([emp, data]) => {
-                    const label30 = !data.confiable ? ' <span style="font-size:10px;color:#b87400;font-weight:600;">(±30d)</span>' : '';
-                    ingHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
+                    const label30 = !data.confiable ? ' <span style="font-size:10px;color:#b87400;font-weight:600;">(A Confirmar)</span>' : '';
+                    ingHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid #f0f0f0;${!data.confiable ? 'background:#fffbeb;padding:5px 8px;margin:0 -8px;border-radius:4px;' : ''}">
                         <span style="color:#252a2e;">${emp}${label30}</span>
                         <span style="color:#3b82c4;font-weight:700;">$${formatNumber(data.total, 0)}</span>
                     </div>`;
@@ -3164,7 +3191,18 @@
                 const consColor = saldoConservador > 0 ? '#24a660' : saldoEsperado > 0 ? '#b87400' : '#c0392b';
 
                 // Warning box
-                let warningHtml = '';
+                
+        // A Confirmar summary
+        const ingAConfTrim = monthMovs.filter(m => m.caja === 'Ingreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+        const egrAConfTrim = monthMovs.filter(m => m.caja === 'Egreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+        let aConfFooter = '';
+        if (ingAConfTrim > 0 || egrAConfTrim > 0) {
+            let pts = [];
+            if (ingAConfTrim > 0) pts.push('$' + formatNumber(ingAConfTrim, 0) + ' en ingresos');
+            if (egrAConfTrim > 0) pts.push('$' + formatNumber(egrAConfTrim, 0) + ' en egresos');
+            aConfFooter = '<div style="margin-top:8px;padding:6px 10px;background:#fffbeb;border:1px solid #fef3c7;border-radius:6px;font-size:11px;color:#92400e;">Incluye ' + pts.join(' y ') + ' a confirmar</div>';
+        }
+        let warningHtml = '';
                 if (saldoConservador < 0 || (saldoConservador >= 0 && saldoConservador < saldoEsperado * 0.3)) {
                     const nonConfIngs = Object.entries(ingEmp).filter(([_,v]) => !v.confiable).sort((a,b) => b[1].total-a[1].total);
                     if (nonConfIngs.length > 0) {
@@ -3206,11 +3244,12 @@
                             <span style="font-weight:700;color:${espColor};">${saldoEsperado >= 0 ? '' : '−'}$${formatNumber(Math.abs(saldoEsperado), 0)}</span>
                         </div>
                         <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;">
-                            <span style="color:#9ba3ab;">Saldo Conservador <span style="font-size:10px;">(±30d)</span></span>
+                            <span style="color:#9ba3ab;">Saldo Conservador <span style="font-size:10px;">(A Confirmar)</span></span>
                             <span style="font-weight:700;color:${consColor};">${saldoConservador >= 0 ? '' : '−'}$${formatNumber(Math.abs(saldoConservador), 0)}</span>
                         </div>
                     </div>
                     ${warningHtml}
+            ${aConfFooter}
                 </div>`;
             });
             html += '</div>';
@@ -3393,7 +3432,7 @@
                 const todayCls = isToday ? ' hoy' : '';
                 const hasMovs = dayMovs.length > 0;
                 const clickAttr = hasMovs || isInRange ? `onclick="abrirDayModal('${dayStr}')" style="cursor:pointer;"` : '';
-                // Dashed border when any movement that day has confiable=false (±30d estimate)
+                // Dashed border when any movement that day has confiable=false (A Confirmar estimate)
                 const hasIncierto = dayMovs.some(m => m.confiable === false);
                 const dashedStyle = hasIncierto ? 'border:2px dashed #b87400;' : '';
 
@@ -3406,7 +3445,17 @@
             calHtml += '</div>';
 
             const calEl = document.getElementById('proyDiaCalendar');
-            if (calEl) calEl.innerHTML = headerHtml + calHtml;
+            
+        // Summary footer for A Confirmar
+        const ingAConf30 = pending.filter(m => m.caja === 'Ingreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+        const egrAConf30 = pending.filter(m => m.caja === 'Egreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+        if (ingAConf30 > 0 || egrAConf30 > 0) {
+            let parts = [];
+            if (ingAConf30 > 0) parts.push(formatUSD(ingAConf30) + ' en ingresos a confirmar');
+            if (egrAConf30 > 0) parts.push(formatUSD(egrAConf30) + ' en egresos a confirmar');
+            calHtml += '<div style="margin-top:12px;padding:10px 14px;background:#fffbeb;border:1px solid #fef3c7;border-radius:8px;font-size:12px;color:#92400e;">Incluye ' + parts.join(' y ') + '</div>';
+        }
+        if (calEl) calEl.innerHTML = headerHtml + calHtml;
         }
 
         function abrirDayModal(fecha) {
@@ -3455,6 +3504,20 @@
             renderHistorial();
         }
 
+        function histEmpSelectAll() {
+            document.querySelectorAll('#histEmpList input[type=checkbox].emp-item').forEach(b => { b.checked = true; });
+            const allCb = document.getElementById('histEmpAll');
+            if (allCb) allCb.checked = true;
+            updateHistEmpBtn();
+            renderHistorial();
+        }
+        function histEmpClearAll() {
+            document.querySelectorAll('#histEmpList input[type=checkbox].emp-item').forEach(b => { b.checked = false; });
+            const allCb = document.getElementById('histEmpAll');
+            if (allCb) allCb.checked = false;
+            updateHistEmpBtn();
+            renderHistorial();
+        }
         function updateHistEmpBtn() {
             const boxes = document.querySelectorAll('#histEmpList input[type=checkbox].emp-item');
             const checked = [...boxes].filter(b => b.checked);
@@ -3550,11 +3613,7 @@
                 );
             }
 
-            const fcColor = (rb) => {
-                if (rb > 0)             return '#24a660';
-                if (rb + odLimit > 0)   return '#b87400';
-                return '#c0392b';
-            };
+            const fcColor = (rb) => { return rb >= 0 ? '#24a660' : '#c0392b'; }
 
             const inicialColor = fcColor(rawBal);
 
@@ -3565,7 +3624,8 @@
                         <th style="text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">EMPRESA</th>
                         <th style="text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">DETALLE</th>
                         <th style="text-align:right;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">MONTO</th>
-                        <th style="text-align:right;padding:10px 0 10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;white-space:nowrap;">DISPONIBLE</th>
+                        <th style="text-align:right;padding:10px 0 10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;white-space:nowrap;">SALDO</th>
+                <th style="text-align:center;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;width:40px;">HECHO</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -3573,7 +3633,8 @@
                         <td style="padding:11px 8px 11px 0;font-size:12px;color:#9ba3ab;">${todayFmt}</td>
                         <td colspan="2" style="padding:11px 8px;font-size:13px;font-weight:700;color:#5a616b;">Saldo disponible hoy</td>
                         <td style="padding:11px 8px;text-align:right;font-size:12px;color:#9ba3ab;">—</td>
-                        <td style="padding:11px 0 11px 8px;text-align:right;font-size:16px;font-weight:800;color:${inicialColor};">${formatUSD(disponibleInicial)}</td>
+                        <td style="padding:11px 0 11px 8px;text-align:right;font-size:16px;font-weight:800;color:${inicialColor};">${rawBal < 0 ? "-" : ""}${formatUSD(Math.abs(rawBal))}</td>
+                <td></td>
                     </tr>`;
 
             let runRaw = rawBal;
@@ -3588,19 +3649,21 @@
                 const fmtFecha = new Date(m.fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit'});
                 const isAtrasado = m.fecha < todayStr;
                 const atrasadoBadge = isAtrasado ? `&nbsp;<span style="font-size:10px;background:rgba(255,167,38,0.18);color:#b87400;padding:1px 6px;border-radius:3px;font-weight:600;vertical-align:middle;">atrasado</span>` : '';
-                const rowBg = isAtrasado ? 'rgba(255,167,38,0.04)' : 'transparent';
+                const aConfBadge = m.confiable !== true ? ' <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:4px;">A Confirmar</span>' : '';
+            const rowBg = (isAtrasado || m.confiable !== true) ? '#fffbeb' : 'transparent';
 
                 html += `<tr style="border-bottom:1px solid #e3e6e9;cursor:pointer;background:${rowBg};" onclick="abrirMovModal('${m.id}')" onmouseover="this.style.background='rgba(59,130,196,0.05)'" onmouseout="this.style.background='${rowBg}'">
                     <td style="padding:9px 8px 9px 0;font-size:13px;color:#5a616b;white-space:nowrap;">${fmtFecha}${atrasadoBadge}</td>
                     <td style="padding:9px 8px;font-size:13px;font-weight:600;color:#252a2e;">${m.empresa || '—'}</td>
                     <td style="padding:9px 8px;font-size:12px;color:#9ba3ab;">${m.detalle || '—'}</td>
-                    <td style="padding:9px 8px;text-align:right;font-size:13px;font-weight:700;color:${montoColor};">${montoStr}</td>
-                    <td style="padding:9px 0 9px 8px;text-align:right;font-size:13px;font-weight:700;color:${rc};">${formatUSD(runDisp)}</td>
+                    <td style="padding:9px 8px;text-align:right;font-size:13px;font-weight:700;color:${montoColor};">${montoStr}${aConfBadge}</td>
+                    <td style="padding:9px 0 9px 8px;text-align:right;font-size:13px;font-weight:700;color:${rc};">${runRaw < 0 ? "-" : ""}${formatUSD(Math.abs(runRaw))}</td>
+                <td style="text-align:center;padding:4px;"><input type="checkbox" ${m.hecho ? "checked" : ""} onclick="event.stopPropagation();handleToggleHecho('${m.id}',this.checked)" style="cursor:pointer;width:16px;height:16px;accent-color:#24a660;"></td>
                 </tr>`;
             });
 
             if (sorted.length === 0) {
-                html += `<tr><td colspan="5" style="padding:28px;text-align:center;color:#9ba3ab;font-style:italic;">Sin movimientos pendientes</td></tr>`;
+                html += `<tr><td colspan="6" style="padding:28px;text-align:center;color:#9ba3ab;font-style:italic;">Sin movimientos pendientes</td></tr>`;
             }
             html += `</tbody></table>`;
             const container = document.getElementById('flujoCajaContent');
@@ -3620,14 +3683,15 @@
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || ''; });
 
             // Pending income movements — any income (not just confirmed) for pipeline visibility
-            // confiable=true → confirmed dates, confiable=false → ±30d uncertainty
+            // confiable=true → confirmed dates, confiable=false → A Confirmar uncertainty
             const pendingIngs = allMovimientos.filter(m =>
-                !m.hecho && m.caja === 'Ingreso' && m.fecha >= todayStr
+                !m.hecho && m.caja === 'Ingreso'
             );
 
             // Helper: get window label
             const getWindow = fecha => {
-                if (fecha <= d30) return '0-30d';
+                if (fecha < todayStr) return 'Vencidos';
+            if (fecha <= d30) return '0-30d';
                 if (fecha <= d60) return '31-60d';
                 if (fecha <= d90) return '61-90d';
                 return '90d+';
@@ -3642,15 +3706,15 @@
                 const usd = Math.abs(m.usd || 0);
                 const win = getWindow(m.fecha);
                 if (cat === 'Cliente') {
-                    if (!clientes[m.empresa]) clientes[m.empresa] = { '0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
+                    if (!clientes[m.empresa]) clientes[m.empresa] = { 'Vencidos':0,'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
                     clientes[m.empresa][win] += usd;
                 } else if (cat === 'Otros') {
-                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = { '0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
+                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = { 'Vencidos':0,'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
                     otrosMap[m.empresa][win] += usd;
                 }
             });
 
-            const windows = ['0-30d','31-60d','61-90d','90d+'];
+            const windows = ['Vencidos','0-30d','31-60d','61-90d','90d+'];
             const buildTable = (dataMap, title, emptyMsg) => {
                 const rows = Object.entries(dataMap).sort((a,b) => {
                     const ta = windows.reduce((s,w) => s+a[1][w], 0);
@@ -3701,14 +3765,14 @@
             // A Cobrar 30d/90d: solo confiable=true (fecha fija)
             const conf30 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const conf90 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            // ±30d estimates (confiable=false) — referencia secundaria
+            // A Confirmar estimates (confiable=false) — referencia secundaria
             const est30 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const est90 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             document.getElementById('piKpi30').textContent = formatUSD(conf30);
             document.getElementById('piKpi90').textContent = formatUSD(conf90);
             document.getElementById('piKpiTotal').textContent = formatUSD(allConfirmed);
-            const el30pm = document.getElementById('piKpi30pm'); if (el30pm) el30pm.textContent = est30 > 0 ? `+${formatUSD(est30)} est. ±30d` : '';
-            const el90pm = document.getElementById('piKpi90pm'); if (el90pm) el90pm.textContent = est90 > 0 ? `+${formatUSD(est90)} est. ±30d` : '';
+            const el30pm = document.getElementById('piKpi30pm'); if (el30pm) el30pm.textContent = est30 > 0 ? `+${formatUSD(est30)} est. A Confirmar` : '';
+            const el90pm = document.getElementById('piKpi90pm'); if (el90pm) el90pm.textContent = est90 > 0 ? `+${formatUSD(est90)} est. A Confirmar` : '';
 
             // Clientes sin cobranza futura (tienen historial pero no tienen ingresos futuros confirmados)
             const clientesConFuturo = new Set(Object.keys(clientes));
