@@ -1406,10 +1406,7 @@
                     </div>
                     <div id="proyTrimKPIs" class="card" style="padding:10px 14px;margin-bottom:12px;">
                         <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
-                            <div style="text-align:center;padding-right:24px;border-right:1px solid #e3e6e9;">
-                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Disponible Hoy</div>
-                                <div style="font-size:17px;font-weight:700;" id="trimSaldoHoy">$0</div>
-                            </div>
+                            
                             <div style="text-align:center;">
                                 <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Ingresos Trim.</div>
                                 <div style="font-size:17px;font-weight:700;color:#24a660;" id="trimTotalIng">$0</div>
@@ -1433,11 +1430,7 @@
                     <input type="hidden" id="saldoInicialProy" value="0">
                     <div class="card" style="padding:14px 20px;">
                         <div style="display:flex; align-items:center; gap:0; flex-wrap:wrap;">
-                            <div style="text-align:center; padding:0 24px 0 0; border-right:1px solid #e3e6e9; margin-right:24px;">
-                                <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Disponible Hoy</div>
-                                <div style="font-size:17px; font-weight:700; color:#24a660;" id="proy30SaldoIni">$0</div>
-                                <div style="font-size:10px; color:#9ba3ab; margin-top:2px;">Incl. sobregiro</div>
-                            </div>
+                            
                             <div style="display:flex; gap:24px; margin-left:auto;">
                                 <div style="text-align:center;">
                                     <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Ingresos</div>
@@ -1451,7 +1444,19 @@
                                     <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Resultado</div>
                                     <div style="font-size:17px; font-weight:700;" id="proy30TotalRes">$0</div>
                                 </div>
-                            </div>
+                            
+              <div style="text-align:center">
+                <div style="font-size:11px;margin-bottom:2px;">D. Verdes</div>
+                <div id="proy30DiasVerdes" style="font-size:16px;font-weight:600;color:#27ae60">0</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:11px;margin-bottom:2px;">D. Amarillos</div>
+                <div id="proy30DiasAmar" style="font-size:16px;font-weight:600;color:#b87400">0</div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:11px;margin-bottom:2px;">D. Rojos</div>
+                <div id="proy30DiasRojos" style="font-size:16px;font-weight:600;color:#c0392b">0</div>
+              </div></div>
                         </div>
                     </div>
                     <div class="card">
@@ -1984,7 +1989,17 @@
         const SUPA_KEY = 'sb_publishable_2l0WJ4zUKz0-Tqo7n_vWiQ_arjBXJVZ';
 
         const { createClient } = window.supabase;
-        const supabaseClient = createClient(SUPA_URL, SUPA_KEY);
+        
+    // Helper: local date string YYYY-MM-DD (avoids UTC timezone shift)
+    function localISO(d) {
+      if (!d) d = new Date();
+      if (typeof d === 'string') d = new Date(d + 'T12:00:00');
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return y + '-' + m + '-' + dd;
+    }
+    const supabaseClient = createClient(SUPA_URL, SUPA_KEY);
 
         let currentUser = null;
         let allMovimientos = [];
@@ -2167,7 +2182,7 @@
             });
 
             // Set default dates
-            const today = new Date().toISOString().split('T')[0];
+            const today = localISO();
             document.getElementById('nmFecha').value = today;
             // Historial date filters start empty — shows all historical data
             document.getElementById('histFechaDesde').value = '';
@@ -2413,7 +2428,7 @@
 
         function resetNuevoMovForm() {
             document.getElementById('nuevoMovForm').reset();
-            document.getElementById('nmFecha').value = new Date().toISOString().split('T')[0];
+            document.getElementById('nmFecha').value = localISO();
             document.getElementById('nmMonto').value = '';
             document.getElementById('nmUSDEquiv').textContent = '0';
             document.getElementById('nmUSD').value = '0';
@@ -2789,7 +2804,7 @@
                 saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
                              + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
                              + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
-                const todayStrD = today.toISOString().split('T')[0];
+                const todayStrD = localISO(today);
                 const overdueMoves = allMovimientos.filter(m => !m.hecho && m.fecha < todayStrD);
                 const overdueIng = overdueMoves.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
                 const overdueEgr = overdueMoves.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
@@ -2833,8 +2848,8 @@
 
             // KPI Ingresos 30d vs YTD (promedio mensual últimos 12 meses)
             {
-                const todayStr = today.toISOString().split('T')[0];
-                const hace12m = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+                const todayStr = localISO(today);
+                const hace12m = localISO(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()));
                 const hist12m = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && m.fecha >= hace12m && m.fecha <= todayStr);
                 const totalHist12m = hist12m.reduce((s, m) => s + Math.abs(getMovimientoAmount(m)), 0);
                 const promMensual = totalHist12m / 12;
@@ -2851,8 +2866,8 @@
             {
                 const mesActual = today.getMonth();
                 const anioAnt = today.getFullYear() - 1;
-                const inicioMesAA = new Date(anioAnt, mesActual, 1).toISOString().split('T')[0];
-                const finMesAA = new Date(anioAnt, mesActual + 1, 0).toISOString().split('T')[0];
+                const inicioMesAA = localISO(new Date(anioAnt, mesActual, 1));
+                const finMesAA = localISO(new Date(anioAnt, mesActual + 1, 0));
                 const histAA = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && m.fecha >= inicioMesAA && m.fecha <= finMesAA);
                 const totalAA = histAA.reduce((s, m) => s + Math.abs(getMovimientoAmount(m)), 0);
                 const varAA = totalAA > 0 ? Math.round(((ingresos30 - totalAA) / totalAA) * 100) : null;
@@ -2885,7 +2900,7 @@
                 let diasV = 0, diasA = 0, diasR = 0;
                 for (let i = 0; i < 30; i++) {
                     const d = new Date(today); d.setDate(today.getDate() + i);
-                    const dStr = d.toISOString().split('T')[0];
+                    const dStr = localISO(d);
                     if (byDayD[dStr]) byDayD[dStr].forEach(m => { runBalD += m.caja === 'Ingreso' ? Math.abs(m.usd||0) : -Math.abs(m.usd||0); });
                     if (runBalD > 0) diasV++;
                     else if (runBalD + odD > 0) diasA++;
@@ -2908,7 +2923,7 @@
                 }
             });
 
-            const todayStrChart = today.toISOString().split('T')[0];
+            const todayStrChart = localISO(today);
             const sortedDays = Object.keys(dailyData).sort().filter(d => d >= todayStrChart);
             const chartLabels = sortedDays.map(d => {
                 const [y,mo,dy] = d.split('-');
@@ -3142,6 +3157,8 @@
                 const ingEmp = {};
                 const egrFijosEmp = {};
                 const egrVarEmp = {};
+            const egrFijosConf = {};
+            const egrVarConf = {};
                 monthMovs.forEach(m => {
                     const amt = Math.abs(m.usd || 0);
                     if (m.caja === 'Ingreso') {
@@ -3152,10 +3169,10 @@
                         const tipo = empTipoMap[m.empresa] || 'Variables';
                         if (tipo === 'Fijos') {
                             if (!egrFijosEmp[m.empresa]) egrFijosEmp[m.empresa] = 0;
-                            egrFijosEmp[m.empresa] += amt;
+                            egrFijosEmp[m.empresa] += amt; if(!m.confiable) egrFijosConf[m.empresa] = false;
                         } else {
                             if (!egrVarEmp[m.empresa]) egrVarEmp[m.empresa] = 0;
-                            egrVarEmp[m.empresa] += amt;
+                            egrVarEmp[m.empresa] += amt; if(!m.confiable) egrVarConf[m.empresa] = false;
                         }
                     }
                 });
@@ -3185,13 +3202,11 @@
                 let bankPT = 0;
                 if (shPT.length > 0) { const hh = shPT[0]; bankPT = (hh.itauUSD||0)+(hh.hsbcUSD||0)+((hh.itauPesos||0)/tcPT)+((hh.hsbcPesos||0)/tcPT)+(hh.efectivoUSD||0)+((hh.efectivoPesos||0)/tcPT)+(hh.chequesCobrosUSD||0)+((hh.chequesCobroPesos||0)/tcPT); }
                 const odPT = (limPT.itauUSD||0)+(limPT.hsbcUSD||0)+((limPT.itauPesos||0)/tcPT)+((limPT.hsbcPesos||0)/tcPT);
-                const todayPT = new Date().toISOString().split('T')[0];
+                const todayPT = localISO();
                 const ovdPT = allMovimientos.filter(m => !m.hecho && m.fecha < todayPT);
                 const ovdIngPT = ovdPT.filter(m => m.caja === 'Ingreso').reduce((s,m) => s+Math.abs(m.usd||0), 0);
                 const ovdEgrPT = ovdPT.filter(m => m.caja === 'Egreso').reduce((s,m) => s+Math.abs(m.usd||0), 0);
                 const dispPT = bankPT + odPT + ovdIngPT - ovdEgrPT;
-                const elDPT = document.getElementById('trimSaldoHoy');
-                if (elDPT) { elDPT.textContent = formatUSD(dispPT); elDPT.style.color = dispPT >= 0 ? '#24a660' : '#c0392b'; }
             }
 
             // Quarterly chart in Dashboard — grouped bars (Ingresos+Egresos per month) + cumulative line
@@ -3255,7 +3270,7 @@
                 let egrFHtml = '';
                 const egrFTotal = Object.values(egrFijosEmp).reduce((s,v) => s+v, 0);
                 Object.entries(egrFijosEmp).sort((a,b) => b[1]-a[1]).forEach(([emp, amt]) => {
-                    egrFHtml += `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
+                    egrFHtml += `<div style="${egrFijosConf[emp]===false?'background:#fffbeb;':''};display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
                         <span style="color:#5a616b;font-style:italic;">${emp}</span>
                         <span style="color:#5a616b;">$${formatNumber(amt, 0)}</span>
                     </div>`;
@@ -3265,7 +3280,7 @@
                 let egrVHtml = '';
                 const egrVTotal = Object.values(egrVarEmp).reduce((s,v) => s+v, 0);
                 Object.entries(egrVarEmp).sort((a,b) => b[1]-a[1]).forEach(([emp, amt]) => {
-                    egrVHtml += `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
+                    egrVHtml += `<div style="${egrVarConf[emp]===false?'background:#fffbeb;':''};display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
                         <span style="color:#252a2e;font-weight:600;">${emp}</span>
                         <span style="color:#252a2e;font-weight:600;">$${formatNumber(amt, 0)}</span>
                     </div>`;
@@ -3418,7 +3433,7 @@
             const byDay = {};
             pending.forEach(m => { if (!byDay[m.fecha]) byDay[m.fecha] = []; byDay[m.fecha].push(m); });
             // Include overdue items in today's bucket
-            const todayStrPD = today.toISOString().split('T')[0];
+            const todayStrPD = localISO(today);
             vencidas.forEach(m => { if (!byDay[todayStrPD]) byDay[todayStrPD] = []; byDay[todayStrPD].push(m); });
 
             // Running balance per day — iterate every day in range so empty days carry forward
@@ -3428,7 +3443,7 @@
             const rangeEnd = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
             let dayCur = new Date(rangeStart);
             while (dayCur < rangeEnd) {
-                const dStr = dayCur.toISOString().split('T')[0];
+                const dStr = localISO(dayCur);
                 if (byDay[dStr]) {
                     byDay[dStr].forEach(m => { runBal += m.caja === 'Ingreso' ? Math.abs(m.usd||0) : -Math.abs(m.usd||0); });
                 }
@@ -3445,23 +3460,15 @@
             });
 
             // Build header — KPIs first, then alerts below
-            let headerHtml = '';
+        // Set days KPIs in upper row
+        const elDV = document.getElementById('proy30DiasVerdes');
+        const elDA = document.getElementById('proy30DiasAmar');
+        const elDR = document.getElementById('proy30DiasRojos');
+        if(elDV) elDV.textContent = verdes;
+        if(elDA) elDA.textContent = amarillos;
+        if(elDR) elDR.textContent = rojos;
+        let headerHtml = '';
 
-            // 1. KPIs row (verdes / amarillos / rojos) with tooltips
-            headerHtml += `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
-                <div style="background:rgba(36,166,96,0.1);border:1px solid rgba(36,166,96,0.3);border-radius:8px;padding:10px 18px;text-align:center;">
-                    <div style="font-size:22px;font-weight:800;color:#24a660;">${verdes}</div>
-                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días verdes <span class="tip-icon" data-tip="Días en que el saldo propio (sin usar crédito bancario) es positivo. Cuantos más, mejor.">?</span></div>
-                </div>
-                <div style="background:rgba(255,167,38,0.1);border:1px solid rgba(255,167,38,0.4);border-radius:8px;padding:10px 18px;text-align:center;">
-                    <div style="font-size:22px;font-weight:800;color:#b87400;">${amarillos}</div>
-                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días amarillos <span class="tip-icon" data-tip="Días en que el saldo propio es insuficiente pero el crédito bancario cubre la diferencia. La empresa opera, pero con deuda bancaria.">?</span></div>
-                </div>
-                <div style="background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.3);border-radius:8px;padding:10px 18px;text-align:center;">
-                    <div style="font-size:22px;font-weight:800;color:#c0392b;">${rojos}</div>
-                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días rojos <span class="tip-icon" data-tip="Días en que ni el saldo propio ni el crédito bancario son suficientes. Indica déficit total y requiere atención inmediata.">?</span></div>
-                </div>
-            </div>`;
 
             // 2. Alert: operaciones con fecha pasada sin confirmar
             if (vencidas.length > 0) {
@@ -3505,8 +3512,8 @@
             const calEnd = new Date(today.getTime() + 36 * 24 * 60 * 60 * 1000);
             let cur = new Date(calStart);
             while (cur <= calEnd) {
-                const dayStr = cur.toISOString().split('T')[0];
-                const isToday = dayStr === today.toISOString().split('T')[0];
+                const dayStr = localISO(cur);
+                const isToday = dayStr === localISO(today);
                 const isInRange = cur >= today && cur < in30;
                 const daySaldo = saldoByDay[dayStr];
                 const dayMovs = byDay[dayStr] || [];
@@ -3555,30 +3562,41 @@
         }
 
         function abrirDayModal(fecha) {
-            const dayMovs = allMovimientos.filter(m => m.fecha === fecha && !m.hecho);
-            const fmtDate = new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', { weekday:'long', day:'numeric', month:'long' });
-            document.getElementById('dayMovTitle').textContent = fmtDate;
-            if (dayMovs.length === 0) {
-                document.getElementById('dayMovContent').innerHTML = '<p style="color:#9ba3ab;font-size:13px;padding:10px 0;">Sin movimientos pendientes este día.</p>';
-            } else {
-                document.getElementById('dayMovContent').innerHTML = dayMovs.map(m => {
-                    const amt = Math.abs(m.usd||0);
-                    const color = m.caja === 'Ingreso' ? '#24a660' : '#c0392b';
-                    const prefix = m.caja === 'Ingreso' ? '+' : '−';
-                    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e3e6e9;">
-                        <div>
-                            <div style="font-weight:600;color:#252a2e;font-size:14px;">${m.empresa||'-'}</div>
-                            ${m.detalle ? `<div style="font-size:12px;color:#9ba3ab;">${m.detalle}</div>` : ''}
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <span style="color:${color};font-weight:700;">${prefix}$${formatNumber(amt,0)}</span>
-                            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('dayMovModal').classList.remove('active');abrirMovModal('${m.id}')">Editar</button>
-                        </div>
-                    </div>`;
-                }).join('');
-            }
-            document.getElementById('dayMovModal').classList.add('active');
+        const todayStr = localISO();
+        const dayMovs = allMovimientos.filter(m => m.fecha === fecha && !m.hecho);
+        const overdueMovs = (fecha >= todayStr) ? allMovimientos.filter(m => m.fecha < todayStr && !m.hecho) : [];
+        const allItems = [...overdueMovs.map(m => ({...m, isOverdue: true})), ...dayMovs.map(m => ({...m, isOverdue: false}))];
+        const fmtDate = new Date(fecha+'T12:00:00').toLocaleDateString('es-UY',{weekday:'long',day:'numeric',month:'long'});
+        document.getElementById('dayMovTitle').textContent = fmtDate;
+        if(!allItems.length) {
+          document.getElementById('dayMovContent').innerHTML = '<div style="color:#7b8a9b;font-size:13px;padding:16px">Sin movimientos pendientes este d\u00eda</div>';
+        } else {
+          const egresos = allItems.filter(m => m.caja === 'Egreso');
+          const ingresos = allItems.filter(m => m.caja === 'Ingreso');
+          let html = '';
+          if(egresos.length) {
+            html += '<div style="font-weight:600;font-size:13px;color:#c0392b;padding:8px 0 4px;border-bottom:2px solid #c0392b">Egresos (' + egresos.length + ')</div>';
+            egresos.sort((a,b) => a.empresa.localeCompare(b.empresa));
+            egresos.forEach(m => {
+              const amt = Math.abs(m.usd);
+              const ovd = m.isOverdue ? '<span style="background:#fef3c7;color:#b87400;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px">vencido</span>' : '';
+              html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #e3e6e9"><div><div style="font-weight:500;color:#2a2e33;font-size:13px">' + m.empresa + ovd + '</div><div style="font-size:11px;color:#7b8a9b">' + (m.detalle||'') + '</div></div><div style="color:#c0392b;font-weight:600">-' + formatNumber(amt) + '</div></div>';
+            });
+          }
+          if(ingresos.length) {
+            html += '<div style="font-weight:600;font-size:13px;color:#27ae60;padding:8px 0 4px;margin-top:8px;border-bottom:2px solid #27ae60">Ingresos (' + ingresos.length + ')</div>';
+            ingresos.sort((a,b) => a.empresa.localeCompare(b.empresa));
+            ingresos.forEach(m => {
+              const amt = Math.abs(m.usd);
+              const ovd = m.isOverdue ? '<span style="background:#fef3c7;color:#b87400;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px">vencido</span>' : '';
+              const conf = !m.confiable ? '<span style="background:#fffbeb;color:#b87400;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px">a confirmar</span>' : '';
+              html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #e3e6e9"><div><div style="font-weight:500;color:#2a2e33;font-size:13px">' + m.empresa + ovd + conf + '</div><div style="font-size:11px;color:#7b8a9b">' + (m.detalle||'') + '</div></div><div style="color:#27ae60;font-weight:600">+' + formatNumber(amt) + '</div></div>';
+            });
+          }
+          document.getElementById('dayMovContent').innerHTML = html;
         }
+        document.getElementById('dayMovModal').classList.remove('hidden');
+      }
 
         function verVencidas() {
             document.querySelector('[data-screen="sc-movimientos"]')?.click();
@@ -3634,7 +3652,7 @@
             const filterTipo = document.getElementById('histFilterTipo')?.value || '';
             const desde = document.getElementById('histFechaDesde')?.value || '';
             const hasta = document.getElementById('histFechaHasta')?.value || '';
-            const todayStr = new Date().toISOString().split('T')[0];
+            const todayStr = localISO();
             const empClaseMap = {};
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || 'Otros'; });
             return allMovimientos.filter(m => {
@@ -3690,7 +3708,7 @@
             const odLimit = (limitesFlujo.itauUSD||0) + (limitesFlujo.hsbcUSD||0) + ((limitesFlujo.itauPesos||0)/tcFlujo) + ((limitesFlujo.hsbcPesos||0)/tcFlujo);
             const disponibleInicial = rawBal + odLimit;
 
-            const todayStr = new Date().toISOString().split('T')[0];
+            const todayStr = localISO();
             const todayFmt = new Date().toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit', year:'numeric'});
 
             // Pending: overdue first (oldest→newest), then future (oldest→newest)
@@ -3769,10 +3787,10 @@
         let piChart = null;
         function renderProyIng() {
             const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            const d30 = new Date(today.getTime() + 30*24*60*60*1000).toISOString().split('T')[0];
-            const d60 = new Date(today.getTime() + 60*24*60*60*1000).toISOString().split('T')[0];
-            const d90 = new Date(today.getTime() + 90*24*60*60*1000).toISOString().split('T')[0];
+            const todayStr = localISO(today);
+            const d30 = localISO(new Date(today.getTime() + 30*24*60*60*1000));
+            const d60 = localISO(new Date(today.getTime() + 60*24*60*60*1000));
+            const d90 = localISO(new Date(today.getTime() + 90*24*60*60*1000));
 
             // Build clase lookup from empresas (fallback for movements without clase field)
             const empClaseMap = {};
@@ -3857,10 +3875,10 @@
             document.getElementById('piTablaOtros').innerHTML = buildTable(otrosMap, 'Otros Ingresos Esperados', 'Sin otros ingresos registrados (aportes, préstamos, etc.).');
 
             // KPIs
-            const allConfirmed = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            // A Cobrar 30d/90d: solo confiable=true (fecha fija)
+                        // A Cobrar 30d/90d: solo confiable=true (fecha fija)
             const conf30 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const conf90 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+        const allConfirmed = conf30 + conf90;
             // A Confirmar estimates (confiable=false) — referencia secundaria
             const est30 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const est90 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
@@ -3921,7 +3939,7 @@
             }
 
             // Block 5: Performance histórica
-            const hace12m = new Date(today.getFullYear()-1, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+            const hace12m = localISO(new Date(today.getFullYear()-1, today.getMonth(), today.getDate()));
             const histClientes = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase==='Cliente'||m.categoria==='Cliente'||empClaseMap[m.empresa]==='Cliente') && m.fecha >= hace12m);
 
             // Monthly avg per client
@@ -4429,7 +4447,7 @@
 
         // Obtiene el TC desde internet solo una vez por día
         async function fetchTipoCambioIfNeeded() {
-            const today = new Date().toISOString().split('T')[0];
+            const today = localISO();
             const lastFetch = localStorage.getItem('tcLastFetch');
             applyStoredTC(); // Siempre aplicar el valor guardado primero
             if (lastFetch === today) return; // Ya se actualizó hoy
