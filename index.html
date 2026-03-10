@@ -2057,6 +2057,7 @@
             ]);
 
             if (movRes.data) allMovimientos = movRes.data;
+            allMovimientos.forEach(m => { m.confiable = (String(m.confiable).toLowerCase() === 'true'); });
             if (empRes.data) allEmpresas = empRes.data;
 
             updateEmpresasSelects();
