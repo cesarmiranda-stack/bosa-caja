@@ -300,24 +300,24 @@
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
 
         .kpi {
             background: #ffffff;
             border-radius: 8px;
-            padding: 10px 14px;
+            padding: 6px 10px;
             box-shadow: 0 1px 3px rgba(0,0,0,.08);
         }
 
         .kpi-lbl {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: #5a616b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -398,7 +398,7 @@
         label .tip-icon { vertical-align: middle; margin-left: 4px; }
 
         .kpi-val {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             color: #252a2e;
             line-height: 1;
@@ -2979,9 +2979,10 @@
                             borderWidth: 2.5,
                             tension: 0.35,
                             fill: true,
-                            pointRadius: 4,
-                            pointHoverRadius: 6,
-                            pointBackgroundColor: '#3b82c4',
+                            pointRadius: cumulative.map(v => v < 0 ? 6 : 4),
+                            pointHoverRadius: cumulative.map(v => v < 0 ? 8 : 6),
+                            pointBackgroundColor: cumulative.map(v => v < 0 ? 'rgba(220,38,38,1)' : 'rgba(59,130,196,1)'),
+                            pointBorderColor: cumulative.map(v => v < 0 ? 'rgba(220,38,38,1)' : 'rgba(59,130,196,1)'),
                             yAxisID: 'y1'
                         }
                     ]
