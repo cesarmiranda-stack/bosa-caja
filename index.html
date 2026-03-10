@@ -3879,7 +3879,7 @@
                         // A Cobrar 30d/90d: solo confiable=true (fecha fija)
             const conf30 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const conf90 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-        const allConfirmed = conf30 + conf90;
+        const allConfirmed = conf90;
             // A Confirmar estimates (confiable=false) — referencia secundaria
             const est30 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const est90 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
