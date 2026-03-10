@@ -3183,7 +3183,7 @@
                 const saldoEsperado = ingresos - egresos;
                 const saldoConservador = ingresosConf - egresos;
 
-                trimData.push({ month: months[idx], ingresos, egresos, resultado: saldoEsperado, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp });
+                trimData.push({ month: months[idx], ingresos, egresos, resultado: saldoEsperado, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp, egrFijosConf, egrVarConf });
             });
 
             // Update ProyTrim KPIs
@@ -3252,7 +3252,7 @@
 
             // Build ProyTrim cards
             let html = '<div style="font-size:12px;color:#9ba3ab;font-style:italic;margin-bottom:12px;padding:8px 12px;background:#f8f9fa;border-radius:6px;border-left:3px solid #e3e6e9;">ℹ️ Los saldos muestran el flujo neto proyectado de cada mes (ingresos − egresos) sin considerar el saldo actual de banco. Para ver la evolución acumulada de caja, consultá el Dashboard.</div><div class="grid-3col">';
-            trimData.forEach(({ month, ingresos, egresos, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp }, idx) => {
+            trimData.forEach(({ month, ingresos, egresos, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp, egrFijosConf, egrVarConf }, idx) => {
                 const mid = ['mar','abr','may'][idx];
 
                 // Ingresos rows
