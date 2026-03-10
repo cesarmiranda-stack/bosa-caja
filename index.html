@@ -3439,7 +3439,7 @@
             vencidas.forEach(m => { if (!byDay[todayStrPD]) byDay[todayStrPD] = []; byDay[todayStrPD].push(m); });
 
             // Running balance per day — iterate every day in range so empty days carry forward
-            let runBal = fondosConOverdue;
+            let runBal = fondosPropios;
             const saldoByDay = {};
             const rangeStart = new Date(today);
             const rangeEnd = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -3597,7 +3597,7 @@
           }
           document.getElementById('dayMovContent').innerHTML = html;
         }
-        document.getElementById('dayMovModal').classList.remove('hidden');
+        document.getElementById('dayMovModal').style.display = 'flex';
       }
 
         function verVencidas() {
@@ -4686,3 +4686,8 @@
     <div id="toastNotif"></div>
 </body>
 </html>
+
+ Claude is active in this tab group  
+Open chat
+ 
+Dismiss
