@@ -1063,17 +1063,17 @@
                             <div class="kpi-sub">Incl. sobregiro</div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
-                            <div class="kpi-lbl">Ingresos Próx. 30d <span class="tip-icon tip-down" data-tip="Total de cobros que están pendientes de recibir en los próximos 30 días, según los movimientos cargados en el sistema.">?</span></div>
+                            <div class="kpi-lbl">Ingresos Próx. 30d <span class="tip-icon tip-down" data-tip="Total de ingresos pendientes en los próximos 30 días, incluye atrasados aún no cobrados. Según los movimientos cargados en el sistema.">?</span></div>
                             <div class="kpi-val k-green" id="kpiIngresos30">$0</div>
                             <div class="kpi-sub">Pendientes</div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(192,57,43,0.06),rgba(192,57,43,0.02));border:1px solid rgba(192,57,43,0.15);">
-                            <div class="kpi-lbl">Egresos Próx. 30d <span class="tip-icon tip-down" data-tip="Total de pagos y gastos que están pendientes de realizarse en los próximos 30 días, según los movimientos cargados en el sistema.">?</span></div>
+                            <div class="kpi-lbl">Egresos Próx. 30d <span class="tip-icon tip-down" data-tip="Total de egresos pendientes en los próximos 30 días, incluye atrasados aún no pagados. Según los movimientos cargados en el sistema.">?</span></div>
                             <div class="kpi-val k-red" id="kpiEgresos30">$0</div>
                             <div class="kpi-sub">Pendientes</div>
                         </div>
                         <div class="kpi" id="kpiSaldo30Box" style="border:1px solid rgba(36,166,96,0.2);">
-                            <div class="kpi-lbl">Saldo Próx. 30d <span class="tip-icon tip-down" data-tip="Resultado de restar los egresos a los ingresos del próximo mes. Verde significa que entra más de lo que sale. Rojo indica déficit proyectado.">?</span></div>
+                            <div class="kpi-lbl">Saldo Próx. 30d <span class="tip-icon tip-down" data-tip="Saldo inicial de hoy + ingresos pendientes − egresos pendientes en 30 días. Verde = superávit, rojo = déficit proyectado.">?</span></div>
                             <div class="kpi-val k-gray" id="kpiResultado30">$0</div>
                             <div class="kpi-sub">Proyectado</div>
                         </div>
@@ -1090,7 +1090,7 @@
                             <div class="kpi-sub" id="kpiSobreHoySub">del límite total</div>
                         </div>
                         <div class="kpi" id="kpiCobranzaBox" style="border:1px solid rgba(59,130,196,0.25);background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));">
-                            <div class="kpi-lbl">Cobranza Confirmada 30d <span class="tip-icon" data-tip="De todos los cobros a clientes del próximo mes, este es el porcentaje que ya está confirmado. Un porcentaje alto indica mayor certeza de ingreso.">?</span></div>
+                            <div class="kpi-lbl">Cobranza Confirmada 30d <span class="tip-icon" data-tip="De todos los ingresos pendientes en 30 días (incluye atrasados), porcentaje que está confirmado. Un porcentaje alto indica mayor certeza de cobro.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
                                 <div class="kpi-val" id="kpiCobranzaMonto" style="color:#3b82c4;">$0</div>
                                 <div style="font-size:14px;font-weight:700;" id="kpiCobranzaPct">—</div>
@@ -1098,7 +1098,7 @@
                             <div class="kpi-sub" id="kpiCobranzaSub">de ingresos clientes</div>
                         </div>
                         <div class="kpi" id="kpiCobNoConfBox" style="border:1px solid rgba(184,116,0,0.25);background:linear-gradient(135deg,rgba(184,116,0,0.07),rgba(184,116,0,0.02));">
-                            <div class="kpi-lbl">Cobranza Sin Confirmar 30d <span class="tip-icon" data-tip="Ingresos de clientes pendientes en los próximos 30 días que aún no están confirmados. Un monto alto indica incertidumbre en los cobros.">?</span></div>
+                            <div class="kpi-lbl">Cobranza Sin Confirmar 30d <span class="tip-icon" data-tip="Ingresos pendientes en 30 días (incluye atrasados) que aún no están confirmados. Un monto alto indica incertidumbre en los cobros.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
                                 <div class="kpi-val" id="kpiCobNoConfMonto" style="color:#b87400;">$0</div>
                                 <div style="font-size:14px;font-weight:700;" id="kpiCobNoConfPct">—</div>
@@ -1106,7 +1106,7 @@
                             <div class="kpi-sub" id="kpiCobNoConfSub">de ingresos clientes</div>
                         </div>
                         <div class="kpi" id="kpiEgrConfBox" style="border:1px solid rgba(192,57,43,0.25);background:linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02));">
-                            <div class="kpi-lbl">Egresos Confirmados 30d <span class="tip-icon" data-tip="De todos los egresos pendientes del próximo mes, este es el porcentaje que está confirmado. Un porcentaje alto indica mayor certeza de gasto.">?</span></div>
+                            <div class="kpi-lbl">Egresos Confirmados 30d <span class="tip-icon" data-tip="De todos los egresos pendientes en 30 días (incluye atrasados), porcentaje que está confirmado. Un porcentaje alto indica mayor certeza de gasto.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
                                 <div class="kpi-val" id="kpiEgrConfMonto" style="color:#c0392b;">$0</div>
                                 <div style="font-size:14px;font-weight:700;" id="kpiEgrConfPct">—</div>
@@ -1404,7 +1404,11 @@
 
                 <!-- PROYECCIÓN TRIMESTRAL SCREEN -->
                 <div id="sc-proyTrim" class="screen">
-                    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:12px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                        <div class="certeza-toggle">
+                            <button type="button" id="ptToggleTodos" class="certeza-btn active-certeza" onclick="setPtEscenario('todos')">Todos</button>
+                            <button type="button" id="ptToggleConf" class="certeza-btn" onclick="setPtEscenario('confirmados')">Solo confirmados</button>
+                        </div>
                         <button class="btn btn-primary btn-sm" onclick="proyectarGastosFijos()">⚡ Proyectar gastos fijos</button>
                     </div>
                     <div id="proyTrimContent"></div>
@@ -1497,49 +1501,82 @@
 
                 <!-- PROYECCION INGRESOS SCREEN -->
                 <div id="sc-proyIng" class="screen">
-                    <!-- Bloque 1: KPIs -->
-                    <div class="kpi-grid" style="margin-bottom:16px;">
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.04));border:1px solid rgba(36,166,96,0.2);">
-                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Total de ingresos con fecha fija (certeza alta) esperados en los próximos 30 días.">?</span></div>
-                            <div class="kpi-val k-green" id="piKpi30">$0</div>
-                            <div class="kpi-sub">fecha fija</div>
-                            <div id="piKpi30pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
+                    <!-- Toggle Pipeline / Performance -->
+                    <div class="certeza-toggle" style="margin-bottom:12px;">
+                        <button type="button" id="piTogglePipeline" class="certeza-btn active-certeza" onclick="setPiVista('pipeline')">Pipeline</button>
+                        <button type="button" id="piTogglePerformance" class="certeza-btn" onclick="setPiVista('performance')">Performance</button>
+                    </div>
+
+                    <!-- VISTA PIPELINE -->
+                    <div id="piVistaPipeline">
+                        <!-- KPIs Pipeline -->
+                        <div class="kpi-grid" style="margin-bottom:16px;">
+                            <div class="kpi" id="piKpi30Box" style="background:linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.04));border:1px solid rgba(36,166,96,0.2);">
+                                <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Ingresos confirmados pendientes en los próximos 30 días (incluye atrasados). Coincide con Cobranza Confirmada del Dashboard.">?</span></div>
+                                <div class="kpi-val k-green" id="piKpi30">$0</div>
+                                <div class="kpi-sub">confirmados</div>
+                                <div id="piKpi30pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
+                            </div>
+                            <div class="kpi" id="piKpi90Box" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
+                                <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Ingresos confirmados pendientes en los próximos 90 días.">?</span></div>
+                                <div class="kpi-val k-green" id="piKpi90">$0</div>
+                                <div class="kpi-sub">confirmados</div>
+                                <div id="piKpi90pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
+                            </div>
+                            <div class="kpi" style="background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));border:1px solid rgba(59,130,196,0.2);">
+                                <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes (confirmados + sin confirmar) sin límite de fecha.">?</span></div>
+                                <div class="kpi-val" id="piKpiTotal" style="color:#3b82c4;">$0</div>
+                                <div class="kpi-sub">todos los pendientes</div>
+                            </div>
+                            <div class="kpi" id="piKpiSinCobrBox" style="background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.25);">
+                                <div class="kpi-lbl">Sin Cobranza Futura <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ingresos futuros registrados. Oportunidad para el equipo de ventas.">?</span></div>
+                                <div class="kpi-val" id="piKpiSinCobr" style="color:#b87400;">0</div>
+                                <div class="kpi-sub" style="color:#b87400;">clientes</div>
+                            </div>
                         </div>
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
-                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Total de ingresos con fecha fija esperados en los próximos 90 días. El monto ±30d se muestra como referencia.">?</span></div>
-                            <div class="kpi-val k-green" id="piKpi90">$0</div>
-                            <div class="kpi-sub">fecha fija</div>
-                            <div id="piKpi90pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
-                        </div>
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));border:1px solid rgba(59,130,196,0.2);">
-                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro sin límite de fecha, incluyendo los de baja certeza. Refleja el potencial máximo de cobranza.">?</span></div>
-                            <div class="kpi-val" id="piKpiTotal" style="color:#3b82c4;">$0</div>
-                            <div class="kpi-sub">confirmado</div>
-                        </div>
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.25);">
-                            <div class="kpi-lbl">Sin Cobranza Futura <span class="tip-icon" data-tip="Clientes activos que no tienen ningún ingreso futuro registrado. Son oportunidades de venta o seguimiento comercial a gestionar.">?</span></div>
-                            <div class="kpi-val" id="piKpiSinCobr" style="color:#b87400;">0</div>
-                            <div class="kpi-sub" style="color:#b87400;">clientes — oportunidad</div>
+                        <!-- Tablas pipeline -->
+                        <div id="piTablaClientes"></div>
+                        <div id="piTablaOtros"></div>
+                        <!-- Gráfico pipeline -->
+                        <div class="card">
+                            <div class="card-title">Pipeline por Período</div>
+                            <div class="chart-container" style="height:280px;">
+                                <canvas id="piChart"></canvas>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Bloque 2+3: Tablas pipeline -->
-                    <div id="piTablaClientes"></div>
-                    <div id="piTablaOtros"></div>
-
-                    <!-- Bloque 4: Grafico pipeline -->
-                    <div class="card">
-                        <div class="card-title">Pipeline por Período</div>
-                        <div class="chart-container" style="height:280px;">
-                            <canvas id="piChart"></canvas>
+                    <!-- VISTA PERFORMANCE -->
+                    <div id="piVistaPerformance" style="display:none;">
+                        <!-- KPIs Performance -->
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px;">
+                            <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.2);">
+                                <div class="kpi-lbl">Clientes Activos <span class="tip-icon" data-tip="Clientes con al menos un ingreso futuro registrado.">?</span></div>
+                                <div class="kpi-val k-green" id="perfKpiActivos">0</div>
+                                <div class="kpi-sub">con cobranza futura</div>
+                            </div>
+                            <div class="kpi" id="perfKpiInactivosBox" style="border:1px solid rgba(192,57,43,0.2);">
+                                <div class="kpi-lbl">Clientes Sin Cobranza <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ningún ingreso futuro registrado.">?</span></div>
+                                <div class="kpi-val" id="perfKpiInactivos" style="color:#9ba3ab;">0</div>
+                                <div class="kpi-sub">sin ingresos futuros</div>
+                            </div>
+                            <div class="kpi" id="perfKpiRiesgoBox" style="border:1px solid rgba(192,57,43,0.2);">
+                                <div class="kpi-lbl">Ingreso Mensual en Riesgo <span class="tip-icon" data-tip="Suma del promedio mensual (12M) de los clientes sin cobranza futura. Indica cuánto ingreso potencial no se está persiguiendo.">?</span></div>
+                                <div class="kpi-val" id="perfKpiRiesgo" style="color:#9ba3ab;">$0</div>
+                                <div class="kpi-sub">prom. mensual 12M</div>
+                            </div>
                         </div>
-                    </div>
-
-                    <!-- Bloque 5: Performance histórica -->
-                    <div class="card">
-                        <div class="card-title">Performance Histórica por Cliente</div>
-                        <div style="font-size:12px;color:#9ba3ab;margin-bottom:12px;">Comparación de cobranza proyectada vs promedio mensual real (últimos 12 meses)</div>
-                        <div id="piTablaPerformance"></div>
+                        <!-- Tabla Clientes Activos -->
+                        <div class="card" style="margin-bottom:16px;">
+                            <div class="card-title">Clientes Activos</div>
+                            <div id="perfTablaActivos"></div>
+                        </div>
+                        <!-- Tabla Sin Cobranza -->
+                        <div class="card" style="border-left:3px solid rgba(192,57,43,0.4);">
+                            <div class="card-title" style="color:#c0392b;">Sin Cobranza — Acción Ventas</div>
+                            <div style="font-size:12px;color:#9ba3ab;margin-bottom:12px;">Estos clientes tienen historial de pagos pero no tienen cobranza futura registrada.</div>
+                            <div id="perfTablaInactivos"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -3187,11 +3224,15 @@
 
             const trimData = [];
 
+            const soloConfTrim = ptEscenario === 'confirmados';
+
             monthNums.forEach(({ m: monthNum, y: yearNum }, idx) => {
-                const monthMovs = allMovimientos.filter(m => {
+                const monthMovsAll = allMovimientos.filter(m => {
                     const movDate = new Date(m.fecha + 'T12:00:00');
                     return !m.hecho && movDate.getMonth() + 1 === monthNum && movDate.getFullYear() === yearNum;
                 });
+                // Filtrar por escenario
+                const monthMovs = soloConfTrim ? monthMovsAll.filter(m => isConf(m)) : monthMovsAll;
 
                 // Group by empresa, consolidated
                 const ingEmp = {};
@@ -3380,6 +3421,19 @@
             if (span) span.innerHTML = span.innerHTML.replace(open ? '▼' : '▶', open ? '▶' : '▼');
         }
 
+        let ptEscenario = 'todos'; // 'todos' | 'confirmados' — Trimestral
+        function setPtEscenario(modo) {
+            ptEscenario = modo;
+            const btnT = document.getElementById('ptToggleTodos');
+            const btnC = document.getElementById('ptToggleConf');
+            if (modo === 'todos') {
+                btnT.className = 'certeza-btn active-certeza'; btnC.className = 'certeza-btn';
+            } else {
+                btnT.className = 'certeza-btn'; btnC.className = 'certeza-btn active-certeza';
+            }
+            renderProyTrim();
+        }
+
         let pdEscenario = 'todos'; // 'todos' | 'confirmados'
         function setPdEscenario(modo) {
             pdEscenario = modo;
@@ -3428,9 +3482,29 @@
             document.getElementById('pd_kpiCobConf').textContent = formatUSD(cobConf);
             document.getElementById('pd_kpiCobConfPct').textContent = pctCobConf !== null ? pctCobConf + '%' : '—';
             document.getElementById('pd_kpiCobConfSub').textContent = totalIng30 > 0 ? `de ${formatUSD(totalIng30)} total ingresos` : 'sin ingresos';
+            // Colores dinámicos cobranza confirmada (mismo que dashboard)
+            {
+                const cc = pctCobConf === null ? '#9ba3ab' : pctCobConf >= 70 ? '#24a660' : pctCobConf >= 40 ? '#b87400' : '#c0392b';
+                const ccBg = pctCobConf === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctCobConf >= 70 ? 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))' : pctCobConf >= 40 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
+                const ccBorder = pctCobConf === null ? 'rgba(90,97,107,0.15)' : pctCobConf >= 70 ? 'rgba(36,166,96,0.25)' : pctCobConf >= 40 ? 'rgba(245,166,35,0.3)' : 'rgba(192,57,43,0.25)';
+                document.getElementById('pd_kpiCobConf').style.color = cc;
+                document.getElementById('pd_kpiCobConfPct').style.color = cc;
+                document.getElementById('pd_kpiCobConfBox').style.background = ccBg;
+                document.getElementById('pd_kpiCobConfBox').style.borderColor = ccBorder;
+            }
             document.getElementById('pd_kpiCobNoConf').textContent = formatUSD(cobNoConf);
             document.getElementById('pd_kpiCobNoConfPct').textContent = pctCobNoConf !== null ? pctCobNoConf + '%' : '—';
             document.getElementById('pd_kpiCobNoConfSub').textContent = totalIng30 > 0 ? `de ${formatUSD(totalIng30)} total ingresos` : 'sin ingresos';
+            // Colores dinámicos cobranza sin confirmar (alto % = rojo)
+            {
+                const nc = pctCobNoConf === null ? '#9ba3ab' : pctCobNoConf <= 30 ? '#24a660' : pctCobNoConf <= 60 ? '#b87400' : '#c0392b';
+                const ncBg = pctCobNoConf === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctCobNoConf <= 30 ? 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))' : pctCobNoConf <= 60 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
+                const ncBorder = pctCobNoConf === null ? 'rgba(90,97,107,0.15)' : pctCobNoConf <= 30 ? 'rgba(36,166,96,0.25)' : pctCobNoConf <= 60 ? 'rgba(245,166,35,0.3)' : 'rgba(192,57,43,0.25)';
+                document.getElementById('pd_kpiCobNoConf').style.color = nc;
+                document.getElementById('pd_kpiCobNoConfPct').style.color = nc;
+                document.getElementById('pd_kpiCobNoConfBox').style.background = ncBg;
+                document.getElementById('pd_kpiCobNoConfBox').style.borderColor = ncBorder;
+            }
 
             // Fila 2 KPIs — Egresos confirmados
             const egrPending = next30Pending.filter(m => m.caja === 'Egreso');
@@ -3442,9 +3516,29 @@
             document.getElementById('pd_kpiEgrConf').textContent = formatUSD(egrConf);
             document.getElementById('pd_kpiEgrConfPct').textContent = pctEgrConf !== null ? pctEgrConf + '%' : '—';
             document.getElementById('pd_kpiEgrConfSub').textContent = totalEgr30 > 0 ? `de ${formatUSD(totalEgr30)} total egresos` : 'sin egresos';
+            // Colores dinámicos egresos confirmados (mismo que dashboard)
+            {
+                const ec = pctEgrConf === null ? '#9ba3ab' : pctEgrConf >= 70 ? '#c0392b' : pctEgrConf >= 40 ? '#b87400' : '#24a660';
+                const ecBg = pctEgrConf === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctEgrConf >= 70 ? 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))' : pctEgrConf >= 40 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
+                const ecBorder = pctEgrConf === null ? 'rgba(90,97,107,0.15)' : pctEgrConf >= 70 ? 'rgba(192,57,43,0.25)' : pctEgrConf >= 40 ? 'rgba(245,166,35,0.3)' : 'rgba(36,166,96,0.25)';
+                document.getElementById('pd_kpiEgrConf').style.color = ec;
+                document.getElementById('pd_kpiEgrConfPct').style.color = ec;
+                document.getElementById('pd_kpiEgrConfBox').style.background = ecBg;
+                document.getElementById('pd_kpiEgrConfBox').style.borderColor = ecBorder;
+            }
             document.getElementById('pd_kpiEgrNoConf').textContent = formatUSD(egrNoConf);
             document.getElementById('pd_kpiEgrNoConfPct').textContent = pctEgrNoConf !== null ? pctEgrNoConf + '%' : '—';
             document.getElementById('pd_kpiEgrNoConfSub').textContent = totalEgr30 > 0 ? `de ${formatUSD(totalEgr30)} total egresos` : 'sin egresos';
+            // Colores dinámicos egresos sin confirmar (alto % = rojo)
+            {
+                const enc = pctEgrNoConf === null ? '#9ba3ab' : pctEgrNoConf <= 30 ? '#24a660' : pctEgrNoConf <= 60 ? '#b87400' : '#c0392b';
+                const encBg = pctEgrNoConf === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctEgrNoConf <= 30 ? 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))' : pctEgrNoConf <= 60 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
+                const encBorder = pctEgrNoConf === null ? 'rgba(90,97,107,0.15)' : pctEgrNoConf <= 30 ? 'rgba(36,166,96,0.25)' : pctEgrNoConf <= 60 ? 'rgba(245,166,35,0.3)' : 'rgba(192,57,43,0.25)';
+                document.getElementById('pd_kpiEgrNoConf').style.color = enc;
+                document.getElementById('pd_kpiEgrNoConfPct').style.color = enc;
+                document.getElementById('pd_kpiEgrNoConfBox').style.background = encBg;
+                document.getElementById('pd_kpiEgrNoConfBox').style.borderColor = encBorder;
+            }
 
             // --- Calendar logic (same base as dashboard day-1) ---
             const soloConf = pdEscenario === 'confirmados';
@@ -3701,11 +3795,7 @@
                 );
             }
 
-            const fcColor = (rb) => {
-                if (rb > 0)             return '#24a660';
-                if (rb + odLimit > 0)   return '#b87400';
-                return '#c0392b';
-            };
+            const fcColor = (rb) => rb >= 0 ? '#24a660' : '#c0392b';
 
             const inicialColor = fcColor(rawBal);
 
@@ -3761,11 +3851,26 @@
             if (container) container.innerHTML = html;
         }
 
+        let piVista = 'pipeline';
+        function setPiVista(vista) {
+            piVista = vista;
+            const btnP = document.getElementById('piTogglePipeline');
+            const btnF = document.getElementById('piTogglePerformance');
+            if (vista === 'pipeline') {
+                btnP.className = 'certeza-btn active-certeza'; btnF.className = 'certeza-btn';
+                document.getElementById('piVistaPipeline').style.display = '';
+                document.getElementById('piVistaPerformance').style.display = 'none';
+            } else {
+                btnP.className = 'certeza-btn'; btnF.className = 'certeza-btn active-certeza';
+                document.getElementById('piVistaPipeline').style.display = 'none';
+                document.getElementById('piVistaPerformance').style.display = '';
+            }
+        }
+
         let piChart = null;
         function renderProyIng() {
-            const today = new Date();
-            const todayStr = today.toISOString().split('T')[0];
-            const d30 = new Date(today.getTime() + 30*24*60*60*1000).toISOString().split('T')[0];
+            const { today, todayStr, in30, next30Pending } = getBaseData();
+            const d30 = in30.toISOString().split('T')[0];
             const d60 = new Date(today.getTime() + 60*24*60*60*1000).toISOString().split('T')[0];
             const d90 = new Date(today.getTime() + 90*24*60*60*1000).toISOString().split('T')[0];
 
@@ -3773,10 +3878,9 @@
             const empClaseMap = {};
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || ''; });
 
-            // Pending income movements — any income (not just confirmed) for pipeline visibility
-            // confiable=true → confirmed dates, confiable=false → ±30d uncertainty
+            // Pending income: future + overdue (coherent with dashboard)
             const pendingIngs = allMovimientos.filter(m =>
-                !m.hecho && m.caja === 'Ingreso' && m.fecha >= todayStr
+                !m.hecho && m.caja === 'Ingreso'
             );
 
             // Helper: get window label
@@ -3847,30 +3951,45 @@
                 return html;
             };
 
-            document.getElementById('piTablaClientes').innerHTML = buildTable(clientes, 'Pipeline de Clientes — Ingresos Confirmados', 'Sin ingresos de clientes confirmados con fecha.');
+            document.getElementById('piTablaClientes').innerHTML = buildTable(clientes, 'Pipeline de Clientes', 'Sin ingresos de clientes registrados.');
             document.getElementById('piTablaOtros').innerHTML = buildTable(otrosMap, 'Otros Ingresos Esperados', 'Sin otros ingresos registrados (aportes, préstamos, etc.).');
 
-            // KPIs
-            const allConfirmed = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            // A Cobrar 30d/90d: solo confiable=true (fecha fija)
-            const conf30 = pendingIngs.filter(m => isConf(m) && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            // === KPIs Pipeline ===
+            // Coherente con dashboard: conf30 usa next30Pending (incluye atrasados)
+            const ingPending30 = next30Pending.filter(m => m.caja === 'Ingreso');
+            const conf30 = ingPending30.filter(m => isConf(m)).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const est30 = ingPending30.filter(m => !isConf(m)).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            // 90d y total usan pendingIngs (todos los pendientes sin límite)
             const conf90 = pendingIngs.filter(m => isConf(m) && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            // ±30d estimates (confiable=false) — referencia secundaria
-            const est30 = pendingIngs.filter(m => !isConf(m) && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const est90 = pendingIngs.filter(m => !isConf(m) && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const allPipelineTotal = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
+
             document.getElementById('piKpi30').textContent = formatUSD(conf30);
             document.getElementById('piKpi90').textContent = formatUSD(conf90);
-            document.getElementById('piKpiTotal').textContent = formatUSD(allConfirmed);
+            document.getElementById('piKpiTotal').textContent = formatUSD(allPipelineTotal);
             const el30pm = document.getElementById('piKpi30pm'); if (el30pm) el30pm.textContent = est30 > 0 ? `+${formatUSD(est30)} est. ±30d` : '';
             const el90pm = document.getElementById('piKpi90pm'); if (el90pm) el90pm.textContent = est90 > 0 ? `+${formatUSD(est90)} est. ±30d` : '';
 
-            // Clientes sin cobranza futura (tienen historial pero no tienen ingresos futuros confirmados)
+            // Clientes con/sin cobranza futura
             const clientesConFuturo = new Set(Object.keys(clientes));
-            const clientesConHistorial = new Set(allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente')).map(m => m.empresa));
+            const clientesConHistorial = new Set(allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente' || empClaseMap[m.empresa] === 'Cliente')).map(m => m.empresa));
             const sinCobranza = [...clientesConHistorial].filter(e => !clientesConFuturo.has(e));
             document.getElementById('piKpiSinCobr').textContent = sinCobranza.length;
+            // Color dinámico: rojo si hay clientes sin cobranza
+            const scBox = document.getElementById('piKpiSinCobrBox');
+            if (scBox) {
+                if (sinCobranza.length > 0) {
+                    scBox.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02))';
+                    scBox.style.borderColor = 'rgba(192,57,43,0.25)';
+                    document.getElementById('piKpiSinCobr').style.color = '#c0392b';
+                } else {
+                    scBox.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
+                    scBox.style.borderColor = 'rgba(36,166,96,0.2)';
+                    document.getElementById('piKpiSinCobr').style.color = '#24a660';
+                }
+            }
 
-            // Chart: stacked bar by period, stacked by empresa (top 5 + others)
+            // === Chart Pipeline ===
             const topEmps = Object.entries(clientes).sort((a,b) => {
                 const ta = windows.reduce((s,w) => s+a[1][w], 0);
                 const tb = windows.reduce((s,w) => s+b[1][w], 0);
@@ -3906,11 +4025,10 @@
                 ctx2.clearRect(0, 0, chartCtx.width, chartCtx.height);
             }
 
-            // Block 5: Performance histórica
+            // === VISTA PERFORMANCE ===
             const hace12m = new Date(today.getFullYear()-1, today.getMonth(), today.getDate()).toISOString().split('T')[0];
             const histClientes = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase==='Cliente'||m.categoria==='Cliente'||empClaseMap[m.empresa]==='Cliente') && m.fecha >= hace12m);
 
-            // Monthly avg per client
             const histMap = {};
             histClientes.forEach(m => {
                 if (!histMap[m.empresa]) histMap[m.empresa] = 0;
@@ -3919,45 +4037,111 @@
             const promMap = {};
             Object.entries(histMap).forEach(([emp, total]) => { promMap[emp] = total / 12; });
 
-            // Last cobro date per client
             const lastCobroMap = {};
             allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase==='Cliente'||m.categoria==='Cliente'||empClaseMap[m.empresa]==='Cliente')).forEach(m => {
                 if (!lastCobroMap[m.empresa] || m.fecha > lastCobroMap[m.empresa]) lastCobroMap[m.empresa] = m.fecha;
             });
 
-            // All clients (with history OR with future)
-            const allClients = new Set([...Object.keys(promMap), ...Object.keys(clientes)]);
+            // KPIs Performance
+            const activosCount = clientesConFuturo.size;
+            const inactivosCount = sinCobranza.length;
+            const ingresoRiesgo = sinCobranza.reduce((s, emp) => s + (promMap[emp] || 0), 0);
+            document.getElementById('perfKpiActivos').textContent = activosCount;
+            document.getElementById('perfKpiInactivos').textContent = inactivosCount;
+            const inactivosBox = document.getElementById('perfKpiInactivosBox');
+            if (inactivosCount > 0) {
+                document.getElementById('perfKpiInactivos').style.color = '#c0392b';
+                inactivosBox.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
+                inactivosBox.style.borderColor = 'rgba(192,57,43,0.25)';
+            } else {
+                document.getElementById('perfKpiInactivos').style.color = '#24a660';
+                inactivosBox.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
+                inactivosBox.style.borderColor = 'rgba(36,166,96,0.2)';
+            }
+            document.getElementById('perfKpiRiesgo').textContent = formatUSD(ingresoRiesgo);
+            const riesgoBox = document.getElementById('perfKpiRiesgoBox');
+            if (ingresoRiesgo > 0) {
+                document.getElementById('perfKpiRiesgo').style.color = '#c0392b';
+                riesgoBox.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
+                riesgoBox.style.borderColor = 'rgba(192,57,43,0.25)';
+            } else {
+                document.getElementById('perfKpiRiesgo').style.color = '#24a660';
+                riesgoBox.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
+                riesgoBox.style.borderColor = 'rgba(36,166,96,0.2)';
+            }
 
-            let perfHtml = '<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:#f8f9fa;"><th style="text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">Cliente</th><th style="text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">Próx. 90d</th><th style="text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">Prom. Mensual 12M</th><th style="text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">Último Cobro</th><th style="text-align:center;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">Estado</th></tr></thead><tbody>';
+            // Tabla Clientes Activos
+            const thStyle = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thStyleR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thStyleC = 'text-align:center;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
 
-            [...allClients].sort().forEach(emp => {
-                const proj90 = windows.filter(w=>w!=='90d+').reduce((s,w) => s+(clientes[emp]?.[w]||0), 0) + (clientes[emp]?.['90d+']||0);
+            let activosHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead><tr style="background:#f8f9fa;">
+                    <th style="${thStyle}">Cliente</th>
+                    <th style="${thStyleR}">Próx. 90d</th>
+                    <th style="${thStyleR}">Prom. Mensual 12M</th>
+                    <th style="${thStyleC}">Tendencia</th>
+                    <th style="${thStyleR}">Último Cobro</th>
+                </tr></thead><tbody>`;
+
+            [...clientesConFuturo].sort((a,b) => {
+                const ta = windows.reduce((s,w) => s+(clientes[a]?.[w]||0), 0);
+                const tb = windows.reduce((s,w) => s+(clientes[b]?.[w]||0), 0);
+                return tb - ta;
+            }).forEach(emp => {
+                const proj90 = windows.reduce((s,w) => s+(clientes[emp]?.[w]||0), 0);
                 const prom = promMap[emp] || 0;
-                const lastCobro = lastCobroMap[emp];
-                const lastCobroFmt = lastCobro ? new Date(lastCobro).toLocaleDateString('es-UY') : '—';
-                let estado, estadoColor, estadoBg;
-                if (!clientes[emp]) {
-                    estado = '🔴 Llamar — sin cobranza';
-                    estadoColor = '#c0392b'; estadoBg = 'rgba(192,57,43,0.06)';
-                } else if (prom > 0 && proj90 < prom * 0.8) {
-                    estado = '🟡 Por debajo del historial';
-                    estadoColor = '#b87400'; estadoBg = 'rgba(245,166,35,0.06)';
-                } else {
-                    estado = '🟢 Activo';
-                    estadoColor = '#24a660'; estadoBg = 'rgba(36,166,96,0.06)';
+                const mensualizado = proj90 / 3;
+                let tendencia = '—', tendColor = '#9ba3ab';
+                if (prom > 0) {
+                    const pct = Math.round(((mensualizado - prom) / prom) * 100);
+                    tendencia = pct >= 0 ? `▲ +${pct}%` : `▼ ${pct}%`;
+                    tendColor = pct >= 0 ? '#24a660' : '#b87400';
                 }
-                perfHtml += `<tr style="border-top:1px solid #f0f2f4;background:${estadoBg};">
+                const lastCobro = lastCobroMap[emp];
+                const lastCobroFmt = lastCobro ? new Date(lastCobro + 'T12:00:00').toLocaleDateString('es-UY') : '—';
+                activosHtml += `<tr style="border-top:1px solid #f0f2f4;">
                     <td style="padding:8px 10px;font-weight:600;color:#252a2e;">${emp}</td>
-                    <td style="text-align:right;padding:8px 10px;">${proj90>0?formatUSD(proj90):'—'}</td>
+                    <td style="text-align:right;padding:8px 10px;color:#24a660;font-weight:600;">${proj90>0?formatUSD(proj90):'—'}</td>
                     <td style="text-align:right;padding:8px 10px;">${prom>0?formatUSD(prom):'—'}</td>
+                    <td style="text-align:center;padding:8px 10px;font-weight:700;color:${tendColor};">${tendencia}</td>
                     <td style="text-align:right;padding:8px 10px;color:#9ba3ab;">${lastCobroFmt}</td>
-                    <td style="text-align:center;padding:8px 10px;font-size:12px;font-weight:600;color:${estadoColor};">${estado}</td>
                 </tr>`;
             });
+            if (clientesConFuturo.size === 0) activosHtml += '<tr><td colspan="5" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Sin clientes activos con cobranza futura</td></tr>';
+            activosHtml += '</tbody></table>';
+            document.getElementById('perfTablaActivos').innerHTML = activosHtml;
 
-            if (allClients.size === 0) perfHtml += '<tr><td colspan="5" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Sin datos de clientes aún</td></tr>';
-            perfHtml += '</tbody></table>';
-            document.getElementById('piTablaPerformance').innerHTML = perfHtml;
+            // Tabla Sin Cobranza — Acción Ventas
+            let inactivosHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead><tr style="background:#f8f9fa;">
+                    <th style="${thStyle}">Cliente</th>
+                    <th style="${thStyleR}">Prom. Mensual 12M</th>
+                    <th style="${thStyleR}">Último Cobro</th>
+                    <th style="${thStyleC}">Días sin cobro</th>
+                </tr></thead><tbody>`;
+
+            const todayMs = today.getTime();
+            sinCobranza.sort((a,b) => (promMap[b]||0) - (promMap[a]||0)).forEach(emp => {
+                const prom = promMap[emp] || 0;
+                const lastCobro = lastCobroMap[emp];
+                const lastCobroFmt = lastCobro ? new Date(lastCobro + 'T12:00:00').toLocaleDateString('es-UY') : '—';
+                let diasSinCobro = '—', diasColor = '#9ba3ab';
+                if (lastCobro) {
+                    const dias = Math.round((todayMs - new Date(lastCobro + 'T12:00:00').getTime()) / (24*60*60*1000));
+                    diasSinCobro = `${dias} días`;
+                    diasColor = dias > 60 ? '#c0392b' : dias > 30 ? '#b87400' : '#24a660';
+                }
+                inactivosHtml += `<tr style="border-top:1px solid #f0f2f4;">
+                    <td style="padding:8px 10px;font-weight:600;color:#252a2e;">${emp}</td>
+                    <td style="text-align:right;padding:8px 10px;font-weight:600;">${prom>0?formatUSD(prom):'—'}</td>
+                    <td style="text-align:right;padding:8px 10px;color:#9ba3ab;">${lastCobroFmt}</td>
+                    <td style="text-align:center;padding:8px 10px;font-weight:700;color:${diasColor};">${diasSinCobro}</td>
+                </tr>`;
+            });
+            if (sinCobranza.length === 0) inactivosHtml += '<tr><td colspan="4" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Todos los clientes tienen cobranza futura registrada</td></tr>';
+            inactivosHtml += '</tbody></table>';
+            document.getElementById('perfTablaInactivos').innerHTML = inactivosHtml;
         }
 
         function limpiarFiltrosHistorial() {
