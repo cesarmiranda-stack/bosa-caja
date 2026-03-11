@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caja BOSA</title>
+    <title>BOSA Caja - Gestión de Efectivo</title>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
-            margin: 0
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
@@ -300,24 +300,24 @@
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 8px;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .kpi {
             background: #ffffff;
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,.08);
         }
 
         .kpi-lbl {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             color: #5a616b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 2px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -398,15 +398,15 @@
         label .tip-icon { vertical-align: middle; margin-left: 4px; }
 
         .kpi-val {
-            font-size: 16px;
+            font-size: 32px;
             font-weight: 700;
             color: #252a2e;
             line-height: 1;
-            margin-bottom: 3px;
+            margin-bottom: 8px;
         }
 
         .kpi-sub {
-            font-size: 11px;
+            font-size: 12px;
             color: #9ba3ab;
         }
 
@@ -414,8 +414,6 @@
         .k-blue { color: #3b82c4; }
         .k-gray { color: #5a616b; }
         .k-red { color: #c0392b; }
-        .active-toggle { background: #3b82c4 !important; color: #fff !important; }
-        .trimViewBtn { background: #f8f9fa; color: #5a616b; cursor: pointer; }
 
         .card {
             background: #ffffff;
@@ -915,17 +913,11 @@
         .rojo .cal-day-saldo { color:#c0392b; }
 
     </style>
-    <link rel="icon" type="image/jpeg" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAZABkAAD/2wBDAAYEBAUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScdHyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wAARCAAgACADAREAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAAMHBAIF/8QAJxAAAgEDAwMDBQAAAAAAAAAAAgMBAAQRBQYhBxOhEjGRFFFScYH/xAAXAQEBAQEAAAAAAAAAAAAAAAAAAQID/8QAGREBAQEBAQEAAAAAAAAAAAAAACERATFB/9oADAMBAAIRAxEAPwDwq6uDQvTrxwQa7S4MJ9iFczE+KKU5Dbc/Q5RrL7GMxPmiOKAoLUm83ZZ9N9sztRTmNITh3bUJ4HM4zmOOaxNrpcjDvZ2oXXTYH7wt0p1v6qItMiItIOM5iPbjPirz2J3ypHWmBQWUtL3RqfTbbA7YO5FoCyXdl8Kn05nGeYzWZtdLkI1qy1TTemeoI3rci2+Jwzp4NZDGhPGefn+U57E+VIa0wKDWnWdTt1CpOo3iljwIA4oiP1ETRdJuLq4uz7lw9rj/ACYclPzNAqiP/9k=">
-    <meta property="og:title" content="Caja BOSA">
-    <meta property="og:description" content="Gestión de Caja">
-    <meta property="og:image" content="https://bosa.uy/wp-content/uploads/2023/12/logo-bosa-gris.svg">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://bosa-caja.netlify.app/">
 </head>
 <body>
     <div id="loginScreen" class="login-container">
         <div class="login-card">
-            <div class="login-logo"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI1LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgaWQ9IkNhcGFfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MDAgMTM0LjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUwMCAxMzQuNjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiM2NTZDNzA7fQo8L3N0eWxlPgo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNzcuMiw2NS4xYzMuNSwyLjgsNy42LDUuNCwxMC43LDguOGMxNC44LDE2LDEyLjksNDguNS0xNy42LDU2LjNjLTYuNSwxLjYtMTMuMSwyLjUtMTkuNywyLjYgIEMzMC40LDEzMy4xLDAsMTMyLjksMCwxMzIuOVYyLjZjMCwwLDI5LjUsMCw0OC45LDBjOC40LDAsMTYuNiwxLjEsMjQuNCw0LjRjMTUsNi40LDIxLjMsMjAuMSwxOC45LDM1LjggIEM5MC42LDUzLjIsODYuOSw1OC4yLDc3LjIsNjUuMSBNMjAuNiwxMTMuMWMwLDAsMTguNiwwLDMyLjctMC4xYzIuNywwLDUuNC0wLjQsOC0xLjFjNy43LTIsMTIuOS03LjgsMTMuOC0xNS4xICBjMS04LjQtMi4yLTE1LjUtOS4zLTE4LjZjLTMuOS0xLjctOC4xLTIuNy0xMi40LTIuOWMtMTMuOS0wLjMtMzIuOC0wLjItMzIuOC0wLjJMMjAuNiwxMTMuMXogTTIwLjYsNTYuNGMwLDAsMTcsMCwzMCwwICBjMi41LDAsNC45LTAuMyw3LjMtMC43YzcuOS0xLjYsMTMtNy40LDEzLjUtMTVjMC41LTguNC0zLjgtMTQuNy0xMS43LTE3LjFjLTIuOC0wLjgtNS42LTEuMy04LjUtMS40QzM4LDIyLDIwLjYsMjIsMjAuNiwyMiAgTDIwLjYsNTYuNHoiPjwvcGF0aD4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTM1MC40LDEzMi45TDM5OS4xLDIuNmgyMy43bDQ4LjUsMTMwLjNINDUwbC0xMC4yLTI3LjJoLTU4bC0xMC4yLDI3LjNMMzUwLjQsMTMyLjl6IE00MzIuNSw4Ni4xbC0yMS45LTU3LjUgIGwtMjEuNSw1Ny41TDQzMi41LDg2LjF6Ij48L3BhdGg+CjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik00NjAuOSwxOS42YzAtMTAuOCw4LjgtMTkuNiwxOS42LTE5LjZTNTAwLDguOCw1MDAsMTkuNnMtOC44LDE5LjYtMTkuNiwxOS42UzQ2MC45LDMwLjQsNDYwLjksMTkuNiBNNDk3LDE5LjYgIGMwLTkuNi03LjEtMTYuNy0xNi42LTE2LjdzLTE2LjYsNy4xLTE2LjYsMTYuN3M3LjEsMTYuOCwxNi42LDE2LjhTNDk3LDI5LjIsNDk3LDE5LjYgTTQ3Mi45LDguNmg5LjJjMS42LTAuMSwzLjMsMC40LDQuNiwxLjMgIGMxLjQsMSwyLjIsMi42LDIuMyw0LjNjMC4yLDEuNC0wLjEsMi45LTAuOCw0LjFjLTAuOSwxLjQtMi4zLDIuNC0zLjksMi43bDQuOCw4LjhoLTRsLTQuNy04LjZoLTQuMnY4LjZoLTMuMkw0NzIuOSw4LjZ6ICAgTTQ3Ni4xLDE4LjRjMC4xLDAsMC4xLDAsMC4yLDBjMiwwLDQuNCwwLDYuNCwwYzEuNywwLDMuMS0xLjMsMy4yLTIuOWMwLjMtMS41LTAuNi0zLTItMy41Yy0wLjYtMC4yLTEuMi0wLjMtMS44LTAuMyAgYy0xLjgsMC0zLjgsMC01LjUsMGgtMC40TDQ3Ni4xLDE4LjR6Ij48L3BhdGg+CjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xNzIuNywwLjZIMTY3Yy0yNi42LDAtNDguMSwyMS42LTQ4LjIsNDguMnYzNy43YzAsMjYuNiwyMS42LDQ4LjEsNDguMiw0OC4yaDMuN2MyNi42LDAsNDguMS0yMS42LDQ4LjItNDguMiAgVjQ2LjhDMjE4LjksMjEuMywxOTguMiwwLjYsMTcyLjcsMC42IE0xOTgsNDYuOHYzOS43YzAsMTUtMTIuMiwyNy4yLTI3LjIsMjcuMkgxNjdjLTE1LDAtMjcuMi0xMi4yLTI3LjItMjcuMlY0OC43ICBjMC0xNSwxMi4yLTI3LjIsMjcuMi0yNy4yaDUuN0MxODYuNiwyMS41LDE5OCwzMi44LDE5OCw0Ni44QzE5OCw0Ni44LDE5OCw0Ni44LDE5OCw0Ni44Ij48L3BhdGg+CjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yODYuNiwwLjZjLTEyLjEsMC0yMi4zLDMtMzEuMSw5LjFjLTcuNSw1LjEtMTIuNiwxMy4xLTE0LjEsMjIuMWMtMS42LDkuNCwwLjQsMTkuNSw1LjQsMjYuMyAgYzUuMiw3LjMsMTIuOCwxMC45LDE4LjgsMTMuMmM3LjIsMi44LDE0LjksNC4xLDIyLjMsNS4zYzEuOSwwLjMsMy44LDAuNyw1LjcsMWM1LjksMS4xLDEyLjEsMi42LDE3LjQsNi4zYzMuMiwyLjMsNS40LDUuOCw2LDkuNyAgYzAuNiw0LTAuNSw4LjEtMywxMS4zYy0xLjUsMS45LTMuNCwzLjYtNS41LDQuOWMtNC44LDMtMTAuNSw0LjUtMTgsNC43Yy0xNS40LDAuNC0zMC41LTQuOC00Mi40LTE0LjZsLTcuMSwxOC45ICBjMTQuNSwxMC4zLDMwLjYsMTUuOCw0Ni42LDE1LjhjNy40LDAsMTQuNy0xLjEsMjEuOC0zLjFjOS40LTIuNCwxNy40LTguMywyMi43LTE2LjRjOC4xLTEyLjYsNy41LTMwLjYtMS40LTQxLjIgIGMtNS01LjktMTEuNS05LTE3LjItMTEuMmMtNy40LTIuOS0xNS4zLTQuMy0yMi44LTUuN2MtMi41LTAuNS01LjItMC45LTcuNy0xLjVjLTYuNy0xLjQtMTIuMi0zLjEtMTYuOC03Yy0yLjktMi40LTQuNy01LjktNS05LjYgIGMtMC4zLTMuNSwwLjktNy4xLDMuMi05LjdjMi40LTIuNyw1LjQtNC45LDguOC02LjRjOC45LTMuOCwxOC42LTMuOSwzMC40LTAuM2M2LjUsMi4xLDEyLjYsNS4zLDE4LDkuNmw2LjktMTguMSAgQzMxNi4xLDUuMiwzMDEuNSwwLjYsMjg2LjYsMC42Ij48L3BhdGg+Cjwvc3ZnPgo=" alt="BOSA" style="height:40px;display:block;margin:0 auto;"><div style="font-size:13px;font-weight:400;color:#6b7280;margin-top:8px;">Gestión de Caja</div></div>
+            <div class="login-logo">BOSA</div>
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -943,7 +935,7 @@
 
     <div id="appContainer" class="app-container">
         <div class="sidebar">
-            <div class="sidebar-logo"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMTM0LjU5Ij4KICA8cGF0aCBkPSJNNzcuMTUsNjUuMWMzLjUzLDIuODQsNy42LDUuMzgsMTAuNzQsOC43OCwxNC44LDE2LDEyLjksNDguNS0xNy41OCw1Ni4yOWE4NS44MSw4NS44MSwwLDAsMS0xOS43NCwyLjU2Yy0yMC4yLjMzLTUwLjU3LjE3LTUwLjU3LjE3VjIuNjRzMjkuNDYsMCw0OC44NywwYzguMzgsMCwxNi41OCwxLjA3LDI0LjQsNC40MywxNSw2LjQzLDIxLjI5LDIwLjE1LDE4LjkxLDM1LjgtMS41NywxMC4zNC01LjI3LDE1LjM1LTE1LDIyLjJtLTU2LjU4LDQ4czE4LjYzLDAsMzIuNjctLjA3YTMzLjcsMzMuNywwLDAsMCw4LTEuMDhjNy43NC0yLDEyLjktNy44MSwxMy43NS0xNS4xMywxLTguMzktMi4yMy0xNS41My05LjI2LTE4LjYyQTMzLjg0LDMzLjg0LDAsMCwwLDUzLjM5LDc1LjNjLTEzLjg2LS4zNS0zMi44Mi0uMi0zMi44Mi0uMlptMC01Ni42NnMxNywwLDMwLDBhMzguMTUsMzguMTUsMCwwLDAsNy4zMS0uNzNjNy45MS0xLjU5LDEzLTcuNCwxMy40NS0xNSwuNDctOC4zNy0zLjc2LTE0Ljc0LTExLjczLTE3LjE1YTMwLjk0LDMwLjk0LDAsMCwwLTguNTMtMS4zNUMzOCwyMiwyMC41OCwyMiwyMC41OCwyMloiIHN0eWxlPSJmaWxsOiNmZmYiPjwvcGF0aD4KICA8cGF0aCBkPSJNMzUwLjM1LDEzMi45LDM5OS4wOSwyLjU5aDIzLjY5TDQ3MS4zMiwxMzIuOUg0NTBsLTEwLjItMjcuMjUtNTgsMC0xMC4yLDI3LjI3Wm04Mi4xOC00Ni44MUw0MTAuNjcsMjguNmwtMjEuNSw1Ny40OVoiIHN0eWxlPSJmaWxsOiNmZmYiPjwvcGF0aD4KICA8cGF0aCBkPSJNNDYwLjg2LDE5LjU3YTE5LjU3LDE5LjU3LDAsMCwxLDM5LjE0LDAsMTkuNTcsMTkuNTcsMCwxLDEtMzkuMTQsMG0zNi4xNCwwYzAtOS42MS03LjA3LTE2LjY4LTE2LjU3LTE2LjY4UzQ2My44NiwxMCw0NjMuODYsMTkuNTdzNy4wNywxNi43OSwxNi41NywxNi43OVM0OTcsMjkuMTcsNDk3LDE5LjU3TTQ3Mi45Miw4LjY1aDkuMjFhNy40Myw3LjQzLDAsMCwxLDQuNiwxLjM0LDUuOCw1LjgsMCwwLDEsMi4zNCw0LjMxLDYuNiw2LjYsMCwwLDEtLjg0LDQuMSw2LDYsMCwwLDEtMy45MSwyLjc0bDQuNzksOC43OWgtNGwtNC43Mi04LjU2aC00LjI0djguNTZoLTMuMjVabTMuMTksOS43NGEuODYuODYsMCwwLDAsLjIxLDBjMiwwLDQuMzcsMCw2LjQsMGEzLjA5LDMuMDksMCwwLDAsMy4xNy0yLjkzLDMuMTQsMy4xNCwwLDAsMC0yLTMuNTIsNi4zMSw2LjMxLDAsMCwwLTEuODMtLjI5Yy0xLjc1LDAtMy44MSwwLTUuNTUsMGwtLjQyLDBaIiBzdHlsZT0iZmlsbDojZmZmIj48L3BhdGg+CiAgPHBhdGggZD0iTTE3Mi43Mi41NkgxNjdhNDguMjIsNDguMjIsMCwwLDAtNDguMTYsNDguMTZWODYuNDNBNDguMjEsNDguMjEsMCwwLDAsMTY3LDEzNC41OWgzLjc0YTQ4LjIyLDQ4LjIyLDAsMCwwLDQ4LjE2LTQ4LjE2VjQ2Ljc4QTQ2LjI4LDQ2LjI4LDAsMCwwLDE3Mi43Mi41Nk0xOTgsNDYuNzhWODYuNDNhMjcuMjMsMjcuMjMsMCwwLDEtMjcuMiwyNy4ySDE2N2EyNy4yMywyNy4yMywwLDAsMS0yNy4yLTI3LjJWNDguNzJBMjcuMjMsMjcuMjMsMCwwLDEsMTY3LDIxLjUyaDUuNjhBMjUuMjksMjUuMjksMCwwLDEsMTk4LDQ2Ljc4IiBzdHlsZT0iZmlsbDojZmZmIj48L3BhdGg+CiAgPHBhdGggZD0iTTI4Ni42NS42M2MtMTIuMSwwLTIyLjI3LDMtMzEuMDgsOS4wOEEzMy4yOSwzMy4yOSwwLDAsMCwyNDEuNDUsMzEuOGMtMS42Miw5LjM1LjQzLDE5LjQ1LDUuMzYsMjYuMzQsNS4yNCw3LjMzLDEyLjgsMTAuOTEsMTguOCwxMy4yLDcuMjUsMi43NywxNC45LDQuMDcsMjIuMyw1LjMzLDEuODguMzIsMy44Mi42NSw1LjcyLDEsNS44OCwxLjA4LDEyLjA2LDIuNTksMTcuMzUsNi4zNWExNC40LDE0LjQsMCwwLDEsNiw5LjY2LDE0LjgsMTQuOCwwLDAsMS0zLDExLjI3LDIxLjQ4LDIxLjQ4LDAsMCwxLTUuNDgsNC44N2MtNC44MiwzLTEwLjUzLDQuNS0xOCw0LjY1YTYzLjg2LDYzLjg2LDAsMCwxLTQyLjQyLTE0LjYzbC03LjE1LDE4LjljMTQuNTQsMTAuMjcsMzAuNjMsMTUuNzgsNDYuNjIsMTUuNzhhODAuNzMsODAuNzMsMCwwLDAsMjEuNzktMy4wOUEzOC40LDM4LjQsMCwwLDAsMzMyLDExNWM4LjExLTEyLjU1LDcuNDgtMzAuNjQtMS40NC00MS4xNy01LTUuODgtMTEuNS05LTE3LjIzLTExLjIxLTcuNDItMi45LTE1LjI2LTQuMzMtMjIuODQtNS43Mi0yLjU0LS40Ni01LjE2LS45NC03LjczLTEuNDctNi43My0xLjM4LTEyLjE2LTMuMS0xNi44MS03YTE0LDE0LDAsMCwxLTUtOS42MiwxMy4yLDEzLjIsMCwwLDEsMy4yMi05Ljc0LDI0Ljk0LDI0Ljk0LDAsMCwxLDguNzgtNi4zN2M4Ljk0LTMuNzcsMTguNi0zLjg3LDMwLjM5LS4zYTU1LjM1LDU1LjM1LDAsMCwxLDE4LDkuNjNsNi44NS0xOC4xMUE3MSw3MSwwLDAsMCwyODYuNjUuNjMiIHN0eWxlPSJmaWxsOiNmZmYiPjwvcGF0aD4KPC9zdmc+Cg==" alt="BOSA" style="height:28px;display:block;"><div style="font-size:11px;font-weight:400;opacity:0.7;margin-top:4px;letter-spacing:1px;">Gestión de Caja</div></div>
+            <div class="sidebar-logo">BOSA</div>
             <div class="sidebar-nav">
                 <!-- OPERATIVAS -->
                 <div class="sb-item active" data-screen="sc-dashboard">
@@ -1088,7 +1080,7 @@
                     </div>
 
                     <!-- Fila 2: Riesgo y calidad -->
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
                         <div class="kpi" id="kpiSobreHoyBox" style="border:1px solid rgba(245,166,35,0.3);background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));">
                             <div class="kpi-lbl">Sobregiro Hoy <span class="tip-icon" data-tip="Cuánto del crédito bancario se está usando hoy. Si el saldo propio es positivo, este valor es cero. El porcentaje indica qué parte del límite total ya se consumió.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
@@ -1097,21 +1089,21 @@
                             </div>
                             <div class="kpi-sub" id="kpiSobreHoySub">del límite total</div>
                         </div>
-                        <div class="kpi" id="kpiIngConfBox" style="border:1px solid rgba(36,166,96,0.25);background:linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02));">
-                            <div class="kpi-lbl">Ingresos Confirmados 30d <span class="tip-icon" data-tip="Suma de ingresos pendientes con certeza 'Confirmado' en los próximos 30 días.">?</span></div>
+                        <div class="kpi" id="kpiCobranzaBox" style="border:1px solid rgba(59,130,196,0.25);background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));">
+                            <div class="kpi-lbl">Cobranza Confirmada 30d <span class="tip-icon" data-tip="De todos los cobros a clientes del próximo mes, este es el porcentaje que ya está confirmado. Un porcentaje alto indica mayor certeza de ingreso.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
-                                <div class="kpi-val" id="kpiIngConfMonto" style="color:#24a660;">$0</div>
-                                <div class="kpi-val" id="kpiIngConfPct" style="font-size:18px;font-weight:600;color:#24a660;">–</div>
+                                <div class="kpi-val" id="kpiCobranzaMonto" style="color:#3b82c4;">$0</div>
+                                <div style="font-size:18px;font-weight:700;" id="kpiCobranzaPct">—</div>
                             </div>
-                            <div class="kpi-sub" id="kpiIngConfSub">confirmados</div>
+                            <div class="kpi-sub" id="kpiCobranzaSub">de ingresos clientes</div>
                         </div>
-                        <div class="kpi" id="kpiIngAConfBox" style="border:1px solid rgba(217,169,25,0.25);background:linear-gradient(135deg,rgba(217,169,25,0.07),rgba(217,169,25,0.02));">
-                            <div class="kpi-lbl">Ingresos a Confirmar 30d <span class="tip-icon" data-tip="Suma de ingresos pendientes con certeza 'A Confirmar' en los próximos 30 días.">?</span></div>
+                        <div class="kpi" id="kpiEgrConfBox" style="border:1px solid rgba(192,57,43,0.25);background:linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02));">
+                            <div class="kpi-lbl">Egresos Confirmados 30d <span class="tip-icon" data-tip="De todos los egresos pendientes del próximo mes, este es el porcentaje que está confirmado. Un porcentaje alto indica mayor certeza de gasto.">?</span></div>
                             <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
-                                <div class="kpi-val" id="kpiIngAConfMonto" style="color:#d9a919;">$0</div>
-                                <div class="kpi-val" id="kpiIngAConfPct" style="font-size:18px;font-weight:600;color:#d9a919;">–</div>
+                                <div class="kpi-val" id="kpiEgrConfMonto" style="color:#c0392b;">$0</div>
+                                <div style="font-size:18px;font-weight:700;" id="kpiEgrConfPct">—</div>
                             </div>
-                            <div class="kpi-sub" id="kpiIngAConfSub">a confirmar</div>
+                            <div class="kpi-sub" id="kpiEgrConfSub">de egresos totales</div>
                         </div>
                     </div>
 
@@ -1175,7 +1167,7 @@
 
                         <!-- Banner auto dirección -->
                         <div id="nmDirBanner" style="border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;background:rgba(36,166,96,0.08);border:2px solid rgba(36,166,96,0.3);">
-                            <span id="nmDirIcon" style="font-size:22px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg></span>
+                            <span id="nmDirIcon" style="font-size:22px;">📥</span>
                             <div>
                                 <div id="nmDirLabel" style="font-size:15px;font-weight:800;color:#24a660;letter-spacing:0.3px;">INGRESO</div>
                                 <div id="nmDirSub" style="font-size:11px;color:#5a616b;margin-top:2px;">Seleccioná una empresa para auto-detectar la dirección</div>
@@ -1231,7 +1223,7 @@
                                     <input type="number" id="nmTC" placeholder="43.50" step="0.01" value="43.50" style="width:80px;padding:10px 12px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;display:none;" oninput="nmCalcMonto()">
                                     <span style="font-size:13px;color:#9ba3ab;white-space:nowrap;">= USD <strong id="nmUSDEquiv" style="color:#252a2e;">0</strong></span>
                                 </div>
-                                <div style="font-size:11px;color:#9ba3ab;margin-top:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"/></svg>TC del día tomado automáticamente de BCU · editable si es necesario</div>
+                                <div style="font-size:11px;color:#9ba3ab;margin-top:5px;">🔄 TC del día tomado automáticamente de BCU · editable si es necesario</div>
                             </div>
                             <!-- Hidden fields for compatibility -->
                             <input type="hidden" id="nmPesos" value="0">
@@ -1243,12 +1235,12 @@
 
                             <!-- Certeza -->
                             <div class="form-group">
-                                <label>Certeza <span class="tip-icon" data-tip="'Confirmado' = monto y fecha confirmados. 'A Confirmar' = monto y fecha estimados, sujetos a confirmación.">?</span></label>
+                                <label>Certeza de fecha <span class="tip-icon" data-tip="'Fecha fija' = la fecha de cobro/pago está confirmada. 'Fecha estimada ±30d' = el monto es seguro pero la fecha puede variar ±30 días.">?</span></label>
                                 <div class="certeza-toggle">
-                                    <button type="button" id="nmCertConfBtn" class="certeza-btn active-certeza" onclick="setNmCerteza('confirmado')">Confirmado</button>
-                                    <button type="button" id="nmCertMontoBtn" class="certeza-btn" onclick="setNmCerteza('monto-confirmado')">A Confirmar</button>
+                                    <button type="button" id="nmCertConfBtn" class="certeza-btn active-certeza" onclick="setNmCerteza('confirmado')">📌 Fecha fija</button>
+                                    <button type="button" id="nmCertMontoBtn" class="certeza-btn" onclick="setNmCerteza('monto-confirmado')">±30d estimado</button>
                                 </div>
-                                <div style="font-size:11px;color:#9ba3ab;margin-top:6px;">A Confirmar: el monto está confirmado, la fecha puede moverse 30 días.</div>
+                                <div style="font-size:11px;color:#9ba3ab;margin-top:6px;">±30d estimado: el monto está confirmado, la fecha puede moverse 30 días.</div>
                             </div>
 
                             <!-- Detalle -->
@@ -1281,23 +1273,19 @@
 
                 <!-- MOVIMIENTOS SCREEN -->
                 <div id="sc-movimientos" class="screen">
-                    <div id="movPastDueWarning" style="display:none;align-items:center;justify-content:space-between;background:#fffbeb;border:1px solid #f59e0b;border-radius:8px;padding:12px 16px;margin-bottom:16px;">
-                        <div style="display:flex;align-items:center;gap:8px;"><span style="font-weight:600;color:#92400e;">0 operaciones con fecha pasada sin confirmar</span></div>
-                        <span style="font-size:12px;color:#92400e;">Revisalas y marcalas como realizadas o ajusta las fechas.</span>
-                    </div>
                     <div class="card">
                         <div class="card-title">Movimientos</div>
                         
                         <div class="search-bar">
-                            <input type="text" id="movSearchInput" placeholder="Buscar por empresa, detalle, categoría..." oninput="renderMovimientos()">
+                            <input type="text" id="movSearchInput" placeholder="Buscar por empresa, detalle, categoría, monto..." oninput="renderMovimientos()">
                             <button class="btn btn-primary btn-sm" id="nuevoMovBtn">+ Nuevo</button>
                         </div>
 
                         <div class="filters">
                             <select id="movFilterEstado" class="f-sel" onchange="renderMovimientos()">
                                 <option value="">Estado: Todos</option>
-                                <option value="Realizados">Realizados</option>
-                                <option value="Pendientes" selected>Pendientes</option>
+                                <option value="Realizados" selected>Realizados</option>
+                                <option value="Pendientes">Pendientes</option>
                             </select>
                             <select id="movFilterEmpresa" class="f-sel" onchange="renderMovimientos()">
                                 <option value="">Empresa: Todas</option>
@@ -1306,6 +1294,12 @@
                                 <option value="">Tipo: Todos</option>
                                 <option value="Ingreso">Ingresos</option>
                                 <option value="Egreso">Egresos</option>
+                            </select>
+                            <select id="movSortOrder" class="f-sel" onchange="renderMovimientos()">
+                                <option value="fecha_asc">Orden: Fecha ↑</option>
+                                <option value="fecha_desc">Orden: Fecha ↓</option>
+                                <option value="created_desc">Orden: Último agregado</option>
+                                <option value="created_asc">Orden: Primer agregado</option>
                             </select>
                         </div>
 
@@ -1397,29 +1391,8 @@
 
                 <!-- PROYECCIÓN TRIMESTRAL SCREEN -->
                 <div id="sc-proyTrim" class="screen">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-                        <div id="trimViewToggle" style="display:inline-flex;border:1px solid #e3e6e9;border-radius:6px;overflow:hidden;">
-                            <button class="btn btn-sm trimViewBtn active-toggle" onclick="setTrimView('conservador')" style="border-radius:6px 0 0 6px;border:none;">Conservador</button>
-                            <button class="btn btn-sm trimViewBtn" onclick="setTrimView('optimista')" style="border-radius:0 6px 6px 0;border:none;">Optimista</button>
-                        </div>
+                    <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:12px;">
                         <button class="btn btn-primary btn-sm" onclick="proyectarGastosFijos()">⚡ Proyectar gastos fijos</button>
-                    </div>
-                    <div id="proyTrimKPIs" class="card" style="padding:10px 14px;margin-bottom:12px;">
-                        <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;">
-                            
-                            <div style="text-align:center;">
-                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Ingresos Trim.</div>
-                                <div style="font-size:17px;font-weight:700;color:#24a660;" id="trimTotalIng">$0</div>
-                            </div>
-                            <div style="text-align:center;">
-                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Egresos Trim.</div>
-                                <div style="font-size:17px;font-weight:700;color:#c0392b;" id="trimTotalEgr">$0</div>
-                            </div>
-                            <div style="text-align:center;">
-                                <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;margin-bottom:2px;">Resultado Trim.</div>
-                                <div style="font-size:17px;font-weight:700;" id="trimTotalRes">$0</div>
-                            </div>
-                        </div>
                     </div>
                     <div id="proyTrimContent"></div>
                 </div>
@@ -1430,7 +1403,11 @@
                     <input type="hidden" id="saldoInicialProy" value="0">
                     <div class="card" style="padding:14px 20px;">
                         <div style="display:flex; align-items:center; gap:0; flex-wrap:wrap;">
-                            
+                            <div style="text-align:center; padding:0 24px 0 0; border-right:1px solid #e3e6e9; margin-right:24px;">
+                                <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Disponible Hoy</div>
+                                <div style="font-size:17px; font-weight:700; color:#24a660;" id="proy30SaldoIni">$0</div>
+                                <div style="font-size:10px; color:#9ba3ab; margin-top:2px;">Incl. sobregiro</div>
+                            </div>
                             <div style="display:flex; gap:24px; margin-left:auto;">
                                 <div style="text-align:center;">
                                     <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Ingresos</div>
@@ -1444,19 +1421,7 @@
                                     <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Resultado</div>
                                     <div style="font-size:17px; font-weight:700;" id="proy30TotalRes">$0</div>
                                 </div>
-                            
-              <div style="text-align:center">
-                <div style="font-size:11px;margin-bottom:2px;">D. Verdes</div>
-                <div id="proy30DiasVerdes" style="font-size:16px;font-weight:600;color:#27ae60">0</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:11px;margin-bottom:2px;">D. Amarillos</div>
-                <div id="proy30DiasAmar" style="font-size:16px;font-weight:600;color:#b87400">0</div>
-              </div>
-              <div style="text-align:center">
-                <div style="font-size:11px;margin-bottom:2px;">D. Rojos</div>
-                <div id="proy30DiasRojos" style="font-size:16px;font-weight:600;color:#c0392b">0</div>
-              </div></div>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
@@ -1478,43 +1443,30 @@
 
                 <!-- PROYECCION INGRESOS SCREEN -->
                 <div id="sc-proyIng" class="screen">
-                    <!-- Bloque 1: KPIs Conservador -->
-                    <div style="font-size:10px;font-weight:700;color:#5a616b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Escenario Conservador (solo confirmados)</div>
-                    <div class="kpi-grid" style="margin-bottom:8px;">
+                    <!-- Bloque 1: KPIs -->
+                    <div class="kpi-grid" style="margin-bottom:16px;">
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.04));border:1px solid rgba(36,166,96,0.2);">
-                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon tip-down" data-tip="Ingresos confirmados esperados en 30 dias, incluyendo atrasados.">?</span></div>
+                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Total de ingresos con fecha fija (certeza alta) esperados en los próximos 30 días.">?</span></div>
                             <div class="kpi-val k-green" id="piKpi30">$0</div>
+                            <div class="kpi-sub">fecha fija</div>
+                            <div id="piKpi30pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
-                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon tip-down" data-tip="Ingresos confirmados esperados en 90 dias.">?</span></div>
+                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Total de ingresos con fecha fija esperados en los próximos 90 días. El monto ±30d se muestra como referencia.">?</span></div>
                             <div class="kpi-val k-green" id="piKpi90">$0</div>
+                            <div class="kpi-sub">fecha fija</div>
+                            <div id="piKpi90pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));border:1px solid rgba(59,130,196,0.2);">
-                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon tip-down" data-tip="Total ingresos pendientes confirmados.">?</span></div>
+                            <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro sin límite de fecha, incluyendo los de baja certeza. Refleja el potencial máximo de cobranza.">?</span></div>
                             <div class="kpi-val" id="piKpiTotal" style="color:#3b82c4;">$0</div>
+                            <div class="kpi-sub">confirmado</div>
                         </div>
                         <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.25);">
-                            <div class="kpi-lbl">Sin Cobranza <span class="tip-icon tip-down" data-tip="Clientes activos sin ingresos futuros.">?</span></div>
+                            <div class="kpi-lbl">Sin Cobranza Futura <span class="tip-icon" data-tip="Clientes activos que no tienen ningún ingreso futuro registrado. Son oportunidades de venta o seguimiento comercial a gestionar.">?</span></div>
                             <div class="kpi-val" id="piKpiSinCobr" style="color:#b87400;">0</div>
-                            <div class="kpi-sub" style="color:#b87400;">clientes</div>
+                            <div class="kpi-sub" style="color:#b87400;">clientes — oportunidad</div>
                         </div>
-                    </div>
-                    <!-- Bloque 1b: KPIs Optimista -->
-                    <div style="font-size:10px;font-weight:700;color:#b87400;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Escenario Optimista (confirmados + a confirmar)</div>
-                    <div class="kpi-grid" style="margin-bottom:16px;">
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.06),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.2);">
-                            <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon tip-down" data-tip="Todos los ingresos (confirmados + a confirmar) en 30 dias.">?</span></div>
-                            <div class="kpi-val" id="piKpi30opt" style="color:#b87400;">$0</div>
-                        </div>
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.06),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.2);">
-                            <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon tip-down" data-tip="Todos los ingresos en 90 dias.">?</span></div>
-                            <div class="kpi-val" id="piKpi90opt" style="color:#b87400;">$0</div>
-                        </div>
-                        <div class="kpi" style="background:linear-gradient(135deg,rgba(245,166,35,0.06),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.2);">
-                            <div class="kpi-lbl">Pipeline Total Opt. <span class="tip-icon tip-down" data-tip="Total ingresos pendientes incluyendo no confirmados.">?</span></div>
-                            <div class="kpi-val" id="piKpiTotalOpt" style="color:#b87400;">$0</div>
-                        </div>
-                        <div class="kpi" style="opacity:0;pointer-events:none;"></div>
                     </div>
 
                     <!-- Bloque 2+3: Tablas pipeline -->
@@ -1554,10 +1506,6 @@
                                 <div class="emp-dd-list" id="histEmpList">
                                     <label><input type="checkbox" id="histEmpAll" onchange="histEmpToggleAll(this)"> <strong>Todas</strong></label>
                                     <hr class="emp-dd-divider">
-                    <div style="display:flex;gap:6px;padding:4px 0;">
-                        <button type="button" onclick="histEmpSelectAll()" style="flex:1;padding:4px 8px;font-size:11px;border:1px solid #e3e6e9;border-radius:4px;background:#f8f9fa;cursor:pointer;">Seleccionar todos</button>
-                        <button type="button" onclick="histEmpClearAll()" style="flex:1;padding:4px 8px;font-size:11px;border:1px solid #e3e6e9;border-radius:4px;background:#f8f9fa;cursor:pointer;">Borrar todos</button>
-                    </div>
                                     <!-- populated by renderHistorial() -->
                                 </div>
                             </div>
@@ -1706,23 +1654,23 @@
                     <div class="card">
                         <div class="card-title">Bancos y Límites de Sobregiro <span class="tip-icon" style="font-size:11px;" data-tip="El límite de sobregiro es la línea de crédito que el banco te permite usar cuando el saldo es insuficiente. Ingresá el monto habilitado por cada cuenta — se suma automáticamente al 'Disponible Hoy' del Dashboard.">?</span></div>
                         <div class="grid-2col" style="gap: 12px;">
-                                    <div class="form-group" style="margin-bottom: 10px;">
-                                        <label>Itaú Pesos — límite (UYU)</label>
-                                        <input type="number" id="limItauPesos" placeholder="0" step="1">
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 10px;">
-                                        <label>Itaú Dólares — límite (USD)</label>
-                                        <input type="number" id="limItauUSD" placeholder="0" step="0.01">
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 10px;">
-                                        <label>HSBC Pesos — límite (UYU)</label>
-                                        <input type="number" id="limHsbcPesos" placeholder="0" step="1">
-                                    </div>
-                                    <div class="form-group" style="margin-bottom: 10px;">
-                                        <label>HSBC Dólares — límite (USD)</label>
-                                        <input type="number" id="limHsbcUSD" placeholder="0" step="0.01">
-                                    </div>
-                                </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Itaú Pesos — límite (UYU)</label>
+                                <input type="number" id="limItauPesos" placeholder="0" step="1">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Itaú Dólares — límite (USD)</label>
+                                <input type="number" id="limItauUSD" placeholder="0" step="0.01">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>HSBC Pesos — límite (UYU)</label>
+                                <input type="number" id="limHsbcPesos" placeholder="0" step="1">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>HSBC Dólares — límite (USD)</label>
+                                <input type="number" id="limHsbcUSD" placeholder="0" step="0.01">
+                            </div>
+                        </div>
                         <button class="btn btn-primary btn-block" style="margin-top: 8px;" onclick="guardarLimites()">Guardar límites</button>
                         <div style="margin-top: 16px;">
                             <div style="font-size: 11px; font-weight: 700; color: #5a616b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Historial de cambios</div>
@@ -1731,56 +1679,14 @@
                     </div>
 
                     <!-- Reparar vínculos -->
-                <div class="card" style="margin-top:16px;">
-                    <div class="card-title">🔧 Reparar vínculos empresa-movimiento</div>
-                    <div style="font-size:13px;color:#5a616b;margin-bottom:12px;">Algunos movimientos quedaron huérfanos al renombrar empresas. Este botón corrige los 6 cambios de nombre registrados en tu base de datos.</div>
-                    <div id="repararVinculosStatus" style="font-size:12px;color:#9ba3ab;margin-bottom:8px;"></div>
+                    <div class="card" style="margin-top:16px;">
+                        <div class="card-title">🔧 Reparar vínculos empresa-movimiento</div>
+                        <div style="font-size:13px;color:#5a616b;margin-bottom:12px;">Algunos movimientos quedaron huérfanos al renombrar empresas. Este botón corrige los 6 cambios de nombre registrados en tu base de datos.</div>
+                        <div id="repararVinculosStatus" style="font-size:12px;color:#9ba3ab;margin-bottom:8px;"></div>
                         <button class="btn btn-ghost btn-sm" onclick="repararVinculosEmpresas()">⚡ Ejecutar reparación (solo 1 vez)</button>
                     </div>
-                
-            
-
-        <!-- Log de Actividad -->
-        <div style="background:#fff;border-radius:12px;padding:20px;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
-            <h3 style="margin:0 0 16px;font-size:16px;font-weight:600;color:#252a2e;">Log de Actividad</h3>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end;">
-                <div>
-                    <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px;">Tabla</label>
-                    <select id="logFilterTabla" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;">
-                        <option value="">Todas</option>
-                        <option value="movimientos">Movimientos</option>
-                        <option value="empresas">Empresas</option>
-                        <option value="configuracion">Configuración</option>
-                    </select>
                 </div>
-                <div>
-                    <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px;">Acción</label>
-                    <select id="logFilterAccion" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;">
-                        <option value="">Todas</option>
-                        <option value="INSERT">Agregar</option>
-                        <option value="UPDATE">Modificar</option>
-                        <option value="DELETE">Eliminar</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px;">Desde</label>
-                    <input type="date" id="logFilterDesde" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;">
-                </div>
-                <div>
-                    <label style="font-size:11px;color:#6b7280;display:block;margin-bottom:4px;">Hasta</label>
-                    <input type="date" id="logFilterHasta" style="padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;">
-                </div>
-                <button onclick="loadAuditLog()" style="padding:6px 16px;background:#c0392b;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;">Buscar</button>
             </div>
-            <div id="auditLogContainer" style="overflow-x:auto;">
-                <p style="color:#6b7280;font-size:13px;">Presioná "Buscar" para cargar el log.</p>
-            </div>
-        </div>
-            </div>
-                </div>
-
-
-        
         </div>
     </div>
 
@@ -1812,8 +1718,8 @@
                 <div class="form-group">
                     <label>Dirección</label>
                     <div class="tipo-toggle">
-                        <button type="button" id="emCajaIngBtn" class="tipo-btn active-ing" onclick="setEmCaja('Ingreso')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 5v14"/><path d="M5 12l7 7 7-7"/></svg> Ingreso</button>
-                        <button type="button" id="emCajaEgrBtn" class="tipo-btn" onclick="setEmCaja('Egreso')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg> Egreso</button>
+                        <button type="button" id="emCajaIngBtn" class="tipo-btn active-ing" onclick="setEmCaja('Ingreso')">📥 Ingreso</button>
+                        <button type="button" id="emCajaEgrBtn" class="tipo-btn" onclick="setEmCaja('Egreso')">📤 Egreso</button>
                     </div>
                 </div>
 
@@ -1840,10 +1746,10 @@
 
                 <!-- Certeza -->
                 <div class="form-group">
-                    <label>Certeza <span class="tip-icon" data-tip="'Confirmado' = monto y fecha confirmados. 'A Confirmar' = monto y fecha estimados, sujetos a confirmación.">?</span></label>
+                    <label>Certeza de fecha <span class="tip-icon" data-tip="'Fecha fija' = fecha confirmada. '±30d estimado' = fecha puede variar ±30 días.">?</span></label>
                     <div class="certeza-toggle">
-                        <button type="button" id="emCertConfBtn" class="certeza-btn active-certeza" onclick="setEmCerteza('confirmado')">Confirmado</button>
-                        <button type="button" id="emCertMontoBtn" class="certeza-btn" onclick="setEmCerteza('monto-confirmado')">A Confirmar</button>
+                        <button type="button" id="emCertConfBtn" class="certeza-btn active-certeza" onclick="setEmCerteza('confirmado')">📌 Fecha fija</button>
+                        <button type="button" id="emCertMontoBtn" class="certeza-btn" onclick="setEmCerteza('monto-confirmado')">±30d estimado</button>
                     </div>
                 </div>
 
@@ -1989,17 +1895,7 @@
         const SUPA_KEY = 'sb_publishable_2l0WJ4zUKz0-Tqo7n_vWiQ_arjBXJVZ';
 
         const { createClient } = window.supabase;
-        
-    // Helper: local date string YYYY-MM-DD (avoids UTC timezone shift)
-    function localISO(d) {
-      if (!d) d = new Date();
-      if (typeof d === 'string') d = new Date(d + 'T12:00:00');
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      return y + '-' + m + '-' + dd;
-    }
-    const supabaseClient = createClient(SUPA_URL, SUPA_KEY);
+        const supabaseClient = createClient(SUPA_URL, SUPA_KEY);
 
         let currentUser = null;
         let allMovimientos = [];
@@ -2057,7 +1953,6 @@
             ]);
 
             if (movRes.data) allMovimientos = movRes.data;
-            allMovimientos.forEach(m => { m.confiable = (String(m.confiable).toLowerCase() === 'true'); });
             if (empRes.data) allEmpresas = empRes.data;
 
             updateEmpresasSelects();
@@ -2183,7 +2078,7 @@
             });
 
             // Set default dates
-            const today = localISO();
+            const today = new Date().toISOString().split('T')[0];
             document.getElementById('nmFecha').value = today;
             // Historial date filters start empty — shows all historical data
             document.getElementById('histFechaDesde').value = '';
@@ -2268,6 +2163,7 @@
         // Caja y Bancos: currency formatting helpers
         function sbParseNum(val) {
             if (!val) return 0;
+            // Remove dots (thousands sep) and replace comma with dot (decimal sep)
             return parseFloat(String(val).replace(/\./g, '').replace(',', '.')) || 0;
         }
         function sbFormatCurrency(num) {
@@ -2279,10 +2175,12 @@
             return (isNeg ? '-' : '') + parts.join(',');
         }
         function sbFocusIn(el) {
+            // On focus: show raw number for editing
             const num = sbParseNum(el.value);
             el.value = num !== 0 ? num : '';
         }
         function sbFocusOut(el) {
+            // On blur: show formatted number
             const num = sbParseNum(el.value);
             el.value = sbFormatCurrency(num);
             calcSbTotal();
@@ -2327,13 +2225,13 @@
             if (tipo === 'Ingreso') {
                 banner.style.background = 'rgba(36,166,96,0.08)';
                 banner.style.border = '2px solid rgba(36,166,96,0.3)';
-                icon.textContent = '↓';
+                icon.textContent = '📥';
                 label.textContent = 'INGRESO'; label.style.color = '#24a660';
                 if (sub) sub.textContent = 'Dinero que entra a la empresa';
             } else {
                 banner.style.background = 'rgba(192,57,43,0.08)';
                 banner.style.border = '2px solid rgba(192,57,43,0.3)';
-                icon.textContent = '↑';
+                icon.textContent = '📤';
                 label.textContent = 'EGRESO'; label.style.color = '#c0392b';
                 if (sub) sub.textContent = 'Dinero que sale de la empresa';
             }
@@ -2429,7 +2327,7 @@
 
         function resetNuevoMovForm() {
             document.getElementById('nuevoMovForm').reset();
-            document.getElementById('nmFecha').value = localISO();
+            document.getElementById('nmFecha').value = new Date().toISOString().split('T')[0];
             document.getElementById('nmMonto').value = '';
             document.getElementById('nmUSDEquiv').textContent = '0';
             document.getElementById('nmUSD').value = '0';
@@ -2471,7 +2369,8 @@
                 fecha: document.getElementById('nmFecha').value,
                 empresa: document.getElementById('nmEmpresa').value,
                 caja: document.getElementById('nmCaja').value,
-                                detalle: document.getElementById('nmDetalle').value,
+                clase: document.getElementById('nmClase').value || null,
+                detalle: document.getElementById('nmDetalle').value,
                 documento: '',
                 comentarios: '',
                 pesos: Math.round(pesos * 100) / 100,
@@ -2522,7 +2421,9 @@
                     mov.empresa?.toLowerCase().includes(searchTerm) ||
                     mov.detalle?.toLowerCase().includes(searchTerm) ||
                     mov.documento?.toLowerCase().includes(searchTerm) ||
-                    (mov.clase||mov.categoria||'').toLowerCase().includes(searchTerm);
+                    (mov.clase||mov.categoria||'').toLowerCase().includes(searchTerm) ||
+                    String(Math.abs(mov.usd||0)).includes(searchTerm) ||
+                    String(Math.abs(mov.pesos||0)).includes(searchTerm);
                 
                 const matchEstado = !filterEstado || 
                     (filterEstado === 'Realizados' && mov.hecho) ||
@@ -2532,29 +2433,23 @@
                 const matchCaja = !filterCaja || mov.caja === filterCaja;
 
                 return matchSearch && matchEstado && matchEmpresa && matchCaja;
-            }).sort((a, b) => a.fecha.localeCompare(b.fecha));
+            });
+
+            const sortOrder = document.getElementById('movSortOrder')?.value || 'fecha_asc';
+            if (sortOrder === 'fecha_asc') filtered.sort((a, b) => a.fecha.localeCompare(b.fecha));
+            else if (sortOrder === 'fecha_desc') filtered.sort((a, b) => b.fecha.localeCompare(a.fecha));
+            else if (sortOrder === 'created_desc') filtered.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+            else if (sortOrder === 'created_asc') filtered.sort((a, b) => (a.created_at || '').localeCompare(b.created_at || ''));
 
             const tbody = document.getElementById('movimientosBody');
-            // Advertencia: operaciones con fecha pasada pendientes
-            const today = new Date(); today.setHours(0,0,0,0);
-            const pastDue = filtered.filter(m => !m.hecho && new Date(m.fecha) < today);
-            const warningEl = document.getElementById('movPastDueWarning');
-            if (warningEl) {
-                if (pastDue.length > 0) {
-                    warningEl.style.display = 'flex';
-                    warningEl.querySelector('span').textContent = pastDue.length + ' operaciones con fecha pasada sin confirmar';
-                } else {
-                    warningEl.style.display = 'none';
-                }
-            }
             tbody.innerHTML = filtered.map(mov => {
                 const amount = getMovimientoAmount(mov);
                 const amountClass = mov.caja === 'Ingreso' ? 't-ing' : 't-egr';
                 const estadoBadge = mov.hecho ? '<span class="badge b-green">Realizado</span>' : '<span class="badge b-gray">Pendiente</span>';
                 
-                return `<tr style="${mov.confiable === true ? '' : 'background:#fffbeb;'}">
-                    <td>${new Date(mov.fecha).toLocaleDateString('es-UY')}</td>
-                    <td>${mov.empresa || '-'}${mov.confiable === true ? '' : ' <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:6px;">A Confirmar</span>'}</td>
+                return `<tr>
+                    <td>${new Date(mov.fecha + 'T12:00:00').toLocaleDateString('es-UY')}</td>
+                    <td>${mov.empresa || '-'}</td>
                     <td><span class="${amountClass}">${mov.caja === 'Ingreso' ? 'Ingreso' : 'Egreso'}</span></td>
                     <td class="text-right">${formatUSD(Math.abs(amount))}</td>
                     <td>${estadoBadge}</td>
@@ -2647,7 +2542,7 @@
             const fecha = document.getElementById('emFecha')?.value || '';
             const caja = document.getElementById('emCaja')?.value || '';
             const usd = parseFloat(document.getElementById('emUSD')?.value) || 0;
-            const icon = caja === 'Ingreso' ? '↓' : '↑';
+            const icon = caja === 'Ingreso' ? '📥' : '📤';
             const fechaFmt = fecha ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'numeric',month:'short'}) : '';
             const ctx = document.getElementById('emHeaderCtx');
             if (ctx) ctx.textContent = `${empresa} · ${icon} ${caja || '—'} · USD ${formatNumber(usd,0)} · ${fechaFmt}`;
@@ -2676,10 +2571,9 @@
             const emEquiv = document.getElementById('emUSDEquiv');
             if (emEquiv) emEquiv.textContent = formatNumber(usdAbs, 0);
 
-            // Currency mode — if pesos >> usd (UYU movement), show UYU; else USD
-            const pAbsVal = Math.abs(mov.pesos || 0);
-            emCurrencyState = (pAbsVal > 1 && (mov.tc||0) > 1) ? 'UYU' : 'USD';
-            setEmCurrency(emCurrencyState);
+            // Currency mode — siempre USD por defecto
+            emCurrencyState = 'USD';
+            setEmCurrency('USD');
 
             // Direction toggle
             setEmCaja(mov.caja || 'Ingreso');
@@ -2709,7 +2603,8 @@
                 fecha: document.getElementById('emFecha').value,
                 empresa: document.getElementById('emEmpresa').value,
                 caja: document.getElementById('emCaja').value,
-                                detalle: document.getElementById('emDetalle').value,
+                clase: document.getElementById('emClase').value || null,
+                detalle: document.getElementById('emDetalle').value,
                 documento: document.getElementById('emDocumento').value || '',
                 comentarios: document.getElementById('emComentarios').value || '',
                 pesos: Math.round(pesosVal * 100) / 100,
@@ -2766,7 +2661,7 @@
             const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
             const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
-            const next30Pending = allMovimientos.filter(m => !m.hecho && new Date(m.fecha) < in30);
+            const next30Pending = allMovimientos.filter(m => !m.hecho && new Date(m.fecha + 'T12:00:00') < in30);
             
             const ingresos30 = next30Pending
                 .filter(m => m.caja === 'Ingreso')
@@ -2805,11 +2700,7 @@
                 saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
                              + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
                              + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
-                const todayStrD = localISO(today);
-                const overdueMoves = allMovimientos.filter(m => !m.hecho && m.fecha < todayStrD);
-                const overdueIng = overdueMoves.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-                const overdueEgr = overdueMoves.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-                const disponibleReal = saldoInicial + overdraftLimit + overdueIng - overdueEgr;
+                const disponibleReal = saldoInicial + overdraftLimit;
                 document.getElementById('kpiSaldoHoy').textContent = formatUSD(disponibleReal);
                 document.getElementById('kpiSaldoHoy').className = disponibleReal > 0 ? 'kpi-val k-green' : disponibleReal < 0 ? 'kpi-val k-red' : 'kpi-val k-gray';
             }
@@ -2831,26 +2722,46 @@
                 document.getElementById('kpiSobreHoyBox').style.borderColor = sobreBorder;
             }
 
-            // KPI Ingresos Confirmados 30d + A Confirmar 30d
+            // KPI Cobranza Confirmada 30d (categoria=Cliente, confiable=true vs total clientes)
             {
-                const ingresosPending = next30Pending.filter(m => m.caja === 'Ingreso');
-                const totalIng30 = ingresosPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const confirmados30 = ingresosPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const aConfirmar30 = totalIng30 - confirmados30;
-                const pctConf = totalIng30 > 0 ? Math.round((confirmados30 / totalIng30) * 100) : null;
-                const pctAConf = totalIng30 > 0 ? Math.round((aConfirmar30 / totalIng30) * 100) : null;
-                document.getElementById('kpiIngConfMonto').textContent = formatUSD(confirmados30);
-                document.getElementById('kpiIngConfPct').textContent = pctConf !== null ? pctConf + '%' : '\u2013';
-                document.getElementById('kpiIngConfSub').textContent = totalIng30 > 0 ? 'de ' + formatUSD(totalIng30) + ' total ingresos' : 'sin ingresos pendientes';
-                document.getElementById('kpiIngAConfMonto').textContent = formatUSD(aConfirmar30);
-                document.getElementById('kpiIngAConfPct').textContent = pctAConf !== null ? pctAConf + '%' : '\u2013';
-                document.getElementById('kpiIngAConfSub').textContent = totalIng30 > 0 ? 'de ' + formatUSD(totalIng30) + ' total ingresos' : 'sin ingresos pendientes';
+                const clientesPending = next30Pending.filter(m => m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente'));
+                const totalClientes30 = clientesPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const confirmados30 = clientesPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const pctCobr = totalClientes30 > 0 ? Math.round((confirmados30 / totalClientes30) * 100) : null;
+                document.getElementById('kpiCobranzaMonto').textContent = formatUSD(confirmados30);
+                document.getElementById('kpiCobranzaPct').textContent = pctCobr !== null ? pctCobr + '%' : '—';
+                document.getElementById('kpiCobranzaSub').textContent = totalClientes30 > 0 ? `de ${formatUSD(totalClientes30)} total clientes` : 'sin ingresos de clientes';
+                const cobColor = pctCobr === null ? '#9ba3ab' : pctCobr >= 70 ? '#24a660' : pctCobr >= 40 ? '#b87400' : '#c0392b';
+                const cobBg = pctCobr === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctCobr >= 70 ? 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))' : pctCobr >= 40 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
+                const cobBorder = pctCobr === null ? 'rgba(90,97,107,0.15)' : pctCobr >= 70 ? 'rgba(36,166,96,0.25)' : pctCobr >= 40 ? 'rgba(245,166,35,0.3)' : 'rgba(192,57,43,0.25)';
+                document.getElementById('kpiCobranzaMonto').style.color = cobColor;
+                document.getElementById('kpiCobranzaPct').style.color = cobColor;
+                document.getElementById('kpiCobranzaBox').style.background = cobBg;
+                document.getElementById('kpiCobranzaBox').style.borderColor = cobBorder;
+            }
+
+            // KPI Egresos Confirmados 30d
+            {
+                const egresosPending = next30Pending.filter(m => m.caja === 'Egreso');
+                const totalEgresos30 = egresosPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const egrConfirmados30 = egresosPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const pctEgr = totalEgresos30 > 0 ? Math.round((egrConfirmados30 / totalEgresos30) * 100) : null;
+                document.getElementById('kpiEgrConfMonto').textContent = formatUSD(egrConfirmados30);
+                document.getElementById('kpiEgrConfPct').textContent = pctEgr !== null ? pctEgr + '%' : '—';
+                document.getElementById('kpiEgrConfSub').textContent = totalEgresos30 > 0 ? `de ${formatUSD(totalEgresos30)} total egresos` : 'sin egresos pendientes';
+                const egrColor = pctEgr === null ? '#9ba3ab' : pctEgr >= 70 ? '#c0392b' : pctEgr >= 40 ? '#b87400' : '#24a660';
+                const egrBg = pctEgr === null ? 'linear-gradient(135deg,rgba(90,97,107,0.05),rgba(90,97,107,0.01))' : pctEgr >= 70 ? 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))' : pctEgr >= 40 ? 'linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02))' : 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
+                const egrBorder = pctEgr === null ? 'rgba(90,97,107,0.15)' : pctEgr >= 70 ? 'rgba(192,57,43,0.25)' : pctEgr >= 40 ? 'rgba(245,166,35,0.3)' : 'rgba(36,166,96,0.25)';
+                document.getElementById('kpiEgrConfMonto').style.color = egrColor;
+                document.getElementById('kpiEgrConfPct').style.color = egrColor;
+                document.getElementById('kpiEgrConfBox').style.background = egrBg;
+                document.getElementById('kpiEgrConfBox').style.borderColor = egrBorder;
             }
 
             // KPI Ingresos 30d vs YTD (promedio mensual últimos 12 meses)
             {
-                const todayStr = localISO(today);
-                const hace12m = localISO(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()));
+                const todayStr = today.toISOString().split('T')[0];
+                const hace12m = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString().split('T')[0];
                 const hist12m = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && m.fecha >= hace12m && m.fecha <= todayStr);
                 const totalHist12m = hist12m.reduce((s, m) => s + Math.abs(getMovimientoAmount(m)), 0);
                 const promMensual = totalHist12m / 12;
@@ -2867,8 +2778,8 @@
             {
                 const mesActual = today.getMonth();
                 const anioAnt = today.getFullYear() - 1;
-                const inicioMesAA = localISO(new Date(anioAnt, mesActual, 1));
-                const finMesAA = localISO(new Date(anioAnt, mesActual + 1, 0));
+                const inicioMesAA = new Date(anioAnt, mesActual, 1).toISOString().split('T')[0];
+                const finMesAA = new Date(anioAnt, mesActual + 1, 0).toISOString().split('T')[0];
                 const histAA = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && m.fecha >= inicioMesAA && m.fecha <= finMesAA);
                 const totalAA = histAA.reduce((s, m) => s + Math.abs(getMovimientoAmount(m)), 0);
                 const varAA = totalAA > 0 ? Math.round(((ingresos30 - totalAA) / totalAA) * 100) : null;
@@ -2901,7 +2812,7 @@
                 let diasV = 0, diasA = 0, diasR = 0;
                 for (let i = 0; i < 30; i++) {
                     const d = new Date(today); d.setDate(today.getDate() + i);
-                    const dStr = localISO(d);
+                    const dStr = d.toISOString().split('T')[0];
                     if (byDayD[dStr]) byDayD[dStr].forEach(m => { runBalD += m.caja === 'Ingreso' ? Math.abs(m.usd||0) : -Math.abs(m.usd||0); });
                     if (runBalD > 0) diasV++;
                     else if (runBalD + odD > 0) diasA++;
@@ -2912,20 +2823,31 @@
                 document.getElementById('kpiDiasRojo').textContent = diasR;
             }
 
-            // Daily chart data
+            // Daily chart data — día 1 acumula saldo bancos + atrasados + hoy
+            const todayStr = today.toISOString().split('T')[0];
             const dailyData = {};
+
+            // Separar atrasados de pendientes futuros
+            let overdueIng = 0, overdueEgr = 0;
             next30Pending.forEach(m => {
-                const day = m.fecha;
-                if (!dailyData[day]) dailyData[day] = { ing: 0, egr: 0 };
-                if (m.caja === 'Ingreso') {
-                    dailyData[day].ing += Math.abs(m.usd || 0);
+                const mDate = m.fecha;
+                if (mDate < todayStr) {
+                    // Atrasados: acumular en día 1
+                    if (m.caja === 'Ingreso') overdueIng += Math.abs(m.usd || 0);
+                    else overdueEgr += Math.abs(m.usd || 0);
                 } else {
-                    dailyData[day].egr += Math.abs(m.usd || 0);
+                    if (!dailyData[mDate]) dailyData[mDate] = { ing: 0, egr: 0 };
+                    if (m.caja === 'Ingreso') dailyData[mDate].ing += Math.abs(m.usd || 0);
+                    else dailyData[mDate].egr += Math.abs(m.usd || 0);
                 }
             });
 
-            const todayStrChart = localISO(today);
-            const sortedDays = Object.keys(dailyData).sort().filter(d => d >= todayStrChart);
+            // Asegurar que hoy exista y sumarle saldo bancos + atrasados
+            if (!dailyData[todayStr]) dailyData[todayStr] = { ing: 0, egr: 0 };
+            dailyData[todayStr].ing += overdueIng + Math.max(saldoInicial, 0);
+            dailyData[todayStr].egr += overdueEgr + Math.max(-saldoInicial, 0);
+
+            const sortedDays = Object.keys(dailyData).sort();
             const chartLabels = sortedDays.map(d => {
                 const [y,mo,dy] = d.split('-');
                 return `${parseInt(dy)}/${parseInt(mo)}`;
@@ -2933,13 +2855,15 @@
             const ingressesData = sortedDays.map(d => dailyData[d].ing);
             const egressesData = sortedDays.map(d => dailyData[d].egr);
 
-            // Cumulative balance line
-            const overdueForChart = allMovimientos.filter(m => !m.hecho && m.fecha < todayStrChart);
-            const overdueIngChart = overdueForChart.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const overdueEgrChart = overdueForChart.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            let cum = saldoInicial + overdraftLimit + overdueIngChart - overdueEgrChart;
-            const cumulativeData = sortedDays.map(d => {
-                cum += dailyData[d].ing - dailyData[d].egr;
+            // Cumulative balance line — arranca de saldo bancos, acumula día a día
+            let cum = saldoInicial + overdueIng - overdueEgr;
+            const cumulativeData = sortedDays.map((d, i) => {
+                if (i === 0) {
+                    // Día 1: ya incluye saldo + atrasados, sumar solo movimientos de hoy
+                    cum += (dailyData[d].ing - overdueIng - Math.max(saldoInicial, 0)) - (dailyData[d].egr - overdueEgr - Math.max(-saldoInicial, 0));
+                } else {
+                    cum += dailyData[d].ing - dailyData[d].egr;
+                }
                 return Math.round(cum * 100) / 100;
             });
 
@@ -2979,10 +2903,9 @@
                             borderWidth: 2.5,
                             tension: 0.35,
                             fill: true,
-                            pointRadius: cumulative.map(v => v < 0 ? 6 : 4),
-                            pointHoverRadius: cumulative.map(v => v < 0 ? 8 : 6),
-                            pointBackgroundColor: cumulative.map(v => v < 0 ? 'rgba(220,38,38,1)' : 'rgba(59,130,196,1)'),
-                            pointBorderColor: cumulative.map(v => v < 0 ? 'rgba(220,38,38,1)' : 'rgba(59,130,196,1)'),
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            pointBackgroundColor: '#3b82c4',
                             yAxisID: 'y1'
                         }
                     ]
@@ -3120,17 +3043,19 @@
             showToast(`✓ ${count} movimiento${count>1?'s':''} proyectado${count>1?'s':''} correctamente`, 'ok');
         }
 
-        let trimViewMode = 'conservador';
-        function setTrimView(mode) {
-            trimViewMode = mode;
-            document.querySelectorAll('.trimViewBtn').forEach(b => b.classList.remove('active-toggle'));
-            event.target.classList.add('active-toggle');
-            renderProyTrim();
-        }
-
         function renderProyTrim() {
-            const months = ['Marzo', 'Abril', 'Mayo'];
-            const monthNums = [3, 4, 5];
+            const nowDate = new Date();
+            const currentMonth = nowDate.getMonth() + 1;
+            const currentYear = nowDate.getFullYear();
+            const months = [];
+            const monthNums = [];
+            for (let i = 0; i < 3; i++) {
+                let mn = currentMonth + i;
+                let yr = currentYear;
+                if (mn > 12) { mn -= 12; yr++; }
+                monthNums.push({ m: mn, y: yr });
+                months.push(new Date(yr, mn - 1, 1).toLocaleString('es-UY', { month: 'long' }).replace(/^\w/, c => c.toUpperCase()));
+            }
             const empClaseMap = {};
             const empTipoMap = {};
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || 'Otros'; empTipoMap[e.nombre] = e.tipo || 'Variables'; });
@@ -3146,36 +3071,34 @@
 
             const trimData = [];
 
-            monthNums.forEach((monthNum, idx) => {
+            monthNums.forEach(({ m: monthNum, y: yearNum }, idx) => {
                 const monthMovs = allMovimientos.filter(m => {
                     const movDate = new Date(m.fecha + 'T12:00:00');
-                    const inMonth = !m.hecho && movDate.getMonth() + 1 === monthNum && movDate.getFullYear() === 2026;
-                    if (!inMonth) return false;
-                    if (trimViewMode === 'conservador' && m.caja === 'Ingreso' && m.confiable !== true) return false;
-                    return true;
+                    return !m.hecho && movDate.getMonth() + 1 === monthNum && movDate.getFullYear() === yearNum;
                 });
 
                 // Group by empresa, consolidated
                 const ingEmp = {};
                 const egrFijosEmp = {};
                 const egrVarEmp = {};
-            const egrFijosConf = {};
-            const egrVarConf = {};
+                let ingConf = 0, ingNoConf = 0, egrConf = 0, egrNoConf = 0;
                 monthMovs.forEach(m => {
                     const amt = Math.abs(m.usd || 0);
                     if (m.caja === 'Ingreso') {
                         if (!ingEmp[m.empresa]) ingEmp[m.empresa] = { total: 0, confiable: m.confiable };
                         ingEmp[m.empresa].total += amt;
                         ingEmp[m.empresa].confiable = ingEmp[m.empresa].confiable && m.confiable;
+                        if (m.confiable) ingConf += amt; else ingNoConf += amt;
                     } else {
                         const tipo = empTipoMap[m.empresa] || 'Variables';
                         if (tipo === 'Fijos') {
                             if (!egrFijosEmp[m.empresa]) egrFijosEmp[m.empresa] = 0;
-                            egrFijosEmp[m.empresa] += amt; if(!m.confiable) egrFijosConf[m.empresa] = false;
+                            egrFijosEmp[m.empresa] += amt;
                         } else {
                             if (!egrVarEmp[m.empresa]) egrVarEmp[m.empresa] = 0;
-                            egrVarEmp[m.empresa] += amt; if(!m.confiable) egrVarConf[m.empresa] = false;
+                            egrVarEmp[m.empresa] += amt;
                         }
+                        if (m.confiable) egrConf += amt; else egrNoConf += amt;
                     }
                 });
 
@@ -3185,31 +3108,8 @@
                 const saldoEsperado = ingresos - egresos;
                 const saldoConservador = ingresosConf - egresos;
 
-                trimData.push({ month: months[idx], ingresos, egresos, resultado: saldoEsperado, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp, egrFijosConf, egrVarConf });
+                trimData.push({ month: months[idx], ingresos, egresos, resultado: saldoEsperado, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp, ingConf, ingNoConf, egrConf, egrNoConf });
             });
-
-            // Update ProyTrim KPIs
-            const trimTotIng = trimData.reduce((s,d) => s + d.ingresos, 0);
-            const trimTotEgr = trimData.reduce((s,d) => s + d.egresos, 0);
-            const trimTotRes = trimTotIng - trimTotEgr;
-            const elTI = document.getElementById('trimTotalIng'); if (elTI) elTI.textContent = formatUSD(trimTotIng);
-            const elTE = document.getElementById('trimTotalEgr'); if (elTE) elTE.textContent = formatUSD(trimTotEgr);
-            const elTR = document.getElementById('trimTotalRes');
-            if (elTR) { elTR.textContent = formatUSD(trimTotRes, true); elTR.style.color = trimTotRes >= 0 ? '#24a660' : '#c0392b'; }
-            // Disponible Hoy in ProyTrim
-            {
-                const tcPT = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-                const shPT = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
-                const limPT = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
-                let bankPT = 0;
-                if (shPT.length > 0) { const hh = shPT[0]; bankPT = (hh.itauUSD||0)+(hh.hsbcUSD||0)+((hh.itauPesos||0)/tcPT)+((hh.hsbcPesos||0)/tcPT)+(hh.efectivoUSD||0)+((hh.efectivoPesos||0)/tcPT)+(hh.chequesCobrosUSD||0)+((hh.chequesCobroPesos||0)/tcPT); }
-                const odPT = (limPT.itauUSD||0)+(limPT.hsbcUSD||0)+((limPT.itauPesos||0)/tcPT)+((limPT.hsbcPesos||0)/tcPT);
-                const todayPT = localISO();
-                const ovdPT = allMovimientos.filter(m => !m.hecho && m.fecha < todayPT);
-                const ovdIngPT = ovdPT.filter(m => m.caja === 'Ingreso').reduce((s,m) => s+Math.abs(m.usd||0), 0);
-                const ovdEgrPT = ovdPT.filter(m => m.caja === 'Egreso').reduce((s,m) => s+Math.abs(m.usd||0), 0);
-                const dispPT = bankPT + odPT + ovdIngPT - ovdEgrPT;
-            }
 
             // Quarterly chart in Dashboard — grouped bars (Ingresos+Egresos per month) + cumulative line
             const trimCtx = document.getElementById('trimesterChart');
@@ -3217,8 +3117,12 @@
                 if (trimesterChart) trimesterChart.destroy();
 
                 const trimLabels = trimData.map(d => d.month);
-                const trimIngs = trimData.map(d => d.ingresos);
-                const trimEgrs = trimData.map(d => d.egresos);
+
+                // Stacked bar data: confirmed + unconfirmed for ingresos and egresos (all positive, above X axis)
+                const trimIngConf = trimData.map(d => d.ingConf);
+                const trimIngNoConf = trimData.map(d => d.ingNoConf);
+                const trimEgrConf = trimData.map(d => d.egrConf);
+                const trimEgrNoConf = trimData.map(d => d.egrNoConf);
 
                 // Cumulative saldo line starting from current bank balance
                 let cumTrim = saldoBanco;
@@ -3236,16 +3140,19 @@
                     data: {
                         labels: trimLabels,
                         datasets: [
-                            { label: 'Ingresos', data: trimIngs, backgroundColor: 'rgba(36,166,96,0.75)', borderRadius: 4, yAxisID: 'y' },
-                            { label: 'Egresos', data: trimEgrs, backgroundColor: 'rgba(192,57,43,0.75)', borderRadius: 4, yAxisID: 'y' },
-                            { label: 'Saldo acumulado', data: cumTrimData, type: 'line', borderColor: '#3b82c4', backgroundColor: 'rgba(59,130,196,0.08)', borderWidth: 2.5, tension: 0.3, pointRadius: 5, fill: true, yAxisID: 'y2' }
+                            { label: 'Ing. Confirmados', data: trimIngConf, backgroundColor: 'rgba(36,166,96,0.85)', borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 }, stack: 'ingresos', yAxisID: 'y', order: 2 },
+                            { label: 'Ing. Sin confirmar', data: trimIngNoConf, backgroundColor: 'rgba(36,166,96,0.35)', borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 }, stack: 'ingresos', yAxisID: 'y', order: 2 },
+                            { label: 'Egr. Confirmados', data: trimEgrConf, backgroundColor: 'rgba(192,57,43,0.85)', borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 }, stack: 'egresos', yAxisID: 'y', order: 2 },
+                            { label: 'Egr. Sin confirmar', data: trimEgrNoConf, backgroundColor: 'rgba(192,57,43,0.35)', borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 }, stack: 'egresos', yAxisID: 'y', order: 2 },
+                            { label: 'Saldo acumulado', data: cumTrimData, type: 'line', borderColor: '#3b82c4', backgroundColor: 'rgba(59,130,196,0.08)', borderWidth: 2.5, tension: 0.3, pointRadius: 5, fill: false, yAxisID: 'y2', order: 1 }
                         ]
                     },
                     options: {
                         responsive: true, maintainAspectRatio: false,
                         plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': $' + formatNumber(c.raw, 0) } } },
                         scales: {
-                            y: { position: 'left', ticks: { callback: v => '$' + formatNumber(v, 0) }, title: { display: true, text: 'Ingresos / Egresos', font: { size: 11 } } },
+                            x: { stacked: true },
+                            y: { stacked: true, position: 'left', beginAtZero: true, ticks: { callback: v => '$' + formatNumber(v, 0) }, title: { display: true, text: 'Ingresos / Egresos', font: { size: 11 } } },
                             y2: { position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => '$' + formatNumber(v, 0) }, title: { display: true, text: 'Saldo acumulado', font: { size: 11 } } }
                         }
                     }
@@ -3254,14 +3161,14 @@
 
             // Build ProyTrim cards
             let html = '<div style="font-size:12px;color:#9ba3ab;font-style:italic;margin-bottom:12px;padding:8px 12px;background:#f8f9fa;border-radius:6px;border-left:3px solid #e3e6e9;">ℹ️ Los saldos muestran el flujo neto proyectado de cada mes (ingresos − egresos) sin considerar el saldo actual de banco. Para ver la evolución acumulada de caja, consultá el Dashboard.</div><div class="grid-3col">';
-            trimData.forEach(({ month, ingresos, egresos, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp, egrFijosConf, egrVarConf }, idx) => {
-                const mid = ['mar','abr','may'][idx];
+            trimData.forEach(({ month, ingresos, egresos, saldoEsperado, saldoConservador, ingEmp, egrFijosEmp, egrVarEmp }, idx) => {
+                const mid = month.toLowerCase().substring(0, 3);
 
                 // Ingresos rows
                 let ingHtml = '';
                 Object.entries(ingEmp).sort((a,b) => b[1].total - a[1].total).forEach(([emp, data]) => {
-                    const label30 = !data.confiable ? ' <span style="font-size:10px;color:#b87400;font-weight:600;">(A Confirmar)</span>' : '';
-                    ingHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid #f0f0f0;${!data.confiable ? 'background:#fffbeb;padding:5px 8px;margin:0 -8px;border-radius:4px;' : ''}">
+                    const label30 = !data.confiable ? ' <span style="font-size:10px;color:#b87400;font-weight:600;">(±30d)</span>' : '';
+                    ingHtml += `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
                         <span style="color:#252a2e;">${emp}${label30}</span>
                         <span style="color:#3b82c4;font-weight:700;">$${formatNumber(data.total, 0)}</span>
                     </div>`;
@@ -3272,7 +3179,7 @@
                 let egrFHtml = '';
                 const egrFTotal = Object.values(egrFijosEmp).reduce((s,v) => s+v, 0);
                 Object.entries(egrFijosEmp).sort((a,b) => b[1]-a[1]).forEach(([emp, amt]) => {
-                    egrFHtml += `<div style="${egrFijosConf[emp]===false?'background:#fffbeb;':''};display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
+                    egrFHtml += `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
                         <span style="color:#5a616b;font-style:italic;">${emp}</span>
                         <span style="color:#5a616b;">$${formatNumber(amt, 0)}</span>
                     </div>`;
@@ -3282,7 +3189,7 @@
                 let egrVHtml = '';
                 const egrVTotal = Object.values(egrVarEmp).reduce((s,v) => s+v, 0);
                 Object.entries(egrVarEmp).sort((a,b) => b[1]-a[1]).forEach(([emp, amt]) => {
-                    egrVHtml += `<div style="${egrVarConf[emp]===false?'background:#fffbeb;':''};display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
+                    egrVHtml += `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0f0f0;">
                         <span style="color:#252a2e;font-weight:600;">${emp}</span>
                         <span style="color:#252a2e;font-weight:600;">$${formatNumber(amt, 0)}</span>
                     </div>`;
@@ -3293,19 +3200,7 @@
                 const consColor = saldoConservador > 0 ? '#24a660' : saldoEsperado > 0 ? '#b87400' : '#c0392b';
 
                 // Warning box
-                
-            const monthMovs = allMovimientos.filter(m => { const d = new Date(m.fecha); return !m.hecho && d.getMonth() + 1 === monthNums[idx] && d.getFullYear() === 2026; });
-        // A Confirmar summary
-        const ingAConfTrim = monthMovs.filter(m => m.caja === 'Ingreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
-        const egrAConfTrim = monthMovs.filter(m => m.caja === 'Egreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
-        let aConfFooter = '';
-        if (ingAConfTrim > 0 || egrAConfTrim > 0) {
-            let pts = [];
-            if (ingAConfTrim > 0) pts.push('$' + formatNumber(ingAConfTrim, 0) + ' en ingresos');
-            if (egrAConfTrim > 0) pts.push('$' + formatNumber(egrAConfTrim, 0) + ' en egresos');
-            aConfFooter = '<div style="margin-top:8px;padding:6px 10px;background:#fffbeb;border:1px solid #fef3c7;border-radius:6px;font-size:11px;color:#92400e;">Incluye ' + pts.join(' y ') + ' a confirmar</div>';
-        }
-        let warningHtml = '';
+                let warningHtml = '';
                 if (saldoConservador < 0 || (saldoConservador >= 0 && saldoConservador < saldoEsperado * 0.3)) {
                     const nonConfIngs = Object.entries(ingEmp).filter(([_,v]) => !v.confiable).sort((a,b) => b[1].total-a[1].total);
                     if (nonConfIngs.length > 0) {
@@ -3347,12 +3242,11 @@
                             <span style="font-weight:700;color:${espColor};">${saldoEsperado >= 0 ? '' : '−'}$${formatNumber(Math.abs(saldoEsperado), 0)}</span>
                         </div>
                         <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;">
-                            <span style="color:#9ba3ab;">Saldo Conservador <span style="font-size:10px;">(A Confirmar)</span></span>
+                            <span style="color:#9ba3ab;">Saldo Conservador <span style="font-size:10px;">(±30d)</span></span>
                             <span style="font-weight:700;color:${consColor};">${saldoConservador >= 0 ? '' : '−'}$${formatNumber(Math.abs(saldoConservador), 0)}</span>
                         </div>
                     </div>
                     ${warningHtml}
-            ${aConfFooter}
                 </div>`;
             });
             html += '</div>';
@@ -3391,7 +3285,14 @@
             const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
             const overdraft = (limites.itauUSD||0) + (limites.hsbcUSD||0) + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
 
-            // KPI update moved below after overdue calc
+            // Update Saldo Inicial KPI — muestra disponible real (rawBalance + overdraftLimit)
+            const saldoIniEl = document.getElementById('proy30SaldoIni');
+            if (saldoIniEl) {
+                const disponibleRealProy = fondosPropios + overdraft;
+                saldoIniEl.textContent = formatUSD(disponibleRealProy);
+                saldoIniEl.style.color = disponibleRealProy > 0 ? '#24a660' : disponibleRealProy < 0 ? '#c0392b' : '#9ba3ab';
+            }
+            const totalDisp = fondosPropios + overdraft;
 
             const today = new Date(); today.setHours(0,0,0,0);
             const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -3401,20 +3302,6 @@
                 const d = new Date(m.fecha + 'T12:00:00');
                 return !m.hecho && d < today;
             });
-
-            // Overdue impact on opening balance
-            const overdueIngPD = vencidas.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const overdueEgrPD = vencidas.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const fondosConOverdue = fondosPropios + overdueIngPD - overdueEgrPD;
-
-            // Update Disponible Hoy KPI with overdue included
-            const saldoIniEl = document.getElementById('proy30SaldoIni');
-            if (saldoIniEl) {
-                const disponibleRealProy = fondosConOverdue + overdraft;
-                saldoIniEl.textContent = formatUSD(disponibleRealProy);
-                saldoIniEl.style.color = disponibleRealProy > 0 ? '#24a660' : disponibleRealProy < 0 ? '#c0392b' : '#9ba3ab';
-            }
-            const totalDisp = fondosConOverdue + overdraft;
 
             const pending = allMovimientos.filter(m => {
                 const d = new Date(m.fecha + 'T12:00:00');
@@ -3434,9 +3321,6 @@
             // Group by day
             const byDay = {};
             pending.forEach(m => { if (!byDay[m.fecha]) byDay[m.fecha] = []; byDay[m.fecha].push(m); });
-            // Include overdue items in today's bucket
-            const todayStrPD = localISO(today);
-            vencidas.forEach(m => { if (!byDay[todayStrPD]) byDay[todayStrPD] = []; byDay[todayStrPD].push(m); });
 
             // Running balance per day — iterate every day in range so empty days carry forward
             let runBal = fondosPropios;
@@ -3445,7 +3329,7 @@
             const rangeEnd = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
             let dayCur = new Date(rangeStart);
             while (dayCur < rangeEnd) {
-                const dStr = localISO(dayCur);
+                const dStr = dayCur.toISOString().split('T')[0];
                 if (byDay[dStr]) {
                     byDay[dStr].forEach(m => { runBal += m.caja === 'Ingreso' ? Math.abs(m.usd||0) : -Math.abs(m.usd||0); });
                 }
@@ -3462,15 +3346,23 @@
             });
 
             // Build header — KPIs first, then alerts below
-        // Set days KPIs in upper row
-        const elDV = document.getElementById('proy30DiasVerdes');
-        const elDA = document.getElementById('proy30DiasAmar');
-        const elDR = document.getElementById('proy30DiasRojos');
-        if(elDV) elDV.textContent = verdes;
-        if(elDA) elDA.textContent = amarillos;
-        if(elDR) elDR.textContent = rojos;
-        let headerHtml = '';
+            let headerHtml = '';
 
+            // 1. KPIs row (verdes / amarillos / rojos) with tooltips
+            headerHtml += `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+                <div style="background:rgba(36,166,96,0.1);border:1px solid rgba(36,166,96,0.3);border-radius:8px;padding:10px 18px;text-align:center;">
+                    <div style="font-size:22px;font-weight:800;color:#24a660;">${verdes}</div>
+                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días verdes <span class="tip-icon" data-tip="Días en que el saldo propio (sin usar crédito bancario) es positivo. Cuantos más, mejor.">?</span></div>
+                </div>
+                <div style="background:rgba(255,167,38,0.1);border:1px solid rgba(255,167,38,0.4);border-radius:8px;padding:10px 18px;text-align:center;">
+                    <div style="font-size:22px;font-weight:800;color:#b87400;">${amarillos}</div>
+                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días amarillos <span class="tip-icon" data-tip="Días en que el saldo propio es insuficiente pero el crédito bancario cubre la diferencia. La empresa opera, pero con deuda bancaria.">?</span></div>
+                </div>
+                <div style="background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.3);border-radius:8px;padding:10px 18px;text-align:center;">
+                    <div style="font-size:22px;font-weight:800;color:#c0392b;">${rojos}</div>
+                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días rojos <span class="tip-icon" data-tip="Días en que ni el saldo propio ni el crédito bancario son suficientes. Indica déficit total y requiere atención inmediata.">?</span></div>
+                </div>
+            </div>`;
 
             // 2. Alert: operaciones con fecha pasada sin confirmar
             if (vencidas.length > 0) {
@@ -3514,8 +3406,8 @@
             const calEnd = new Date(today.getTime() + 36 * 24 * 60 * 60 * 1000);
             let cur = new Date(calStart);
             while (cur <= calEnd) {
-                const dayStr = localISO(cur);
-                const isToday = dayStr === localISO(today);
+                const dayStr = cur.toISOString().split('T')[0];
+                const isToday = dayStr === today.toISOString().split('T')[0];
                 const isInRange = cur >= today && cur < in30;
                 const daySaldo = saldoByDay[dayStr];
                 const dayMovs = byDay[dayStr] || [];
@@ -3537,7 +3429,7 @@
                 const todayCls = isToday ? ' hoy' : '';
                 const hasMovs = dayMovs.length > 0;
                 const clickAttr = hasMovs || isInRange ? `onclick="abrirDayModal('${dayStr}')" style="cursor:pointer;"` : '';
-                // Dashed border when any movement that day has confiable=false (A Confirmar estimate)
+                // Dashed border when any movement that day has confiable=false (±30d estimate)
                 const hasIncierto = dayMovs.some(m => m.confiable === false);
                 const dashedStyle = hasIncierto ? 'border:2px dashed #b87400;' : '';
 
@@ -3550,55 +3442,34 @@
             calHtml += '</div>';
 
             const calEl = document.getElementById('proyDiaCalendar');
-            
-        // Summary footer for A Confirmar
-        const ingAConf30 = pending.filter(m => m.caja === 'Ingreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
-        const egrAConf30 = pending.filter(m => m.caja === 'Egreso' && m.confiable !== true).reduce((s,m) => s + Math.abs(m.usd||0), 0);
-        if (ingAConf30 > 0 || egrAConf30 > 0) {
-            let parts = [];
-            if (ingAConf30 > 0) parts.push(formatUSD(ingAConf30) + ' en ingresos a confirmar');
-            if (egrAConf30 > 0) parts.push(formatUSD(egrAConf30) + ' en egresos a confirmar');
-            calHtml += '<div style="margin-top:12px;padding:10px 14px;background:#fffbeb;border:1px solid #fef3c7;border-radius:8px;font-size:12px;color:#92400e;">Incluye ' + parts.join(' y ') + '</div>';
-        }
-        if (calEl) calEl.innerHTML = headerHtml + calHtml;
+            if (calEl) calEl.innerHTML = headerHtml + calHtml;
         }
 
         function abrirDayModal(fecha) {
-        const todayStr = localISO();
-        const dayMovs = allMovimientos.filter(m => m.fecha === fecha && !m.hecho);
-        const overdueMovs = (fecha >= todayStr) ? allMovimientos.filter(m => m.fecha < todayStr && !m.hecho) : [];
-        const allItems = [...overdueMovs.map(m => ({...m, isOverdue: true})), ...dayMovs.map(m => ({...m, isOverdue: false}))];
-        const fmtDate = new Date(fecha+'T12:00:00').toLocaleDateString('es-UY',{weekday:'long',day:'numeric',month:'long'});
-        document.getElementById('dayMovTitle').textContent = fmtDate;
-        if(!allItems.length) {
-          document.getElementById('dayMovContent').innerHTML = '<div style="color:#7b8a9b;font-size:13px;padding:16px">Sin movimientos pendientes este d\u00eda</div>';
-        } else {
-          const egresos = allItems.filter(m => m.caja === 'Egreso');
-          const ingresos = allItems.filter(m => m.caja === 'Ingreso');
-          let html = '';
-          if(egresos.length) {
-            html += '<div style="font-weight:600;font-size:13px;color:#c0392b;padding:8px 0 4px;border-bottom:2px solid #c0392b">Egresos (' + egresos.length + ')</div>';
-            egresos.sort((a,b) => a.empresa.localeCompare(b.empresa));
-            egresos.forEach(m => {
-              const amt = Math.abs(m.usd);
-              const ovd = m.isOverdue ? '<span style="background:#fef3c7;color:#b87400;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px">vencido</span>' : '';
-              html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #e3e6e9"><div><div style="font-weight:500;color:#2a2e33;font-size:13px">' + m.empresa + ovd + '</div><div style="font-size:11px;color:#7b8a9b">' + (m.detalle||'') + '</div></div><div style="color:#c0392b;font-weight:600">-' + formatNumber(amt) + '</div></div>';
-            });
-          }
-          if(ingresos.length) {
-            html += '<div style="font-weight:600;font-size:13px;color:#27ae60;padding:8px 0 4px;margin-top:8px;border-bottom:2px solid #27ae60">Ingresos (' + ingresos.length + ')</div>';
-            ingresos.sort((a,b) => a.empresa.localeCompare(b.empresa));
-            ingresos.forEach(m => {
-              const amt = Math.abs(m.usd);
-              const ovd = m.isOverdue ? '<span style="background:#fef3c7;color:#b87400;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px">vencido</span>' : '';
-              const conf = !m.confiable ? '<span style="background:#fffbeb;color:#b87400;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px">a confirmar</span>' : '';
-              html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #e3e6e9"><div><div style="font-weight:500;color:#2a2e33;font-size:13px">' + m.empresa + ovd + conf + '</div><div style="font-size:11px;color:#7b8a9b">' + (m.detalle||'') + '</div></div><div style="color:#27ae60;font-weight:600">+' + formatNumber(amt) + '</div></div>';
-            });
-          }
-          document.getElementById('dayMovContent').innerHTML = html;
+            const dayMovs = allMovimientos.filter(m => m.fecha === fecha && !m.hecho);
+            const fmtDate = new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', { weekday:'long', day:'numeric', month:'long' });
+            document.getElementById('dayMovTitle').textContent = fmtDate;
+            if (dayMovs.length === 0) {
+                document.getElementById('dayMovContent').innerHTML = '<p style="color:#9ba3ab;font-size:13px;padding:10px 0;">Sin movimientos pendientes este día.</p>';
+            } else {
+                document.getElementById('dayMovContent').innerHTML = dayMovs.map(m => {
+                    const amt = Math.abs(m.usd||0);
+                    const color = m.caja === 'Ingreso' ? '#24a660' : '#c0392b';
+                    const prefix = m.caja === 'Ingreso' ? '+' : '−';
+                    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e3e6e9;">
+                        <div>
+                            <div style="font-weight:600;color:#252a2e;font-size:14px;">${m.empresa||'-'}</div>
+                            ${m.detalle ? `<div style="font-size:12px;color:#9ba3ab;">${m.detalle}</div>` : ''}
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span style="color:${color};font-weight:700;">${prefix}$${formatNumber(amt,0)}</span>
+                            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('dayMovModal').classList.remove('active');abrirMovModal('${m.id}')">Editar</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+            document.getElementById('dayMovModal').classList.add('active');
         }
-        document.getElementById('dayMovModal').classList.add('active');
-      }
 
         function verVencidas() {
             document.querySelector('[data-screen="sc-movimientos"]')?.click();
@@ -3620,20 +3491,6 @@
             renderHistorial();
         }
 
-        function histEmpSelectAll() {
-            document.querySelectorAll('#histEmpList input[type=checkbox].emp-item').forEach(b => { b.checked = true; });
-            const allCb = document.getElementById('histEmpAll');
-            if (allCb) allCb.checked = true;
-            updateHistEmpBtn();
-            renderHistorial();
-        }
-        function histEmpClearAll() {
-            document.querySelectorAll('#histEmpList input[type=checkbox].emp-item').forEach(b => { b.checked = false; });
-            const allCb = document.getElementById('histEmpAll');
-            if (allCb) allCb.checked = false;
-            updateHistEmpBtn();
-            renderHistorial();
-        }
         function updateHistEmpBtn() {
             const boxes = document.querySelectorAll('#histEmpList input[type=checkbox].emp-item');
             const checked = [...boxes].filter(b => b.checked);
@@ -3654,7 +3511,7 @@
             const filterTipo = document.getElementById('histFilterTipo')?.value || '';
             const desde = document.getElementById('histFechaDesde')?.value || '';
             const hasta = document.getElementById('histFechaHasta')?.value || '';
-            const todayStr = localISO();
+            const todayStr = new Date().toISOString().split('T')[0];
             const empClaseMap = {};
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || 'Otros'; });
             return allMovimientos.filter(m => {
@@ -3710,7 +3567,7 @@
             const odLimit = (limitesFlujo.itauUSD||0) + (limitesFlujo.hsbcUSD||0) + ((limitesFlujo.itauPesos||0)/tcFlujo) + ((limitesFlujo.hsbcPesos||0)/tcFlujo);
             const disponibleInicial = rawBal + odLimit;
 
-            const todayStr = localISO();
+            const todayStr = new Date().toISOString().split('T')[0];
             const todayFmt = new Date().toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit', year:'numeric'});
 
             // Pending: overdue first (oldest→newest), then future (oldest→newest)
@@ -3729,7 +3586,11 @@
                 );
             }
 
-            const fcColor = (rb) => { return rb >= 0 ? '#24a660' : '#c0392b'; }
+            const fcColor = (rb) => {
+                if (rb > 0)             return '#24a660';
+                if (rb + odLimit > 0)   return '#b87400';
+                return '#c0392b';
+            };
 
             const inicialColor = fcColor(rawBal);
 
@@ -3740,8 +3601,7 @@
                         <th style="text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">EMPRESA</th>
                         <th style="text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">DETALLE</th>
                         <th style="text-align:right;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">MONTO</th>
-                        <th style="text-align:right;padding:10px 0 10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;white-space:nowrap;">SALDO</th>
-                <th style="text-align:center;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;width:40px;">HECHO</th>
+                        <th style="text-align:right;padding:10px 0 10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;white-space:nowrap;">DISPONIBLE</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -3749,8 +3609,7 @@
                         <td style="padding:11px 8px 11px 0;font-size:12px;color:#9ba3ab;">${todayFmt}</td>
                         <td colspan="2" style="padding:11px 8px;font-size:13px;font-weight:700;color:#5a616b;">Saldo disponible hoy</td>
                         <td style="padding:11px 8px;text-align:right;font-size:12px;color:#9ba3ab;">—</td>
-                        <td style="padding:11px 0 11px 8px;text-align:right;font-size:16px;font-weight:800;color:${inicialColor};">${rawBal < 0 ? "-" : ""}${formatUSD(Math.abs(rawBal))}</td>
-                <td></td>
+                        <td style="padding:11px 0 11px 8px;text-align:right;font-size:16px;font-weight:800;color:${inicialColor};">${formatUSD(disponibleInicial)}</td>
                     </tr>`;
 
             let runRaw = rawBal;
@@ -3765,21 +3624,19 @@
                 const fmtFecha = new Date(m.fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit'});
                 const isAtrasado = m.fecha < todayStr;
                 const atrasadoBadge = isAtrasado ? `&nbsp;<span style="font-size:10px;background:rgba(255,167,38,0.18);color:#b87400;padding:1px 6px;border-radius:3px;font-weight:600;vertical-align:middle;">atrasado</span>` : '';
-                const aConfBadge = m.confiable !== true ? ' <span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;margin-left:4px;">A Confirmar</span>' : '';
-            const rowBg = (isAtrasado || m.confiable !== true) ? '#fffbeb' : 'transparent';
+                const rowBg = isAtrasado ? 'rgba(255,167,38,0.04)' : 'transparent';
 
                 html += `<tr style="border-bottom:1px solid #e3e6e9;cursor:pointer;background:${rowBg};" onclick="abrirMovModal('${m.id}')" onmouseover="this.style.background='rgba(59,130,196,0.05)'" onmouseout="this.style.background='${rowBg}'">
                     <td style="padding:9px 8px 9px 0;font-size:13px;color:#5a616b;white-space:nowrap;">${fmtFecha}${atrasadoBadge}</td>
                     <td style="padding:9px 8px;font-size:13px;font-weight:600;color:#252a2e;">${m.empresa || '—'}</td>
                     <td style="padding:9px 8px;font-size:12px;color:#9ba3ab;">${m.detalle || '—'}</td>
-                    <td style="padding:9px 8px;text-align:right;font-size:13px;font-weight:700;color:${montoColor};">${montoStr}${aConfBadge}</td>
-                    <td style="padding:9px 0 9px 8px;text-align:right;font-size:13px;font-weight:700;color:${rc};">${runRaw < 0 ? "-" : ""}${formatUSD(Math.abs(runRaw))}</td>
-                <td style="text-align:center;padding:4px;"><input type="checkbox" ${m.hecho ? "checked" : ""} onclick="event.stopPropagation();handleToggleHecho('${m.id}',this.checked)" style="cursor:pointer;width:16px;height:16px;accent-color:#24a660;"></td>
+                    <td style="padding:9px 8px;text-align:right;font-size:13px;font-weight:700;color:${montoColor};">${montoStr}</td>
+                    <td style="padding:9px 0 9px 8px;text-align:right;font-size:13px;font-weight:700;color:${rc};">${formatUSD(runDisp)}</td>
                 </tr>`;
             });
 
             if (sorted.length === 0) {
-                html += `<tr><td colspan="6" style="padding:28px;text-align:center;color:#9ba3ab;font-style:italic;">Sin movimientos pendientes</td></tr>`;
+                html += `<tr><td colspan="5" style="padding:28px;text-align:center;color:#9ba3ab;font-style:italic;">Sin movimientos pendientes</td></tr>`;
             }
             html += `</tbody></table>`;
             const container = document.getElementById('flujoCajaContent');
@@ -3789,25 +3646,24 @@
         let piChart = null;
         function renderProyIng() {
             const today = new Date();
-            const todayStr = localISO(today);
-            const d30 = localISO(new Date(today.getTime() + 30*24*60*60*1000));
-            const d60 = localISO(new Date(today.getTime() + 60*24*60*60*1000));
-            const d90 = localISO(new Date(today.getTime() + 90*24*60*60*1000));
+            const todayStr = today.toISOString().split('T')[0];
+            const d30 = new Date(today.getTime() + 30*24*60*60*1000).toISOString().split('T')[0];
+            const d60 = new Date(today.getTime() + 60*24*60*60*1000).toISOString().split('T')[0];
+            const d90 = new Date(today.getTime() + 90*24*60*60*1000).toISOString().split('T')[0];
 
             // Build clase lookup from empresas (fallback for movements without clase field)
             const empClaseMap = {};
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || ''; });
 
             // Pending income movements — any income (not just confirmed) for pipeline visibility
-            // confiable=true → confirmed dates, confiable=false → A Confirmar uncertainty
+            // confiable=true → confirmed dates, confiable=false → ±30d uncertainty
             const pendingIngs = allMovimientos.filter(m =>
-                !m.hecho && m.caja === 'Ingreso'
+                !m.hecho && m.caja === 'Ingreso' && m.fecha >= todayStr
             );
 
             // Helper: get window label
             const getWindow = fecha => {
-                if (fecha < todayStr) return 'Vencidos';
-            if (fecha <= d30) return '0-30d';
+                if (fecha <= d30) return '0-30d';
                 if (fecha <= d60) return '31-60d';
                 if (fecha <= d90) return '61-90d';
                 return '90d+';
@@ -3822,22 +3678,22 @@
                 const usd = Math.abs(m.usd || 0);
                 const win = getWindow(m.fecha);
                 if (cat === 'Cliente') {
-                    if (!clientes[m.empresa]) clientes[m.empresa] = { 'Vencidos':0,'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
+                    if (!clientes[m.empresa]) clientes[m.empresa] = { '0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
                     clientes[m.empresa][win] += usd;
                 } else if (cat === 'Otros') {
-                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = { 'Vencidos':0,'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
+                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = { '0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
                     otrosMap[m.empresa][win] += usd;
                 }
             });
 
-            const windows = ['Vencidos','0-30d','31-60d','61-90d','90d+'];
+            const windows = ['0-30d','31-60d','61-90d','90d+'];
             const buildTable = (dataMap, title, emptyMsg) => {
                 const rows = Object.entries(dataMap).sort((a,b) => {
                     const ta = windows.reduce((s,w) => s+a[1][w], 0);
                     const tb = windows.reduce((s,w) => s+b[1][w], 0);
                     return tb - ta;
                 });
-                const totals = {'Vencidos':0,'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0};
+                const totals = {'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0};
                 rows.forEach(([,v]) => windows.forEach(w => totals[w] += v[w]));
                 const grandTotal = windows.reduce((s,w) => s+totals[w], 0);
 
@@ -3877,32 +3733,24 @@
             document.getElementById('piTablaOtros').innerHTML = buildTable(otrosMap, 'Otros Ingresos Esperados', 'Sin otros ingresos registrados (aportes, préstamos, etc.).');
 
             // KPIs
-                        // A Cobrar 30d/90d: solo confiable=true (fecha fija)
+            const allConfirmed = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            // A Cobrar 30d/90d: solo confiable=true (fecha fija)
             const conf30 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const conf90 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-        const allConfirmed = conf90;
-            // A Confirmar estimates (confiable=false) — referencia secundaria
+            // ±30d estimates (confiable=false) — referencia secundaria
             const est30 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             const est90 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             document.getElementById('piKpi30').textContent = formatUSD(conf30);
             document.getElementById('piKpi90').textContent = formatUSD(conf90);
             document.getElementById('piKpiTotal').textContent = formatUSD(allConfirmed);
-            const el30pm = document.getElementById('piKpi30pm'); if (el30pm) el30pm.textContent = est30 > 0 ? `+${formatUSD(est30)} est. A Confirmar` : '';
-            const el90pm = document.getElementById('piKpi90pm'); if (el90pm) el90pm.textContent = est90 > 0 ? `+${formatUSD(est90)} est. A Confirmar` : '';
+            const el30pm = document.getElementById('piKpi30pm'); if (el30pm) el30pm.textContent = est30 > 0 ? `+${formatUSD(est30)} est. ±30d` : '';
+            const el90pm = document.getElementById('piKpi90pm'); if (el90pm) el90pm.textContent = est90 > 0 ? `+${formatUSD(est90)} est. ±30d` : '';
 
             // Clientes sin cobranza futura (tienen historial pero no tienen ingresos futuros confirmados)
             const clientesConFuturo = new Set(Object.keys(clientes));
             const clientesConHistorial = new Set(allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente')).map(m => m.empresa));
             const sinCobranza = [...clientesConHistorial].filter(e => !clientesConFuturo.has(e));
             document.getElementById('piKpiSinCobr').textContent = sinCobranza.length;
-
-            // Optimistic KPIs (all items, confirmed + unconfirmed)
-            const all30 = pendingIngs.filter(m => m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const all90 = pendingIngs.filter(m => m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const allTotalOpt = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const el30opt = document.getElementById('piKpi30opt'); if (el30opt) el30opt.textContent = formatUSD(all30);
-            const el90opt = document.getElementById('piKpi90opt'); if (el90opt) el90opt.textContent = formatUSD(all90);
-            const elTotalOpt = document.getElementById('piKpiTotalOpt'); if (elTotalOpt) elTotalOpt.textContent = formatUSD(allTotalOpt);
 
             // Chart: stacked bar by period, stacked by empresa (top 5 + others)
             const topEmps = Object.entries(clientes).sort((a,b) => {
@@ -3941,7 +3789,7 @@
             }
 
             // Block 5: Performance histórica
-            const hace12m = localISO(new Date(today.getFullYear()-1, today.getMonth(), today.getDate()));
+            const hace12m = new Date(today.getFullYear()-1, today.getMonth(), today.getDate()).toISOString().split('T')[0];
             const histClientes = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase==='Cliente'||m.categoria==='Cliente'||empClaseMap[m.empresa]==='Cliente') && m.fecha >= hace12m);
 
             // Monthly avg per client
@@ -4051,14 +3899,14 @@
             let totalIng = 0, totalEgr = 0;
             sorted.forEach(([month, data], i) => {
                 const [year, mon] = month.split('-');
-                const monthName = new Date(year, mon - 1).toLocaleDateString('es-UY', { month: 'long', year: 'numeric' });
+                const monthName = new Date(year, mon - 1).toLocaleDateString('es-UY', { month: 'long', year: 'numeric' }).replace(/ De /g, ' de ');
                 const resultado = data.ing - data.egr;
                 const detId = 'hm-det-' + i;
                 totalIng += data.ing; totalEgr += data.egr;
                 html += `<tr class="hist-table-row">
                     <td colspan="5" style="padding:0;">
                         <div class="hist-table-main" onclick="toggleHistDetail('${detId}', this)">
-                            <span style="font-weight:700;color:#252a2e;">${monthName.charAt(0).toUpperCase() + monthName.slice(1)}</span>
+                            <span style="font-weight:700;color:#252a2e;text-transform:capitalize;">${monthName}</span>
                             <span style="text-align:right;color:#3b82c4;font-weight:600;">+$${formatNumber(data.ing, 0)}</span>
                             <span style="text-align:right;color:#5a616b;">−$${formatNumber(data.egr, 0)}</span>
                             <span style="text-align:right;font-weight:700;color:${resultado>=0?'#24a660':'#c0392b'};">${resultado>=0?'+':'−'}$${formatNumber(Math.abs(resultado),0)}</span>
@@ -4316,6 +4164,12 @@
 
             let error = null;
             if (editingEmpId === null) {
+                // Validar duplicado
+                const existente = allEmpresas.find(e => e.nombre.toLowerCase().trim() === emp.nombre.toLowerCase().trim());
+                if (existente) {
+                    showToast('Ya existe una empresa con ese nombre: ' + existente.nombre, 'err');
+                    return;
+                }
                 const res = await supabaseClient.from('empresas').insert([emp]);
                 error = res.error;
             } else {
@@ -4380,6 +4234,18 @@
             };
 
             let historial = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
+            // Evitar duplicados: si el último registro tiene los mismos valores, no agregar
+            if (historial.length > 0) {
+                const last = historial[0];
+                const sameValues = last.itauPesos === data.itauPesos && last.itauUSD === data.itauUSD &&
+                    last.hsbcPesos === data.hsbcPesos && last.hsbcUSD === data.hsbcUSD &&
+                    last.efectivoPesos === data.efectivoPesos && last.efectivoUSD === data.efectivoUSD &&
+                    last.chequesCobroPesos === data.chequesCobroPesos && last.chequesCobrosUSD === data.chequesCobrosUSD;
+                if (sameValues) {
+                    showToast('Los saldos no cambiaron, no se agregó al historial', 'ok');
+                    return;
+                }
+            }
             historial.unshift(data);
             historial = historial.slice(0, 20);
             localStorage.setItem('saldoHistorial', JSON.stringify(historial));
@@ -4449,7 +4315,7 @@
 
         // Obtiene el TC desde internet solo una vez por día
         async function fetchTipoCambioIfNeeded() {
-            const today = localISO();
+            const today = new Date().toISOString().split('T')[0];
             const lastFetch = localStorage.getItem('tcLastFetch');
             applyStoredTC(); // Siempre aplicar el valor guardado primero
             if (lastFetch === today) return; // Ya se actualizó hoy
@@ -4642,52 +4508,7 @@
             clearTimeout(t._timer);
             t._timer = setTimeout(() => { t.className = type; }, 3000);
         }
-    
-
-    async function loadAuditLog() {
-        const tabla = document.getElementById('logFilterTabla').value;
-        const accion = document.getElementById('logFilterAccion').value;
-        const desde = document.getElementById('logFilterDesde').value;
-        const hasta = document.getElementById('logFilterHasta').value;
-        const container = document.getElementById('auditLogContainer');
-        container.innerHTML = '<p style="color:#6b7280;font-size:13px;">Cargando...</p>';
-        try {
-            let query = supabaseClient.from('audit_log').select('*').order('fecha', { ascending: false }).limit(100);
-            if (tabla) query = query.eq('tabla', tabla);
-            if (accion) query = query.eq('accion', accion);
-            if (desde) query = query.gte('fecha', desde + 'T00:00:00');
-            if (hasta) query = query.lte('fecha', hasta + 'T23:59:59');
-            const { data, error } = await query;
-            if (error) throw error;
-            if (!data || data.length === 0) { container.innerHTML = '<p style="color:#6b7280;font-size:13px;">No hay registros.</p>'; return; }
-            const accionLabel = { INSERT: 'Agregar', UPDATE: 'Modificar', DELETE: 'Eliminar' };
-            const accionColor = { INSERT: '#27ae60', UPDATE: '#f39c12', DELETE: '#e74c3c' };
-            let tbl = '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
-            tbl += '<thead><tr style="border-bottom:2px solid #e5e7eb;text-align:left;"><th style="padding:8px 6px;">Fecha</th><th style="padding:8px 6px;">Usuario</th><th style="padding:8px 6px;">Tabla</th><th style="padding:8px 6px;">Acci\u00f3n</th><th style="padding:8px 6px;">Detalle</th></tr></thead><tbody>';
-            data.forEach(row => {
-                const fecha = new Date(row.fecha).toLocaleString('es-UY', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
-                const usuario = (row.usuario || 'sistema').split('@')[0];
-                tbl += '<tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:6px;">' + fecha + '</td><td style="padding:6px;">' + usuario + '</td><td style="padding:6px;">' + row.tabla + '</td><td style="padding:6px;"><span style="color:' + (accionColor[row.accion]||'#6b7280') + ';font-weight:600;">' + (accionLabel[row.accion]||row.accion) + '</span></td><td style="padding:6px;"><button onclick="showLogDetail(' + row.id + ')" style="padding:2px 8px;background:#f3f4f6;border:1px solid #d1d5db;border-radius:4px;font-size:12px;cursor:pointer;">Ver</button></td></tr>';
-            });
-            tbl += '</tbody></table>';
-            container.innerHTML = tbl;
-            window._auditData = data;
-        } catch (e) { container.innerHTML = '<p style="color:#e74c3c;font-size:13px;">Error: ' + e.message + '</p>'; }
-    }
-    function showLogDetail(id) {
-        const row = (window._auditData || []).find(r => r.id === id);
-        if (!row) return;
-        let msg = 'Accion: ' + row.accion + '\nTabla: ' + row.tabla + '\nUsuario: ' + (row.usuario || 'sistema') + '\nFecha: ' + new Date(row.fecha).toLocaleString('es-UY');
-        if (row.datos_antes) msg += '\n\nDatos ANTES:\n' + JSON.stringify(row.datos_antes, null, 2);
-        if (row.datos_despues) msg += '\n\nDatos DESPUES:\n' + JSON.stringify(row.datos_despues, null, 2);
-        alert(msg);
-    }
     </script>
     <div id="toastNotif"></div>
 </body>
 </html>
-
- Claude is active in this tab group  
-Open chat
- 
-Dismiss
