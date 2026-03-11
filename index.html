@@ -2719,24 +2719,42 @@
             if (document.querySelector('.sb-item.active')?.dataset.screen === 'sc-proyDia') renderProyDia();
         }
 
-        function renderDashboard() {
-            const today = new Date();
-            const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-
-            const next30Pending = allMovimientos.filter(m => !m.hecho && new Date(m.fecha + 'T12:00:00') < in30);
-
-            // Saldo hoy y disponible real (rawBalance + overdraftLimit) — calcular antes de KPIs
+        // ── Base de cálculo centralizada ──────────────────────────────────
+        function getBaseData() {
+            const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
             const saldoHist = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
             const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
-            const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-            const overdraftLimit = (limites.itauUSD||0) + (limites.hsbcUSD||0) + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
+
             let saldoInicial = 0;
             if (saldoHist.length > 0) {
                 const h = saldoHist[0];
-                saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
+                saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0)
+                             + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
                              + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
                              + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
+            }
+
+            const overdraftLimit = (limites.itauUSD||0) + (limites.hsbcUSD||0)
+                                 + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
+
+            const today = new Date(); today.setHours(0,0,0,0);
+            const todayStr = today.toISOString().split('T')[0];
+            const in30 = new Date(today.getTime() + 30*24*60*60*1000);
+
+            const next30Pending = allMovimientos.filter(m =>
+                !m.hecho && new Date(m.fecha + 'T12:00:00') < in30
+            );
+
+            return { tc, saldoHist, limites, saldoInicial, overdraftLimit,
+                     today, todayStr, in30, next30Pending };
+        }
+
+        function renderDashboard() {
+            const { tc, saldoInicial, overdraftLimit, today, todayStr, in30, next30Pending } = getBaseData();
+            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+            // Saldo hoy y disponible real
+            {
                 const disponibleReal = saldoInicial + overdraftLimit;
                 document.getElementById('kpiSaldoHoy').textContent = formatUSD(disponibleReal);
                 document.getElementById('kpiSaldoHoy').className = disponibleReal > 0 ? 'kpi-val k-green' : disponibleReal < 0 ? 'kpi-val k-red' : 'kpi-val k-gray';
@@ -2870,30 +2888,21 @@
                 document.getElementById('kpiVsAAPct').style.color = aaColor;
             }
 
-            // KPI Días verde/amarillo/rojo — same logic as ProyDia
+            // KPI Días verde/amarillo/rojo — usa saldoInicial y overdraftLimit de getBaseData()
             {
-                const tcD = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-                const limitesD = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
-                const saldoHistD = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
-                let rawBalD = 0;
-                if (saldoHistD.length > 0) {
-                    const hh = saldoHistD[0];
-                    rawBalD = (hh.itauUSD||0)+(hh.hsbcUSD||0)+((hh.itauPesos||0)/tcD)+((hh.hsbcPesos||0)/tcD)+(hh.efectivoUSD||0)+((hh.efectivoPesos||0)/tcD)+(hh.chequesCobrosUSD||0)+((hh.chequesCobroPesos||0)/tcD);
-                }
-                const odD = (limitesD.itauUSD||0)+(limitesD.hsbcUSD||0)+((limitesD.itauPesos||0)/tcD)+((limitesD.hsbcPesos||0)/tcD);
                 const byDayD = {};
                 next30Pending.forEach(m => {
                     if (!byDayD[m.fecha]) byDayD[m.fecha] = [];
                     byDayD[m.fecha].push(m);
                 });
-                let runBalD = rawBalD;
+                let runBalD = saldoInicial;
                 let diasV = 0, diasA = 0, diasR = 0;
                 for (let i = 0; i < 30; i++) {
                     const d = new Date(today); d.setDate(today.getDate() + i);
                     const dStr = d.toISOString().split('T')[0];
                     if (byDayD[dStr]) byDayD[dStr].forEach(m => { runBalD += m.caja === 'Ingreso' ? Math.abs(m.usd||0) : -Math.abs(m.usd||0); });
                     if (runBalD > 0) diasV++;
-                    else if (runBalD + odD > 0) diasA++;
+                    else if (runBalD + overdraftLimit > 0) diasA++;
                     else diasR++;
                 }
                 document.getElementById('kpiDiasVerde').textContent = diasV;
@@ -2902,7 +2911,6 @@
             }
 
             // Daily chart data — día 1 acumula saldo bancos + atrasados + hoy
-            const todayStr = today.toISOString().split('T')[0];
             const dailyData = {};
 
             // Separar atrasados de pendientes futuros — con split confirmado/no confirmado
@@ -3174,14 +3182,8 @@
             const empTipoMap = {};
             allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || 'Otros'; empTipoMap[e.nombre] = e.tipo || 'Variables'; });
 
-            // Read current bank balance as starting point for cumulative chart
-            const tcTrim = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-            const saldoHistTrim = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
-            let saldoBanco = 0;
-            if (saldoHistTrim.length > 0) {
-                const h = saldoHistTrim[0];
-                saldoBanco = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tcTrim) + ((h.hsbcPesos||0)/tcTrim);
-            }
+            // Saldo inicial completo (bancos+efectivo+cheques) desde getBaseData()
+            const { tc: tcTrim, saldoInicial: saldoBanco } = getBaseData();
 
             const trimData = [];
 
@@ -3392,29 +3394,12 @@
         }
 
         function renderProyDia() {
-            // --- Base data (same as dashboard) ---
-            const saldoHist = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
-            const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-            const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
-            const overdraft = (limites.itauUSD||0) + (limites.hsbcUSD||0) + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
-            let saldoInicial = 0;
-            if (saldoHist.length > 0) {
-                const h = saldoHist[0];
-                saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
-                             + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
-                             + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
-            }
+            // --- Base data desde getBaseData() ---
+            const { tc, saldoInicial, overdraftLimit: overdraft, today, todayStr, in30, next30Pending } = getBaseData();
             const saldoEl = document.getElementById('saldoInicialProy');
             if (saldoEl) saldoEl.value = Math.round(saldoInicial * 100) / 100;
 
             const disponibleHoy = saldoInicial + overdraft;
-
-            const today = new Date(); today.setHours(0,0,0,0);
-            const todayStr = today.toISOString().split('T')[0];
-            const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-
-            // Same filter as dashboard: all pending < 30d (includes overdue)
-            const next30Pending = allMovimientos.filter(m => !m.hecho && new Date(m.fecha + 'T12:00:00') < in30);
 
             // --- KPIs (exact same calc as dashboard) ---
             const ingresos30 = next30Pending.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
@@ -3695,20 +3680,9 @@
         }
 
         function renderFlujoCaja() {
-            const saldoHist = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
-            const limitesFlujo = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
-            const tcFlujo = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-            let rawBal = 0;
-            if (saldoHist.length > 0) {
-                const h = saldoHist[0];
-                rawBal = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tcFlujo) + ((h.hsbcPesos||0)/tcFlujo)
-                       + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tcFlujo)
-                       + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tcFlujo);
-            }
-            const odLimit = (limitesFlujo.itauUSD||0) + (limitesFlujo.hsbcUSD||0) + ((limitesFlujo.itauPesos||0)/tcFlujo) + ((limitesFlujo.hsbcPesos||0)/tcFlujo);
+            // Base data desde getBaseData()
+            const { saldoInicial: rawBal, overdraftLimit: odLimit, todayStr } = getBaseData();
             const disponibleInicial = rawBal + odLimit;
-
-            const todayStr = new Date().toISOString().split('T')[0];
             const todayFmt = new Date().toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit', year:'numeric'});
 
             // Pending: overdue first (oldest→newest), then future (oldest→newest)
@@ -3741,6 +3715,7 @@
                         <th style="text-align:left;padding:10px 8px 10px 0;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;white-space:nowrap;">FECHA</th>
                         <th style="text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">EMPRESA</th>
                         <th style="text-align:left;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">DETALLE</th>
+                        <th style="text-align:center;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">CERTEZA</th>
                         <th style="text-align:right;padding:10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;">MONTO</th>
                         <th style="text-align:right;padding:10px 0 10px 8px;font-size:11px;text-transform:uppercase;color:#9ba3ab;font-weight:700;white-space:nowrap;">DISPONIBLE</th>
                     </tr>
@@ -3748,7 +3723,7 @@
                 <tbody>
                     <tr style="background:rgba(59,130,196,0.06);border-bottom:2px solid #e3e6e9;">
                         <td style="padding:11px 8px 11px 0;font-size:12px;color:#9ba3ab;">${todayFmt}</td>
-                        <td colspan="2" style="padding:11px 8px;font-size:13px;font-weight:700;color:#5a616b;">Saldo disponible hoy</td>
+                        <td colspan="3" style="padding:11px 8px;font-size:13px;font-weight:700;color:#5a616b;">Saldo disponible hoy</td>
                         <td style="padding:11px 8px;text-align:right;font-size:12px;color:#9ba3ab;">—</td>
                         <td style="padding:11px 0 11px 8px;text-align:right;font-size:16px;font-weight:800;color:${inicialColor};">${formatUSD(disponibleInicial)}</td>
                     </tr>`;
@@ -3766,18 +3741,20 @@
                 const isAtrasado = m.fecha < todayStr;
                 const atrasadoBadge = isAtrasado ? `&nbsp;<span style="font-size:10px;background:rgba(255,167,38,0.18);color:#b87400;padding:1px 6px;border-radius:3px;font-weight:600;vertical-align:middle;">atrasado</span>` : '';
                 const rowBg = isAtrasado ? 'rgba(255,167,38,0.04)' : 'transparent';
+                const confBadge = isConf(m) ? '<span class="badge" style="background:rgba(59,130,196,0.1);color:#3b82c4;">Conf.</span>' : '<span class="badge" style="background:rgba(184,116,0,0.1);color:#b87400;">±30d</span>';
 
                 html += `<tr style="border-bottom:1px solid #e3e6e9;cursor:pointer;background:${rowBg};" onclick="abrirMovModal('${m.id}')" onmouseover="this.style.background='rgba(59,130,196,0.05)'" onmouseout="this.style.background='${rowBg}'">
                     <td style="padding:9px 8px 9px 0;font-size:13px;color:#5a616b;white-space:nowrap;">${fmtFecha}${atrasadoBadge}</td>
                     <td style="padding:9px 8px;font-size:13px;font-weight:600;color:#252a2e;">${m.empresa || '—'}</td>
                     <td style="padding:9px 8px;font-size:12px;color:#9ba3ab;">${m.detalle || '—'}</td>
+                    <td style="padding:9px 8px;text-align:center;">${confBadge}</td>
                     <td style="padding:9px 8px;text-align:right;font-size:13px;font-weight:700;color:${montoColor};">${montoStr}</td>
                     <td style="padding:9px 0 9px 8px;text-align:right;font-size:13px;font-weight:700;color:${rc};">${formatUSD(runDisp)}</td>
                 </tr>`;
             });
 
             if (sorted.length === 0) {
-                html += `<tr><td colspan="5" style="padding:28px;text-align:center;color:#9ba3ab;font-style:italic;">Sin movimientos pendientes</td></tr>`;
+                html += `<tr><td colspan="6" style="padding:28px;text-align:center;color:#9ba3ab;font-style:italic;">Sin movimientos pendientes</td></tr>`;
             }
             html += `</tbody></table>`;
             const container = document.getElementById('flujoCajaContent');
