@@ -1899,7 +1899,7 @@
             <div class="modal-header" id="dayMovTitle">Movimientos del día</div>
             <div id="dayMovContent" style="padding:10px 0;"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="document.getElementById('dayMovModal').style.display='none'">Cerrar</button>
+                <button type="button" class="btn btn-ghost" onclick="document.getElementById('dayMovModal').classList.remove('active')">Cerrar</button>
             </div>
         </div>
     </div>
@@ -3597,7 +3597,7 @@
           }
           document.getElementById('dayMovContent').innerHTML = html;
         }
-        document.getElementById('dayMovModal').style.display = 'flex';
+        document.getElementById('dayMovModal').classList.add('active');
       }
 
         function verVencidas() {
