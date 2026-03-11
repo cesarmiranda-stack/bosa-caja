@@ -1175,7 +1175,7 @@
 
                         <!-- Banner auto dirección -->
                         <div id="nmDirBanner" style="border-radius:8px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;background:rgba(36,166,96,0.08);border:2px solid rgba(36,166,96,0.3);">
-                            <span id="nmDirIcon" style="font-size:22px;">📥</span>
+                            <span id="nmDirIcon" style="font-size:22px;color:#24a660;">▼</span>
                             <div>
                                 <div id="nmDirLabel" style="font-size:15px;font-weight:800;color:#24a660;letter-spacing:0.3px;">INGRESO</div>
                                 <div id="nmDirSub" style="font-size:11px;color:#5a616b;margin-top:2px;">Seleccioná una empresa para auto-detectar la dirección</div>
@@ -1187,7 +1187,7 @@
                                 <input type="checkbox" id="nmExcepToggle" onchange="nmToggleExcepcion()">
                                 <span class="toggle-slider"></span>
                             </label>
-                            <span style="font-size:12px;color:#9ba3ab;">↕ Caso excepcional: cambiar dirección</span>
+                            <span style="font-size:12px;color:#9ba3ab;">Caso excepcional: cambiar dirección</span>
                             <span class="tip-icon" data-tip="Por defecto la dirección se deriva automáticamente de la empresa. Activá esto solo si este movimiento es una excepción puntual.">?</span>
                         </div>
 
@@ -1231,7 +1231,7 @@
                                     <input type="number" id="nmTC" placeholder="43.50" step="0.01" value="43.50" style="width:80px;padding:10px 12px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;display:none;" oninput="nmCalcMonto()">
                                     <span style="font-size:13px;color:#9ba3ab;white-space:nowrap;">= USD <strong id="nmUSDEquiv" style="color:#252a2e;">0</strong></span>
                                 </div>
-                                <div style="font-size:11px;color:#9ba3ab;margin-top:5px;">🔄 TC del día tomado automáticamente de BCU · editable si es necesario</div>
+                                <div style="font-size:11px;color:#9ba3ab;margin-top:5px;">TC del día tomado automáticamente de BCU · editable si es necesario</div>
                             </div>
                             <!-- Hidden fields for compatibility -->
                             <input type="hidden" id="nmPesos" value="0">
@@ -1243,12 +1243,12 @@
 
                             <!-- Certeza -->
                             <div class="form-group">
-                                <label>Certeza de fecha <span class="tip-icon" data-tip="'Fecha fija' = la fecha de cobro/pago está confirmada. 'Fecha estimada ±30d' = el monto es seguro pero la fecha puede variar ±30 días.">?</span></label>
+                                <label>Certeza <span class="tip-icon" data-tip="'Confirmado' = la fecha y monto están confirmados. 'No confirmado (±30d)' = el monto es seguro pero la fecha puede variar ±30 días.">?</span></label>
                                 <div class="certeza-toggle">
-                                    <button type="button" id="nmCertConfBtn" class="certeza-btn active-certeza" onclick="setNmCerteza('confirmado')">📌 Fecha fija</button>
-                                    <button type="button" id="nmCertMontoBtn" class="certeza-btn" onclick="setNmCerteza('monto-confirmado')">±30d estimado</button>
+                                    <button type="button" id="nmCertConfBtn" class="certeza-btn active-certeza" onclick="setNmCerteza('confirmado')">Confirmado</button>
+                                    <button type="button" id="nmCertMontoBtn" class="certeza-btn" onclick="setNmCerteza('monto-confirmado')">No confirmado (±30d)</button>
                                 </div>
-                                <div style="font-size:11px;color:#9ba3ab;margin-top:6px;">±30d estimado: el monto está confirmado, la fecha puede moverse 30 días.</div>
+                                <div style="font-size:11px;color:#9ba3ab;margin-top:6px;">No confirmado: el monto es seguro pero la fecha puede moverse ±30 días.</div>
                             </div>
 
                             <!-- Detalle -->
@@ -1291,8 +1291,8 @@
 
                         <div class="filters">
                             <select id="movFilterEstado" class="f-sel" onchange="renderMovimientos()">
-                                <option value="">Estado: Todos</option>
-                                <option value="Realizados" selected>Realizados</option>
+                                <option value="" selected>Estado: Todos</option>
+                                <option value="Realizados">Realizados</option>
                                 <option value="Pendientes">Pendientes</option>
                             </select>
                             <select id="movFilterEmpresa" class="f-sel" onchange="renderMovimientos()">
@@ -1302,6 +1302,11 @@
                                 <option value="">Tipo: Todos</option>
                                 <option value="Ingreso">Ingresos</option>
                                 <option value="Egreso">Egresos</option>
+                            </select>
+                            <select id="movFilterConf" class="f-sel" onchange="renderMovimientos()">
+                                <option value="">Certeza: Todos</option>
+                                <option value="conf">Confirmado</option>
+                                <option value="noconf">No confirmado</option>
                             </select>
                             <select id="movSortOrder" class="f-sel" onchange="renderMovimientos()">
                                 <option value="created_desc">Orden: Último agregado</option>
@@ -1726,8 +1731,8 @@
                 <div class="form-group">
                     <label>Dirección</label>
                     <div class="tipo-toggle">
-                        <button type="button" id="emCajaIngBtn" class="tipo-btn active-ing" onclick="setEmCaja('Ingreso')">📥 Ingreso</button>
-                        <button type="button" id="emCajaEgrBtn" class="tipo-btn" onclick="setEmCaja('Egreso')">📤 Egreso</button>
+                        <button type="button" id="emCajaIngBtn" class="tipo-btn active-ing" onclick="setEmCaja('Ingreso')">Ingreso</button>
+                        <button type="button" id="emCajaEgrBtn" class="tipo-btn" onclick="setEmCaja('Egreso')">Egreso</button>
                     </div>
                 </div>
 
@@ -1754,10 +1759,10 @@
 
                 <!-- Certeza -->
                 <div class="form-group">
-                    <label>Certeza de fecha <span class="tip-icon" data-tip="'Fecha fija' = fecha confirmada. '±30d estimado' = fecha puede variar ±30 días.">?</span></label>
+                    <label>Certeza <span class="tip-icon" data-tip="'Confirmado' = fecha y monto confirmados. 'No confirmado (±30d)' = monto seguro, fecha puede variar ±30 días.">?</span></label>
                     <div class="certeza-toggle">
-                        <button type="button" id="emCertConfBtn" class="certeza-btn active-certeza" onclick="setEmCerteza('confirmado')">📌 Fecha fija</button>
-                        <button type="button" id="emCertMontoBtn" class="certeza-btn" onclick="setEmCerteza('monto-confirmado')">±30d estimado</button>
+                        <button type="button" id="emCertConfBtn" class="certeza-btn active-certeza" onclick="setEmCerteza('confirmado')">Confirmado</button>
+                        <button type="button" id="emCertMontoBtn" class="certeza-btn" onclick="setEmCerteza('monto-confirmado')">No confirmado (±30d)</button>
                     </div>
                 </div>
 
@@ -1915,6 +1920,9 @@
         let trimesterChart = null;
         let histChart = null;
         let appInitialized = false;
+
+        // Helper: confiable is stored as STRING "true"/"false" in Supabase
+        function isConf(m) { return m.confiable === true || m.confiable === 'true'; }
 
         // LOGIN
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -2231,13 +2239,15 @@
             if (tipo === 'Ingreso') {
                 banner.style.background = 'rgba(36,166,96,0.08)';
                 banner.style.border = '2px solid rgba(36,166,96,0.3)';
-                icon.textContent = '📥';
+                icon.textContent = '▼';
+                icon.style.color = '#24a660';
                 label.textContent = 'INGRESO'; label.style.color = '#24a660';
                 if (sub) sub.textContent = 'Dinero que entra a la empresa';
             } else {
                 banner.style.background = 'rgba(192,57,43,0.08)';
                 banner.style.border = '2px solid rgba(192,57,43,0.3)';
-                icon.textContent = '📤';
+                icon.textContent = '▲';
+                icon.style.color = '#c0392b';
                 label.textContent = 'EGRESO'; label.style.color = '#c0392b';
                 if (sub) sub.textContent = 'Dinero que sale de la empresa';
             }
@@ -2440,8 +2450,12 @@
                 
                 const matchEmpresa = !filterEmpresa || mov.empresa === filterEmpresa;
                 const matchCaja = !filterCaja || mov.caja === filterCaja;
+                const filterConf = document.getElementById('movFilterConf')?.value || '';
+                const matchConf = !filterConf ||
+                    (filterConf === 'conf' && isConf(mov)) ||
+                    (filterConf === 'noconf' && !isConf(mov));
 
-                return matchSearch && matchEstado && matchEmpresa && matchCaja;
+                return matchSearch && matchEstado && matchEmpresa && matchCaja && matchConf;
             });
 
             const sortOrder = document.getElementById('movSortOrder')?.value || 'fecha_asc';
@@ -2455,13 +2469,14 @@
                 const amount = getMovimientoAmount(mov);
                 const amountClass = mov.caja === 'Ingreso' ? 't-ing' : 't-egr';
                 const estadoBadge = mov.hecho ? '<span class="badge b-green">Realizado</span>' : '<span class="badge b-gray">Pendiente</span>';
-                
+                const confBadge = isConf(mov) ? '<span class="badge" style="background:rgba(59,130,196,0.1);color:#3b82c4;">Conf.</span>' : '<span class="badge" style="background:rgba(184,116,0,0.1);color:#b87400;">±30d</span>';
+
                 return `<tr>
                     <td>${new Date(mov.fecha + 'T12:00:00').toLocaleDateString('es-UY')}</td>
                     <td>${mov.empresa || '-'}</td>
                     <td><span class="${amountClass}">${mov.caja === 'Ingreso' ? 'Ingreso' : 'Egreso'}</span></td>
                     <td class="text-right">${formatUSD(Math.abs(amount))}</td>
-                    <td>${estadoBadge}</td>
+                    <td>${estadoBadge} ${confBadge}</td>
                     <td>
                         <input type="checkbox" ${mov.hecho ? 'checked' : ''} onchange="toggleMovimientoDone('${mov.id}', this.checked)">
                     </td>
@@ -2551,10 +2566,9 @@
             const fecha = document.getElementById('emFecha')?.value || '';
             const caja = document.getElementById('emCaja')?.value || '';
             const usd = parseFloat(document.getElementById('emUSD')?.value) || 0;
-            const icon = caja === 'Ingreso' ? '📥' : '📤';
             const fechaFmt = fecha ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'numeric',month:'short'}) : '';
             const ctx = document.getElementById('emHeaderCtx');
-            if (ctx) ctx.textContent = `${empresa} · ${icon} ${caja || '—'} · USD ${formatNumber(usd,0)} · ${fechaFmt}`;
+            if (ctx) ctx.textContent = `${empresa} · ${caja || '—'} · USD ${formatNumber(usd,0)} · ${fechaFmt}`;
         }
 
         function abrirMovModal(id) {
@@ -2588,7 +2602,7 @@
             setEmCaja(mov.caja || 'Ingreso');
 
             // Certeza toggle
-            setEmCerteza(mov.confiable !== false ? 'confirmado' : 'monto-confirmado');
+            setEmCerteza(isConf(mov) ? 'confirmado' : 'monto-confirmado');
 
             emUpdateHeader();
             document.getElementById('editMovModal').classList.add('active');
@@ -2734,7 +2748,7 @@
             {
                 const clientesPending = next30Pending.filter(m => m.caja === 'Ingreso');
                 const totalClientes30 = clientesPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const confirmados30 = clientesPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const confirmados30 = clientesPending.filter(m => isConf(m)).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
                 const pctCobr = totalClientes30 > 0 ? Math.round((confirmados30 / totalClientes30) * 100) : null;
                 document.getElementById('kpiCobranzaMonto').textContent = formatUSD(confirmados30);
                 document.getElementById('kpiCobranzaPct').textContent = pctCobr !== null ? pctCobr + '%' : '—';
@@ -2752,7 +2766,7 @@
             {
                 const ingPending = next30Pending.filter(m => m.caja === 'Ingreso');
                 const totalIng30 = ingPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const noConfirmados30 = ingPending.filter(m => m.confiable !== true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const noConfirmados30 = ingPending.filter(m => !isConf(m)).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
                 const pctNoConf = totalIng30 > 0 ? Math.round((noConfirmados30 / totalIng30) * 100) : null;
                 document.getElementById('kpiCobNoConfMonto').textContent = formatUSD(noConfirmados30);
                 document.getElementById('kpiCobNoConfPct').textContent = pctNoConf !== null ? pctNoConf + '%' : '—';
@@ -2767,7 +2781,7 @@
             {
                 const egresosPending = next30Pending.filter(m => m.caja === 'Egreso');
                 const totalEgresos30 = egresosPending.reduce((s, m) => s + Math.abs(m.usd || 0), 0);
-                const egrConfirmados30 = egresosPending.filter(m => m.confiable === true).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
+                const egrConfirmados30 = egresosPending.filter(m => isConf(m)).reduce((s, m) => s + Math.abs(m.usd || 0), 0);
                 const pctEgr = totalEgresos30 > 0 ? Math.round((egrConfirmados30 / totalEgresos30) * 100) : null;
                 document.getElementById('kpiEgrConfMonto').textContent = formatUSD(egrConfirmados30);
                 document.getElementById('kpiEgrConfPct').textContent = pctEgr !== null ? pctEgr + '%' : '—';
@@ -3013,7 +3027,7 @@
                         documento: '', comentarios: '',
                         pesos: lastMov.pesos || 0, tc: lastMov.tc || 43.5,
                         usd: lastMov.usd || 0, historico_usd: null,
-                        confiable: lastMov.confiable !== undefined ? lastMov.confiable : true,
+                        confiable: lastMov.confiable !== undefined ? isConf(lastMov) : true,
                         hecho: false
                     });
                 });
@@ -3108,10 +3122,10 @@
                 monthMovs.forEach(m => {
                     const amt = Math.abs(m.usd || 0);
                     if (m.caja === 'Ingreso') {
-                        if (!ingEmp[m.empresa]) ingEmp[m.empresa] = { total: 0, confiable: m.confiable };
+                        if (!ingEmp[m.empresa]) ingEmp[m.empresa] = { total: 0, confiable: isConf(m) };
                         ingEmp[m.empresa].total += amt;
-                        ingEmp[m.empresa].confiable = ingEmp[m.empresa].confiable && m.confiable;
-                        if (m.confiable) ingConf += amt; else ingNoConf += amt;
+                        ingEmp[m.empresa].confiable = ingEmp[m.empresa].confiable && isConf(m);
+                        if (isConf(m)) ingConf += amt; else ingNoConf += amt;
                     } else {
                         const tipo = empTipoMap[m.empresa] || 'Variables';
                         if (tipo === 'Fijos') {
@@ -3121,12 +3135,12 @@
                             if (!egrVarEmp[m.empresa]) egrVarEmp[m.empresa] = 0;
                             egrVarEmp[m.empresa] += amt;
                         }
-                        if (m.confiable) egrConf += amt; else egrNoConf += amt;
+                        if (isConf(m)) egrConf += amt; else egrNoConf += amt;
                     }
                 });
 
                 const ingresos = Object.values(ingEmp).reduce((s,v) => s + v.total, 0);
-                const ingresosConf = Object.entries(ingEmp).filter(([_,v]) => v.confiable).reduce((s,[_,v]) => s + v.total, 0);
+                const ingresosConf = Object.entries(ingEmp).filter(([_,v]) => v.confiable === true).reduce((s,[_,v]) => s + v.total, 0);
                 const egresos = Object.values(egrFijosEmp).reduce((s,v) => s + v, 0) + Object.values(egrVarEmp).reduce((s,v) => s + v, 0);
                 const saldoEsperado = ingresos - egresos;
                 const saldoConservador = ingresosConf - egresos;
@@ -3453,7 +3467,7 @@
                 const hasMovs = dayMovs.length > 0;
                 const clickAttr = hasMovs || isInRange ? `onclick="abrirDayModal('${dayStr}')" style="cursor:pointer;"` : '';
                 // Dashed border when any movement that day has confiable=false (±30d estimate)
-                const hasIncierto = dayMovs.some(m => m.confiable === false);
+                const hasIncierto = dayMovs.some(m => !isConf(m));
                 const dashedStyle = hasIncierto ? 'border:2px dashed #b87400;' : '';
 
                 calHtml += `<div class="cal-day ${colorClass}${todayCls}" ${clickAttr} style="${dashedStyle}cursor:${hasMovs||isInRange?'pointer':'default'};">`
@@ -3758,11 +3772,11 @@
             // KPIs
             const allConfirmed = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
             // A Cobrar 30d/90d: solo confiable=true (fecha fija)
-            const conf30 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const conf90 = pendingIngs.filter(m => m.confiable === true && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const conf30 = pendingIngs.filter(m => isConf(m) && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const conf90 = pendingIngs.filter(m => isConf(m) && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             // ±30d estimates (confiable=false) — referencia secundaria
-            const est30 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const est90 = pendingIngs.filter(m => m.confiable === false && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const est30 = pendingIngs.filter(m => !isConf(m) && m.fecha <= d30).reduce((s,m) => s+Math.abs(m.usd||0), 0);
+            const est90 = pendingIngs.filter(m => !isConf(m) && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
             document.getElementById('piKpi30').textContent = formatUSD(conf30);
             document.getElementById('piKpi90').textContent = formatUSD(conf90);
             document.getElementById('piKpiTotal').textContent = formatUSD(allConfirmed);
