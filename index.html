@@ -469,7 +469,7 @@
         }
 
         th {
-            padding: 12px;
+            padding: 6px 12px;
             text-align: left;
             font-weight: 600;
             color: #5a616b;
@@ -480,7 +480,7 @@
         }
 
         td {
-            padding: 12px;
+            padding: 6px 12px;
             border-bottom: 1px solid #e3e6e9;
         }
 
@@ -653,7 +653,7 @@
 
         .hist-row {
             border-top: 1px solid #e3e6e9;
-            padding: 15px 0;
+            padding: 8px 0;
         }
 
         .hist-row:first-child {
@@ -894,8 +894,8 @@
         .hist-table-row { border-bottom:1px solid #e3e6e9; }
         .hist-table-row:hover { background:#f8f9fa; }
         .save-confirm-icon { font-size:40px; color:#3a9d5d; margin-bottom:12px; }
-        .hist-table-main { display:grid; grid-template-columns:1fr 130px 130px 130px 32px; align-items:center; padding:12px 8px; cursor:pointer; }
-        .hist-detail-row { background:#f8f9fa; padding:12px 20px; border-bottom:1px solid #e3e6e9; display:none; }
+        .hist-table-main { display:grid; grid-template-columns:1fr 130px 130px 130px 32px; align-items:center; padding:7px 8px; cursor:pointer; }
+        .hist-detail-row { background:#f8f9fa; padding:7px 20px; border-bottom:1px solid #e3e6e9; display:none; }
         .hist-sub-label { font-size:11px; font-weight:700; text-transform:uppercase; color:#9ba3ab; letter-spacing:0.5px; margin:8px 0 4px; }
         .hist-emp-row { display:flex; justify-content:space-between; padding:4px 0; font-size:13px; }
         /* === CALENDAR === */
@@ -3372,23 +3372,23 @@
                 // Collapsible section header helper
                 const secHdr = (label, subtotal, color, domId) =>
                     `<div onclick="toggleTrimSec('${domId}', this)" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:7px 0 5px;border-bottom:1px solid #e3e6e9;margin-bottom:6px;user-select:none;">
-                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#9ba3ab;letter-spacing:0.5px;">${label} ▼</span>
+                        <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#9ba3ab;letter-spacing:0.5px;">${label} ▶</span>
                         <span style="font-size:13px;font-weight:700;color:${color};">$${formatNumber(subtotal, 0)}</span>
                     </div>`;
 
                 const egrFSection = egrFTotal > 0 ? `
                     ${secHdr('EGRESOS FIJOS', egrFTotal, '#5a616b', 'trimEgrF-' + mid)}
-                    <div id="trimEgrF-${mid}" style="margin-bottom:14px;">${egrFHtml}</div>` : '';
+                    <div id="trimEgrF-${mid}" style="display:none;margin-bottom:14px;">${egrFHtml}</div>` : '';
 
                 const egrVSection = egrVTotal > 0 ? `
                     ${secHdr('EGRESOS VARIABLES', egrVTotal, '#252a2e', 'trimEgrV-' + mid)}
-                    <div id="trimEgrV-${mid}" style="margin-bottom:14px;">${egrVHtml}</div>` : '';
+                    <div id="trimEgrV-${mid}" style="display:none;margin-bottom:14px;">${egrVHtml}</div>` : '';
 
                 html += `<div class="card">
                     <div class="card-title">${month} 2026</div>
 
                     ${secHdr('INGRESOS', ingresos, '#3b82c4', 'trimIng-' + mid)}
-                    <div id="trimIng-${mid}" style="margin-bottom:14px;">${ingHtml}</div>
+                    <div id="trimIng-${mid}" style="display:none;margin-bottom:14px;">${ingHtml}</div>
 
                     ${egrFSection}
                     ${egrVSection}
@@ -3797,7 +3797,7 @@
 
             const fcColor = (rb) => rb >= 0 ? '#24a660' : '#c0392b';
 
-            const inicialColor = fcColor(rawBal);
+            const inicialColor = fcColor(disponibleInicial);
 
             let html = `<table style="width:100%;border-collapse:collapse;">
                 <thead>
@@ -3824,7 +3824,7 @@
                 const isIng = m.caja === 'Ingreso';
                 runRaw += isIng ? amt : -amt;
                 const runDisp = runRaw + odLimit;
-                const rc = fcColor(runRaw);
+                const rc = fcColor(runDisp);
                 const montoStr = `${isIng ? '+' : '−'}$${formatNumber(amt, 0)}`;
                 const montoColor = isIng ? '#24a660' : '#c0392b';
                 const fmtFecha = new Date(m.fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit'});
@@ -3894,30 +3894,39 @@
             // Group by empresa for Clientes
             const clientes = {};
             const otrosMap = {};
+            const emptyWin = () => ({ '0-30d':{conf:0,noConf:0},'31-60d':{conf:0,noConf:0},'61-90d':{conf:0,noConf:0},'90d+':{conf:0,noConf:0} });
             pendingIngs.forEach(m => {
-                // Use clase/categoria from movement first, then fall back to empresa's clase
                 const cat = m.clase || m.categoria || empClaseMap[m.empresa] || '';
                 const usd = Math.abs(m.usd || 0);
                 const win = getWindow(m.fecha);
+                const conf = isConf(m);
                 if (cat === 'Cliente') {
-                    if (!clientes[m.empresa]) clientes[m.empresa] = { '0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
-                    clientes[m.empresa][win] += usd;
+                    if (!clientes[m.empresa]) clientes[m.empresa] = emptyWin();
+                    if (conf) clientes[m.empresa][win].conf += usd; else clientes[m.empresa][win].noConf += usd;
                 } else if (cat === 'Otros') {
-                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = { '0-30d':0,'31-60d':0,'61-90d':0,'90d+':0 };
-                    otrosMap[m.empresa][win] += usd;
+                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = emptyWin();
+                    if (conf) otrosMap[m.empresa][win].conf += usd; else otrosMap[m.empresa][win].noConf += usd;
                 }
             });
 
             const windows = ['0-30d','31-60d','61-90d','90d+'];
+            const cellHtml = (c) => {
+                const total = c.conf + c.noConf;
+                if (total === 0) return '<td style="text-align:right;padding:6px 10px;color:#c8cdd2;">—</td>';
+                let inner = '';
+                if (c.conf > 0) inner += `<div style="color:#24a660;font-weight:600;">${formatUSD(c.conf)}</div>`;
+                if (c.noConf > 0) inner += `<div style="font-size:11px;color:#b87400;">+${formatUSD(c.noConf)} ±30d</div>`;
+                return `<td style="text-align:right;padding:6px 10px;background:${c.conf>0?'rgba(36,166,96,0.04)':'transparent'};">${inner}</td>`;
+            };
             const buildTable = (dataMap, title, emptyMsg) => {
                 const rows = Object.entries(dataMap).sort((a,b) => {
-                    const ta = windows.reduce((s,w) => s+a[1][w], 0);
-                    const tb = windows.reduce((s,w) => s+b[1][w], 0);
+                    const ta = windows.reduce((s,w) => s+a[1][w].conf+a[1][w].noConf, 0);
+                    const tb = windows.reduce((s,w) => s+b[1][w].conf+b[1][w].noConf, 0);
                     return tb - ta;
                 });
-                const totals = {'0-30d':0,'31-60d':0,'61-90d':0,'90d+':0};
-                rows.forEach(([,v]) => windows.forEach(w => totals[w] += v[w]));
-                const grandTotal = windows.reduce((s,w) => s+totals[w], 0);
+                const totals = {'0-30d':{conf:0,noConf:0},'31-60d':{conf:0,noConf:0},'61-90d':{conf:0,noConf:0},'90d+':{conf:0,noConf:0}};
+                rows.forEach(([,v]) => windows.forEach(w => { totals[w].conf += v[w].conf; totals[w].noConf += v[w].noConf; }));
+                const grandTotal = windows.reduce((s,w) => s+totals[w].conf+totals[w].noConf, 0);
 
                 if (rows.length === 0) {
                     return `<div class="card" style="margin-bottom:16px;">
@@ -3936,16 +3945,16 @@
                         <th style="text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#252a2e;text-transform:uppercase;">Total</th>
                     </tr></thead><tbody>`;
                 rows.forEach(([emp, vals]) => {
-                    const total = windows.reduce((s,w) => s+vals[w], 0);
+                    const total = windows.reduce((s,w) => s+vals[w].conf+vals[w].noConf, 0);
                     html += `<tr style="border-top:1px solid #f0f2f4;">
-                        <td style="padding:8px 10px;font-weight:600;color:#252a2e;">${emp}</td>
-                        ${windows.map(w => `<td style="text-align:right;padding:8px 10px;${vals[w]>0?'color:#24a660;font-weight:600;background:rgba(36,166,96,0.04);':'color:#c8cdd2;'}">${vals[w]>0?formatUSD(vals[w]):'—'}</td>`).join('')}
-                        <td style="text-align:right;padding:8px 10px;font-weight:700;color:#252a2e;">${formatUSD(total)}</td>
+                        <td style="padding:6px 10px;font-weight:600;color:#252a2e;">${emp}</td>
+                        ${windows.map(w => cellHtml(vals[w])).join('')}
+                        <td style="text-align:right;padding:6px 10px;font-weight:700;color:#252a2e;">${formatUSD(total)}</td>
                     </tr>`;
                 });
                 html += `<tr style="border-top:2px solid #e3e6e9;background:#f8f9fa;font-weight:700;">
                     <td style="padding:8px 10px;color:#5a616b;">TOTAL</td>
-                    ${windows.map(w => `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${totals[w]>0?formatUSD(totals[w]):'—'}</td>`).join('')}
+                    ${windows.map(w => { const t=totals[w].conf+totals[w].noConf; return `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${t>0?formatUSD(t):'—'}</td>`; }).join('')}
                     <td style="text-align:right;padding:8px 10px;color:#24a660;font-size:15px;">${formatUSD(grandTotal)}</td>
                 </tr></tbody></table></div></div>`;
                 return html;
