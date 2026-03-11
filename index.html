@@ -1296,8 +1296,8 @@
                         <div class="filters">
                             <select id="movFilterEstado" class="f-sel" onchange="renderMovimientos()">
                                 <option value="">Estado: Todos</option>
-                                <option value="Realizados" selected>Realizados</option>
-                                <option value="Pendientes">Pendientes</option>
+                                <option value="Realizados">Realizados</option>
+                                <option value="Pendientes" selected>Pendientes</option>
                             </select>
                             <select id="movFilterEmpresa" class="f-sel" onchange="renderMovimientos()">
                                 <option value="">Empresa: Todas</option>
@@ -1899,7 +1899,7 @@
             <div class="modal-header" id="dayMovTitle">Movimientos del día</div>
             <div id="dayMovContent" style="padding:10px 0;"></div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-ghost" onclick="document.getElementById('dayMovModal').classList.remove('active')">Cerrar</button>
+                <button type="button" class="btn btn-ghost" onclick="document.getElementById('dayMovModal').style.display='none'">Cerrar</button>
             </div>
         </div>
     </div>
