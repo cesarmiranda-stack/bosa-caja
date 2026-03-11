@@ -1412,33 +1412,74 @@
 
                 <!-- PROYECCIÓN DIARIA 30D SCREEN -->
                 <div id="sc-proyDia" class="screen">
-                    <!-- Hidden input keeps saldo value for JS logic, not shown to user -->
                     <input type="hidden" id="saldoInicialProy" value="0">
-                    <div class="card" style="padding:14px 20px;">
-                        <div style="display:flex; align-items:center; gap:0; flex-wrap:wrap;">
-                            <div style="text-align:center; padding:0 24px 0 0; border-right:1px solid #e3e6e9; margin-right:24px;">
-                                <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Disponible Hoy</div>
-                                <div style="font-size:17px; font-weight:700; color:#24a660;" id="proy30SaldoIni">$0</div>
-                                <div style="font-size:10px; color:#9ba3ab; margin-top:2px;">Incl. sobregiro</div>
-                            </div>
-                            <div style="display:flex; gap:24px; margin-left:auto;">
-                                <div style="text-align:center;">
-                                    <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Ingresos</div>
-                                    <div style="font-size:17px; font-weight:700; color:#24a660;" id="proy30TotalIng">$0</div>
-                                </div>
-                                <div style="text-align:center;">
-                                    <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Egresos</div>
-                                    <div style="font-size:17px; font-weight:700; color:#c0392b;" id="proy30TotalEgr">$0</div>
-                                </div>
-                                <div style="text-align:center;">
-                                    <div style="font-size:10px; font-weight:700; color:#5a616b; text-transform:uppercase; margin-bottom:2px;">Resultado</div>
-                                    <div style="font-size:17px; font-weight:700;" id="proy30TotalRes">$0</div>
-                                </div>
-                            </div>
+                    <!-- KPIs Fila 1: mismos que dashboard -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:6px;">
+                        <div class="kpi" style="border:1px solid rgba(59,130,196,0.2);background:linear-gradient(135deg,rgba(59,130,196,0.06),rgba(59,130,196,0.02));">
+                            <div class="kpi-lbl">Disponible Hoy <span class="tip-icon" data-tip="Saldo actual en bancos + efectivo + límite de sobregiro.">?</span></div>
+                            <div class="kpi-val" id="pd_kpiDispHoy" style="color:#3b82c4;">$0</div>
+                            <div class="kpi-sub">Incl. sobregiro</div>
+                        </div>
+                        <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
+                            <div class="kpi-lbl">Ingresos Próx. 30d</div>
+                            <div class="kpi-val k-green" id="pd_kpiIng30">$0</div>
+                            <div class="kpi-sub">Pendientes</div>
+                        </div>
+                        <div class="kpi" style="background:linear-gradient(135deg,rgba(192,57,43,0.06),rgba(192,57,43,0.02));border:1px solid rgba(192,57,43,0.15);">
+                            <div class="kpi-lbl">Egresos Próx. 30d</div>
+                            <div class="kpi-val k-red" id="pd_kpiEgr30">$0</div>
+                            <div class="kpi-sub">Pendientes</div>
+                        </div>
+                        <div class="kpi" id="pd_kpiSaldo30Box" style="border:1px solid rgba(36,166,96,0.2);">
+                            <div class="kpi-lbl">Saldo Próx. 30d</div>
+                            <div class="kpi-val k-gray" id="pd_kpiSaldo30">$0</div>
+                            <div class="kpi-sub">Proyectado</div>
                         </div>
                     </div>
+                    <!-- KPIs Fila 2: cobranza y egresos confirmados -->
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:6px;">
+                        <div class="kpi" id="pd_kpiCobConfBox" style="border:1px solid rgba(36,166,96,0.25);">
+                            <div class="kpi-lbl">Cobranza Confirmada 30d</div>
+                            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+                                <div class="kpi-val" id="pd_kpiCobConf" style="color:#24a660;">$0</div>
+                                <div style="font-size:14px;font-weight:700;" id="pd_kpiCobConfPct">—</div>
+                            </div>
+                            <div class="kpi-sub" id="pd_kpiCobConfSub">de ingresos totales</div>
+                        </div>
+                        <div class="kpi" id="pd_kpiCobNoConfBox" style="border:1px solid rgba(184,116,0,0.25);background:linear-gradient(135deg,rgba(184,116,0,0.07),rgba(184,116,0,0.02));">
+                            <div class="kpi-lbl">Cobranza Sin Confirmar 30d</div>
+                            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+                                <div class="kpi-val" id="pd_kpiCobNoConf" style="color:#b87400;">$0</div>
+                                <div style="font-size:14px;font-weight:700;" id="pd_kpiCobNoConfPct">—</div>
+                            </div>
+                            <div class="kpi-sub" id="pd_kpiCobNoConfSub">de ingresos totales</div>
+                        </div>
+                        <div class="kpi" id="pd_kpiEgrConfBox" style="border:1px solid rgba(59,130,196,0.2);">
+                            <div class="kpi-lbl">Egresos Confirmados 30d</div>
+                            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+                                <div class="kpi-val" id="pd_kpiEgrConf" style="color:#3b82c4;">$0</div>
+                                <div style="font-size:14px;font-weight:700;" id="pd_kpiEgrConfPct">—</div>
+                            </div>
+                            <div class="kpi-sub" id="pd_kpiEgrConfSub">de egresos totales</div>
+                        </div>
+                        <div class="kpi" id="pd_kpiEgrNoConfBox" style="border:1px solid rgba(184,116,0,0.25);background:linear-gradient(135deg,rgba(184,116,0,0.07),rgba(184,116,0,0.02));">
+                            <div class="kpi-lbl">Egresos Sin Confirmar 30d</div>
+                            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+                                <div class="kpi-val" id="pd_kpiEgrNoConf" style="color:#b87400;">$0</div>
+                                <div style="font-size:14px;font-weight:700;" id="pd_kpiEgrNoConfPct">—</div>
+                            </div>
+                            <div class="kpi-sub" id="pd_kpiEgrNoConfSub">de egresos totales</div>
+                        </div>
+                    </div>
+                    <!-- Toggle escenarios + Almanaque -->
                     <div class="card">
-                        <div class="card-title">Proyección Diaria — Próximos 30 Días</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <div class="card-title" style="margin:0;">Proyección Diaria — Próximos 30 Días</div>
+                            <div class="certeza-toggle">
+                                <button type="button" id="pdToggleTodos" class="certeza-btn active-certeza" onclick="setPdEscenario('todos')">Todos</button>
+                                <button type="button" id="pdToggleConf" class="certeza-btn" onclick="setPdEscenario('confirmados')">Solo confirmados</button>
+                            </div>
+                        </div>
                         <div id="proyDiaCalendar"></div>
                     </div>
                 </div>
@@ -2684,34 +2725,8 @@
             const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
             const next30Pending = allMovimientos.filter(m => !m.hecho && new Date(m.fecha + 'T12:00:00') < in30);
-            
-            const ingresos30 = next30Pending
-                .filter(m => m.caja === 'Ingreso')
-                .reduce((sum, m) => sum + Math.abs(m.usd || 0), 0);
-            
-            const egresos30 = next30Pending
-                .filter(m => m.caja === 'Egreso')
-                .reduce((sum, m) => sum + Math.abs(m.usd || 0), 0);
-            
-            const resultado30 = ingresos30 - egresos30;
 
-            document.getElementById('kpiIngresos30').textContent = formatUSD(ingresos30);
-            document.getElementById('kpiEgresos30').textContent = formatUSD(egresos30);
-            document.getElementById('kpiResultado30').textContent = formatUSD(resultado30, true);
-            
-            if (resultado30 > 0) {
-                document.getElementById('kpiResultado30').className = 'kpi-val k-green';
-                document.getElementById('kpiSaldo30Box').style.background = 'linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.02))';
-                document.getElementById('kpiSaldo30Box').style.borderColor = 'rgba(36,166,96,0.2)';
-            } else if (resultado30 < 0) {
-                document.getElementById('kpiResultado30').className = 'kpi-val k-red';
-                document.getElementById('kpiSaldo30Box').style.background = 'linear-gradient(135deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02))';
-                document.getElementById('kpiSaldo30Box').style.borderColor = 'rgba(192,57,43,0.2)';
-            } else {
-                document.getElementById('kpiResultado30').className = 'kpi-val k-gray';
-            }
-
-            // Saldo hoy y disponible real (rawBalance + overdraftLimit)
+            // Saldo hoy y disponible real (rawBalance + overdraftLimit) — calcular antes de KPIs
             const saldoHist = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
             const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
             const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
@@ -2725,6 +2740,32 @@
                 const disponibleReal = saldoInicial + overdraftLimit;
                 document.getElementById('kpiSaldoHoy').textContent = formatUSD(disponibleReal);
                 document.getElementById('kpiSaldoHoy').className = disponibleReal > 0 ? 'kpi-val k-green' : disponibleReal < 0 ? 'kpi-val k-red' : 'kpi-val k-gray';
+            }
+
+            const ingresos30 = next30Pending
+                .filter(m => m.caja === 'Ingreso')
+                .reduce((sum, m) => sum + Math.abs(m.usd || 0), 0);
+
+            const egresos30 = next30Pending
+                .filter(m => m.caja === 'Egreso')
+                .reduce((sum, m) => sum + Math.abs(m.usd || 0), 0);
+
+            const resultado30 = saldoInicial + ingresos30 - egresos30;
+
+            document.getElementById('kpiIngresos30').textContent = formatUSD(ingresos30);
+            document.getElementById('kpiEgresos30').textContent = formatUSD(egresos30);
+            document.getElementById('kpiResultado30').textContent = formatUSD(resultado30, true);
+
+            if (resultado30 > 0) {
+                document.getElementById('kpiResultado30').className = 'kpi-val k-green';
+                document.getElementById('kpiSaldo30Box').style.background = 'linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.02))';
+                document.getElementById('kpiSaldo30Box').style.borderColor = 'rgba(36,166,96,0.2)';
+            } else if (resultado30 < 0) {
+                document.getElementById('kpiResultado30').className = 'kpi-val k-red';
+                document.getElementById('kpiSaldo30Box').style.background = 'linear-gradient(135deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02))';
+                document.getElementById('kpiSaldo30Box').style.borderColor = 'rgba(192,57,43,0.2)';
+            } else {
+                document.getElementById('kpiResultado30').className = 'kpi-val k-gray';
             }
 
             // KPI Sobregiro Hoy
@@ -2864,51 +2905,62 @@
             const todayStr = today.toISOString().split('T')[0];
             const dailyData = {};
 
-            // Separar atrasados de pendientes futuros
-            let overdueIng = 0, overdueEgr = 0;
+            // Separar atrasados de pendientes futuros — con split confirmado/no confirmado
+            let overdueIngConf = 0, overdueIngNoConf = 0, overdueEgrConf = 0, overdueEgrNoConf = 0;
             next30Pending.forEach(m => {
                 const mDate = m.fecha;
+                const amt = Math.abs(m.usd || 0);
+                const conf = isConf(m);
                 if (mDate < todayStr) {
-                    // Atrasados: acumular en día 1
-                    if (m.caja === 'Ingreso') overdueIng += Math.abs(m.usd || 0);
-                    else overdueEgr += Math.abs(m.usd || 0);
+                    if (m.caja === 'Ingreso') { if (conf) overdueIngConf += amt; else overdueIngNoConf += amt; }
+                    else { if (conf) overdueEgrConf += amt; else overdueEgrNoConf += amt; }
                 } else {
-                    if (!dailyData[mDate]) dailyData[mDate] = { ing: 0, egr: 0 };
-                    if (m.caja === 'Ingreso') dailyData[mDate].ing += Math.abs(m.usd || 0);
-                    else dailyData[mDate].egr += Math.abs(m.usd || 0);
+                    if (!dailyData[mDate]) dailyData[mDate] = { ingConf: 0, ingNoConf: 0, egrConf: 0, egrNoConf: 0 };
+                    if (m.caja === 'Ingreso') { if (conf) dailyData[mDate].ingConf += amt; else dailyData[mDate].ingNoConf += amt; }
+                    else { if (conf) dailyData[mDate].egrConf += amt; else dailyData[mDate].egrNoConf += amt; }
                 }
             });
 
             // Asegurar que hoy exista y sumarle saldo bancos + atrasados
-            if (!dailyData[todayStr]) dailyData[todayStr] = { ing: 0, egr: 0 };
-            dailyData[todayStr].ing += overdueIng + Math.max(saldoInicial, 0);
-            dailyData[todayStr].egr += overdueEgr + Math.max(-saldoInicial, 0);
+            if (!dailyData[todayStr]) dailyData[todayStr] = { ingConf: 0, ingNoConf: 0, egrConf: 0, egrNoConf: 0 };
+            const saldoPos = Math.max(saldoInicial, 0);
+            const saldoNeg = Math.max(-saldoInicial, 0);
+            dailyData[todayStr].ingConf += overdueIngConf + saldoPos;
+            dailyData[todayStr].ingNoConf += overdueIngNoConf;
+            dailyData[todayStr].egrConf += overdueEgrConf + saldoNeg;
+            dailyData[todayStr].egrNoConf += overdueEgrNoConf;
 
             const sortedDays = Object.keys(dailyData).sort();
             const chartLabels = sortedDays.map(d => {
                 const [y,mo,dy] = d.split('-');
                 return `${parseInt(dy)}/${parseInt(mo)}`;
             });
-            const ingressesData = sortedDays.map(d => dailyData[d].ing);
-            const egressesData = sortedDays.map(d => dailyData[d].egr);
+            const dIngConf = sortedDays.map(d => dailyData[d].ingConf);
+            const dIngNoConf = sortedDays.map(d => dailyData[d].ingNoConf);
+            const dEgrConf = sortedDays.map(d => dailyData[d].egrConf);
+            const dEgrNoConf = sortedDays.map(d => dailyData[d].egrNoConf);
 
             // Cumulative balance line — arranca de saldo bancos, acumula día a día
+            const overdueIng = overdueIngConf + overdueIngNoConf;
+            const overdueEgr = overdueEgrConf + overdueEgrNoConf;
             let cum = saldoInicial + overdueIng - overdueEgr;
             const cumulativeData = sortedDays.map((d, i) => {
+                const dd = dailyData[d];
+                const totalIng = dd.ingConf + dd.ingNoConf;
+                const totalEgr = dd.egrConf + dd.egrNoConf;
                 if (i === 0) {
-                    // Día 1: ya incluye saldo + atrasados, sumar solo movimientos de hoy
-                    cum += (dailyData[d].ing - overdueIng - Math.max(saldoInicial, 0)) - (dailyData[d].egr - overdueEgr - Math.max(-saldoInicial, 0));
+                    cum += (totalIng - overdueIng - saldoPos) - (totalEgr - overdueEgr - saldoNeg);
                 } else {
-                    cum += dailyData[d].ing - dailyData[d].egr;
+                    cum += totalIng - totalEgr;
                 }
                 return Math.round(cum * 100) / 100;
             });
 
-            renderChartDashboard(chartLabels, ingressesData, egressesData, cumulativeData);
+            renderChartDashboard(chartLabels, dIngConf, dIngNoConf, dEgrConf, dEgrNoConf, cumulativeData);
             renderProyTrim();
         }
 
-        function renderChartDashboard(labels, ingresses, egresses, cumulative) {
+        function renderChartDashboard(labels, ingConf, ingNoConf, egrConf, egrNoConf, cumulative) {
             const ctx = document.getElementById('dashboardChart');
             if (dashboardChart) dashboardChart.destroy();
 
@@ -2918,18 +2970,40 @@
                     labels,
                     datasets: [
                         {
-                            label: 'Ingresos',
-                            data: ingresses,
-                            backgroundColor: 'rgba(36,166,96,0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y'
+                            label: 'Ing. Confirmados',
+                            data: ingConf,
+                            backgroundColor: 'rgba(36,166,96,0.85)',
+                            borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 },
+                            stack: 'ingresos',
+                            yAxisID: 'y',
+                            order: 2
                         },
                         {
-                            label: 'Egresos',
-                            data: egresses,
-                            backgroundColor: 'rgba(192,57,43,0.75)',
-                            borderRadius: 4,
-                            yAxisID: 'y'
+                            label: 'Ing. Sin confirmar',
+                            data: ingNoConf,
+                            backgroundColor: 'rgba(36,166,96,0.35)',
+                            borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
+                            stack: 'ingresos',
+                            yAxisID: 'y',
+                            order: 2
+                        },
+                        {
+                            label: 'Egr. Confirmados',
+                            data: egrConf,
+                            backgroundColor: 'rgba(192,57,43,0.85)',
+                            borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 },
+                            stack: 'egresos',
+                            yAxisID: 'y',
+                            order: 2
+                        },
+                        {
+                            label: 'Egr. Sin confirmar',
+                            data: egrNoConf,
+                            backgroundColor: 'rgba(192,57,43,0.35)',
+                            borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
+                            stack: 'egresos',
+                            yAxisID: 'y',
+                            order: 2
                         },
                         {
                             label: 'Saldo Acumulado',
@@ -2943,7 +3017,8 @@
                             pointRadius: 4,
                             pointHoverRadius: 6,
                             pointBackgroundColor: '#3b82c4',
-                            yAxisID: 'y1'
+                            yAxisID: 'y1',
+                            order: 1
                         }
                     ]
                 },
@@ -2960,7 +3035,9 @@
                         }
                     },
                     scales: {
+                        x: { stacked: true },
                         y: {
+                            stacked: true,
                             beginAtZero: true,
                             position: 'left',
                             title: { display: true, text: 'Movimientos (USD)', font: { size: 11 } },
@@ -3301,80 +3378,124 @@
             if (span) span.innerHTML = span.innerHTML.replace(open ? '▼' : '▶', open ? '▶' : '▼');
         }
 
+        let pdEscenario = 'todos'; // 'todos' | 'confirmados'
+        function setPdEscenario(modo) {
+            pdEscenario = modo;
+            const btnT = document.getElementById('pdToggleTodos');
+            const btnC = document.getElementById('pdToggleConf');
+            if (modo === 'todos') {
+                btnT.className = 'certeza-btn active-certeza'; btnC.className = 'certeza-btn';
+            } else {
+                btnT.className = 'certeza-btn'; btnC.className = 'certeza-btn active-certeza';
+            }
+            renderProyDia();
+        }
+
         function renderProyDia() {
-            // Auto-load saldo from localStorage
-            const saldoEl = document.getElementById('saldoInicialProy');
+            // --- Base data (same as dashboard) ---
             const saldoHist = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
             const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
-            let fondosPropios = 0;
-            if (saldoHist.length > 0) {
-                const h = saldoHist[0];
-                fondosPropios = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
-                              + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
-                              + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
-                if (saldoEl) saldoEl.value = Math.round(fondosPropios * 100) / 100;
-            } else {
-                fondosPropios = parseFloat(saldoEl?.value) || 0;
-            }
-            fondosPropios = parseFloat(saldoEl?.value) || fondosPropios;
-
-            // Overdraft total
             const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
             const overdraft = (limites.itauUSD||0) + (limites.hsbcUSD||0) + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
-
-            // Update Saldo Inicial KPI — muestra disponible real (rawBalance + overdraftLimit)
-            const saldoIniEl = document.getElementById('proy30SaldoIni');
-            if (saldoIniEl) {
-                const disponibleRealProy = fondosPropios + overdraft;
-                saldoIniEl.textContent = formatUSD(disponibleRealProy);
-                saldoIniEl.style.color = disponibleRealProy > 0 ? '#24a660' : disponibleRealProy < 0 ? '#c0392b' : '#9ba3ab';
+            let saldoInicial = 0;
+            if (saldoHist.length > 0) {
+                const h = saldoHist[0];
+                saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0) + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
+                             + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
+                             + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
             }
-            const totalDisp = fondosPropios + overdraft;
+            const saldoEl = document.getElementById('saldoInicialProy');
+            if (saldoEl) saldoEl.value = Math.round(saldoInicial * 100) / 100;
+
+            const disponibleHoy = saldoInicial + overdraft;
 
             const today = new Date(); today.setHours(0,0,0,0);
+            const todayStr = today.toISOString().split('T')[0];
             const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-            // Overdue check
-            const vencidas = allMovimientos.filter(m => {
-                const d = new Date(m.fecha + 'T12:00:00');
-                return !m.hecho && d < today;
-            });
+            // Same filter as dashboard: all pending < 30d (includes overdue)
+            const next30Pending = allMovimientos.filter(m => !m.hecho && new Date(m.fecha + 'T12:00:00') < in30);
 
-            const pending = allMovimientos.filter(m => {
-                const d = new Date(m.fecha + 'T12:00:00');
-                return !m.hecho && d >= today && d < in30;
-            });
+            // --- KPIs (exact same calc as dashboard) ---
+            const ingresos30 = next30Pending.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const egresos30 = next30Pending.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const resultado30 = saldoInicial + ingresos30 - egresos30;
 
-            const totalIng = pending.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const totalEgr = pending.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const totalRes = totalIng - totalEgr;
+            // Fila 1 KPIs
+            document.getElementById('pd_kpiDispHoy').textContent = formatUSD(disponibleHoy);
+            document.getElementById('pd_kpiDispHoy').style.color = disponibleHoy >= 0 ? '#3b82c4' : '#c0392b';
+            document.getElementById('pd_kpiIng30').textContent = formatUSD(ingresos30);
+            document.getElementById('pd_kpiEgr30').textContent = formatUSD(egresos30);
+            const saldo30El = document.getElementById('pd_kpiSaldo30');
+            saldo30El.textContent = formatUSD(resultado30, true);
+            saldo30El.className = resultado30 > 0 ? 'kpi-val k-green' : resultado30 < 0 ? 'kpi-val k-red' : 'kpi-val k-gray';
+            const s30Box = document.getElementById('pd_kpiSaldo30Box');
+            if (resultado30 > 0) { s30Box.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.02))'; s30Box.style.borderColor = 'rgba(36,166,96,0.2)'; }
+            else if (resultado30 < 0) { s30Box.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02))'; s30Box.style.borderColor = 'rgba(192,57,43,0.2)'; }
 
-            document.getElementById('proy30TotalIng').textContent = formatUSD(totalIng);
-            document.getElementById('proy30TotalEgr').textContent = formatUSD(totalEgr);
-            const resEl = document.getElementById('proy30TotalRes');
-            resEl.textContent = formatUSD(totalRes, true);
-            resEl.style.color = totalRes >= 0 ? '#24a660' : '#c0392b';
+            // Fila 2 KPIs — Cobranza
+            const ingPending = next30Pending.filter(m => m.caja === 'Ingreso');
+            const totalIng30 = ingPending.reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const cobConf = ingPending.filter(m => isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const cobNoConf = ingPending.filter(m => !isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const pctCobConf = totalIng30 > 0 ? Math.round((cobConf / totalIng30) * 100) : null;
+            const pctCobNoConf = totalIng30 > 0 ? Math.round((cobNoConf / totalIng30) * 100) : null;
+            document.getElementById('pd_kpiCobConf').textContent = formatUSD(cobConf);
+            document.getElementById('pd_kpiCobConfPct').textContent = pctCobConf !== null ? pctCobConf + '%' : '—';
+            document.getElementById('pd_kpiCobConfSub').textContent = totalIng30 > 0 ? `de ${formatUSD(totalIng30)} total ingresos` : 'sin ingresos';
+            document.getElementById('pd_kpiCobNoConf').textContent = formatUSD(cobNoConf);
+            document.getElementById('pd_kpiCobNoConfPct').textContent = pctCobNoConf !== null ? pctCobNoConf + '%' : '—';
+            document.getElementById('pd_kpiCobNoConfSub').textContent = totalIng30 > 0 ? `de ${formatUSD(totalIng30)} total ingresos` : 'sin ingresos';
 
-            // Group by day
+            // Fila 2 KPIs — Egresos confirmados
+            const egrPending = next30Pending.filter(m => m.caja === 'Egreso');
+            const totalEgr30 = egrPending.reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const egrConf = egrPending.filter(m => isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const egrNoConf = egrPending.filter(m => !isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const pctEgrConf = totalEgr30 > 0 ? Math.round((egrConf / totalEgr30) * 100) : null;
+            const pctEgrNoConf = totalEgr30 > 0 ? Math.round((egrNoConf / totalEgr30) * 100) : null;
+            document.getElementById('pd_kpiEgrConf').textContent = formatUSD(egrConf);
+            document.getElementById('pd_kpiEgrConfPct').textContent = pctEgrConf !== null ? pctEgrConf + '%' : '—';
+            document.getElementById('pd_kpiEgrConfSub').textContent = totalEgr30 > 0 ? `de ${formatUSD(totalEgr30)} total egresos` : 'sin egresos';
+            document.getElementById('pd_kpiEgrNoConf').textContent = formatUSD(egrNoConf);
+            document.getElementById('pd_kpiEgrNoConfPct').textContent = pctEgrNoConf !== null ? pctEgrNoConf + '%' : '—';
+            document.getElementById('pd_kpiEgrNoConfSub').textContent = totalEgr30 > 0 ? `de ${formatUSD(totalEgr30)} total egresos` : 'sin egresos';
+
+            // --- Calendar logic (same base as dashboard day-1) ---
+            const soloConf = pdEscenario === 'confirmados';
+
+            // Separate overdue from future — same logic as dashboard
+            let overdueIng = 0, overdueEgr = 0;
             const byDay = {};
-            pending.forEach(m => { if (!byDay[m.fecha]) byDay[m.fecha] = []; byDay[m.fecha].push(m); });
+            next30Pending.forEach(m => {
+                const amt = Math.abs(m.usd || 0);
+                const include = !soloConf || isConf(m);
+                if (!include) return;
+                if (m.fecha < todayStr) {
+                    if (m.caja === 'Ingreso') overdueIng += amt; else overdueEgr += amt;
+                } else {
+                    if (!byDay[m.fecha]) byDay[m.fecha] = [];
+                    byDay[m.fecha].push(m);
+                }
+            });
 
-            // Running balance per day — iterate every day in range so empty days carry forward
-            let runBal = fondosPropios;
+            // Running balance: start from saldoInicial + overdue (same as dashboard)
+            let runBal = saldoInicial + overdueIng - overdueEgr;
             const saldoByDay = {};
-            const rangeStart = new Date(today);
+            let dayCur = new Date(today);
             const rangeEnd = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-            let dayCur = new Date(rangeStart);
             while (dayCur < rangeEnd) {
                 const dStr = dayCur.toISOString().split('T')[0];
-                if (byDay[dStr]) {
-                    byDay[dStr].forEach(m => { runBal += m.caja === 'Ingreso' ? Math.abs(m.usd||0) : -Math.abs(m.usd||0); });
-                }
+                const dayMovs = byDay[dStr] || [];
+                dayMovs.forEach(m => {
+                    const amt = Math.abs(m.usd || 0);
+                    runBal += m.caja === 'Ingreso' ? amt : -amt;
+                });
                 saldoByDay[dStr] = Math.round(runBal * 100) / 100;
                 dayCur.setDate(dayCur.getDate() + 1);
             }
 
-            // Day stats — count all days in 30-day range
+            // Day stats
             let verdes = 0, amarillos = 0, rojos = 0;
             Object.values(saldoByDay).forEach(s => {
                 if (s > 0) verdes++;
@@ -3382,57 +3503,39 @@
                 else rojos++;
             });
 
-            // Build header — KPIs first, then alerts below
+            // Build header — alerts + day stats
             let headerHtml = '';
-
-            // 1. KPIs row (verdes / amarillos / rojos) with tooltips
             headerHtml += `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
                 <div style="background:rgba(36,166,96,0.1);border:1px solid rgba(36,166,96,0.3);border-radius:8px;padding:10px 18px;text-align:center;">
                     <div style="font-size:22px;font-weight:800;color:#24a660;">${verdes}</div>
-                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días verdes <span class="tip-icon" data-tip="Días en que el saldo propio (sin usar crédito bancario) es positivo. Cuantos más, mejor.">?</span></div>
+                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días verdes <span class="tip-icon" data-tip="Días con saldo propio positivo.">?</span></div>
                 </div>
                 <div style="background:rgba(255,167,38,0.1);border:1px solid rgba(255,167,38,0.4);border-radius:8px;padding:10px 18px;text-align:center;">
                     <div style="font-size:22px;font-weight:800;color:#b87400;">${amarillos}</div>
-                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días amarillos <span class="tip-icon" data-tip="Días en que el saldo propio es insuficiente pero el crédito bancario cubre la diferencia. La empresa opera, pero con deuda bancaria.">?</span></div>
+                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días amarillos <span class="tip-icon" data-tip="Días cubiertos solo con sobregiro bancario.">?</span></div>
                 </div>
                 <div style="background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.3);border-radius:8px;padding:10px 18px;text-align:center;">
                     <div style="font-size:22px;font-weight:800;color:#c0392b;">${rojos}</div>
-                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días rojos <span class="tip-icon" data-tip="Días en que ni el saldo propio ni el crédito bancario son suficientes. Indica déficit total y requiere atención inmediata.">?</span></div>
+                    <div style="font-size:11px;color:#5a616b;display:flex;align-items:center;justify-content:center;gap:4px;">Días rojos <span class="tip-icon" data-tip="Días con déficit total: ni fondos propios ni sobregiro alcanzan.">?</span></div>
                 </div>
+                ${soloConf ? '<div style="font-size:11px;color:#b87400;font-weight:600;padding:8px 14px;background:rgba(184,116,0,0.08);border-radius:6px;">Escenario: solo confirmados</div>' : ''}
             </div>`;
 
-            // 2. Alert: operaciones con fecha pasada sin confirmar
+            // Overdue alert
+            const vencidas = allMovimientos.filter(m => !m.hecho && m.fecha < todayStr);
             if (vencidas.length > 0) {
                 headerHtml += `<div style="background:rgba(255,167,38,0.12);border:1px solid rgba(255,167,38,0.5);border-radius:8px;padding:12px 16px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:12px;">
                     <div>
-                        <div style="font-weight:700;color:#b87400;font-size:13px;">⚠️ ${vencidas.length} operación${vencidas.length>1?'es':''} con fecha pasada sin confirmar</div>
-                        <div style="font-size:12px;color:#5a616b;margin-top:2px;">Revisalas y marcalas como realizadas o ajustá las fechas. La proyección parte del saldo real de hoy.</div>
+                        <div style="font-weight:700;color:#b87400;font-size:13px;">${vencidas.length} operación${vencidas.length>1?'es':''} con fecha pasada sin confirmar</div>
+                        <div style="font-size:12px;color:#5a616b;margin-top:2px;">Revisalas y marcalas como realizadas o ajustá las fechas.</div>
                     </div>
                     <button class="btn btn-ghost btn-sm" style="white-space:nowrap;" onclick="verVencidas()">Ver atrasadas</button>
                 </div>`;
             }
 
-            // Correct fondos propios / sobregiro breakdown
-            const fondosPropiosReal = Math.max(fondosPropios, 0);
-            const sobUsadoDia = Math.max(-fondosPropios, 0);
-            const sobDispDia = Math.max(overdraft + fondosPropios, 0);
-            const pctUsadoDia = overdraft > 0 ? Math.round((sobUsadoDia / overdraft) * 100) : 0;
-            const usandoSobDia = sobUsadoDia > 0;
-            const posColor = usandoSobDia ? '#b87400' : '#24a660';
-            const posBg = usandoSobDia ? 'rgba(255,167,38,0.07)' : 'rgba(36,166,96,0.07)';
-            const posBorder = usandoSobDia ? '#f5a623' : '#24a660';
-            // 3. Alert: estado de fondos propios / sobregiro hoy
-            headerHtml += `<div style="font-size:13px;margin-bottom:16px;padding:10px 14px;background:${posBg};border:1px solid ${posBorder};border-radius:8px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;">
-                <span style="font-weight:700;color:${posColor};">${usandoSobDia ? '🟡 Operando con sobregiro' : '🟢 Operando con fondos propios'}</span>
-                <span style="color:#5a616b;">Fondos propios: <strong style="color:${fondosPropiosReal > 0 ? '#24a660' : '#9ba3ab'};">${fondosPropiosReal > 0 ? formatUSD(fondosPropiosReal) : '$0'}</strong></span>
-                ${overdraft > 0 ? `<span style="color:#5a616b;">Sobregiro usado: <strong style="color:${usandoSobDia ? '#b87400' : '#9ba3ab'};">${formatUSD(sobUsadoDia)} (${pctUsadoDia}%)</strong></span>
-                <span style="color:#5a616b;">Disponible: <strong style="color:${posColor};">${formatUSD(sobDispDia)}</strong></span>` : ''}
-            </div>`;
-
-            // Calendar
+            // Calendar grid
             const DOW = ['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'];
             const calStart = new Date(today);
-            // Start from Monday
             let dow = calStart.getDay(); if (dow === 0) dow = 7;
             calStart.setDate(calStart.getDate() - (dow - 1));
 
@@ -3442,35 +3545,36 @@
 
             const calEnd = new Date(today.getTime() + 36 * 24 * 60 * 60 * 1000);
             let cur = new Date(calStart);
+            // Get all movs grouped for click modal (unfiltered)
+            const byDayAll = {};
+            next30Pending.forEach(m => { if (m.fecha >= todayStr) { if (!byDayAll[m.fecha]) byDayAll[m.fecha] = []; byDayAll[m.fecha].push(m); }});
+
             while (cur <= calEnd) {
                 const dayStr = cur.toISOString().split('T')[0];
-                const isToday = dayStr === today.toISOString().split('T')[0];
+                const isToday = dayStr === todayStr;
                 const isInRange = cur >= today && cur < in30;
                 const daySaldo = saldoByDay[dayStr];
-                const dayMovs = byDay[dayStr] || [];
+                const dayMovs = byDayAll[dayStr] || [];
 
                 let colorClass = 'vacio';
-                let saldoColor = '#9ba3ab';
                 let saldoStr = '';
 
                 if (isToday || isInRange) {
-                    // daySaldo is now always defined for every day in range (carry-forward)
-                    const s = daySaldo !== undefined ? daySaldo : fondosPropios;
-                    if (s > 0) { colorClass = 'verde'; saldoColor = '#24a660'; }
-                    else if (s + overdraft > 0) { colorClass = 'amarillo'; saldoColor = '#b87400'; }
-                    else { colorClass = 'rojo'; saldoColor = '#c0392b'; }
+                    const s = daySaldo !== undefined ? daySaldo : saldoInicial;
+                    if (s > 0) colorClass = 'verde';
+                    else if (s + overdraft > 0) colorClass = 'amarillo';
+                    else colorClass = 'rojo';
                     const absS = Math.abs(s);
                     saldoStr = `${s < 0 ? '−' : ''}$${absS >= 1000 ? formatNumber(absS/1000, 1) + 'k' : formatNumber(absS, 0)}`;
                 }
 
                 const todayCls = isToday ? ' hoy' : '';
                 const hasMovs = dayMovs.length > 0;
-                const clickAttr = hasMovs || isInRange ? `onclick="abrirDayModal('${dayStr}')" style="cursor:pointer;"` : '';
-                // Dashed border when any movement that day has confiable=false (±30d estimate)
+                const clickAttr = hasMovs || isInRange ? `onclick="abrirDayModal('${dayStr}')"` : '';
                 const hasIncierto = dayMovs.some(m => !isConf(m));
                 const dashedStyle = hasIncierto ? 'border:2px dashed #b87400;' : '';
 
-                calHtml += `<div class="cal-day ${colorClass}${todayCls}" ${clickAttr} style="${dashedStyle}cursor:${hasMovs||isInRange?'pointer':'default'};">`
+                calHtml += `<div class="cal-day ${colorClass}${todayCls}" ${clickAttr} style="${dashedStyle}cursor:${hasMovs||isInRange?'pointer':'default'};">`;
                 calHtml += `<div class="cal-day-num">${cur.getDate()}${isToday ? '<span style="font-size:9px;color:#3b82c4;display:block;font-weight:400;">hoy</span>' : ''}</div>`;
                 if (saldoStr) calHtml += `<div class="cal-day-saldo">${saldoStr}</div>`;
                 calHtml += `</div>`;
