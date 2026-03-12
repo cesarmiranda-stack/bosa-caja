@@ -1504,8 +1504,8 @@
                 <div id="sc-proyIng" class="screen">
                     <!-- Toggle Conservador / Optimista -->
                     <div class="certeza-toggle" style="margin-bottom:12px;">
-                        <button type="button" id="piToggleCons" class="certeza-btn active-certeza" onclick="setPiEscenario('conservador')">Conservador</button>
-                        <button type="button" id="piToggleOpt" class="certeza-btn" onclick="setPiEscenario('optimista')">Optimista</button>
+                        <button type="button" id="piToggleTodos" class="certeza-btn active-certeza" onclick="setPiEscenario('todos')">Todos</button>
+                        <button type="button" id="piToggleConf" class="certeza-btn" onclick="setPiEscenario('confirmados')">Solo Confirmados</button>
                     </div>
 
                     <!-- Tabla Pipeline -->
@@ -3164,13 +3164,22 @@
 
             const soloConfTrim = ptEscenario === 'confirmados';
 
+            // Lógica certeza: pre-calcular fecha efectiva de cada movimiento pendiente
+            // En "Solo Confirmados", conf 30d se desplazan +30 días (pueden saltar de mes)
+            const allPending = allMovimientos.filter(m => !m.hecho);
+            const effectiveMovsTrim = allPending.map(m => {
+                if (soloConfTrim && !isConf(m)) {
+                    const shifted = new Date(new Date(m.fecha + 'T12:00:00').getTime() + 30*24*60*60*1000);
+                    return Object.assign({}, m, { _fechaEf: shifted });
+                }
+                return Object.assign({}, m, { _fechaEf: new Date(m.fecha + 'T12:00:00') });
+            });
+
             monthNums.forEach(({ m: monthNum, y: yearNum }, idx) => {
-                const monthMovsAll = allMovimientos.filter(m => {
-                    const movDate = new Date(m.fecha + 'T12:00:00');
-                    return !m.hecho && movDate.getMonth() + 1 === monthNum && movDate.getFullYear() === yearNum;
-                });
-                // Filtrar por escenario
-                const monthMovs = soloConfTrim ? monthMovsAll.filter(m => isConf(m)) : monthMovsAll;
+                // Filtrar por mes usando fecha efectiva (ya incluye desplazamiento)
+                const monthMovs = effectiveMovsTrim.filter(m =>
+                    m._fechaEf.getMonth() + 1 === monthNum && m._fechaEf.getFullYear() === yearNum
+                );
 
                 // Group by empresa, consolidated
                 const ingEmp = {};
@@ -3393,9 +3402,17 @@
 
             const disponibleHoy = saldoInicial + overdraft;
 
-            // --- KPIs (exact same calc as dashboard) ---
-            const ingresos30 = next30Pending.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const egresos30 = next30Pending.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            // --- KPIs — aplica lógica certeza si toggle activo ---
+            const soloConf = pdEscenario === 'confirmados';
+            const in30KpiStr = in30.toISOString().split('T')[0];
+            const kpiMovs = soloConf ? next30Pending.filter(m => {
+                if (isConf(m)) return true;
+                // conf 30d: desplazar +30d, incluir solo si cae dentro del rango
+                const shifted = new Date(new Date(m.fecha + 'T12:00:00').getTime() + 30*24*60*60*1000).toISOString().split('T')[0];
+                return shifted < in30KpiStr;
+            }) : next30Pending;
+            const ingresos30 = kpiMovs.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
+            const egresos30 = kpiMovs.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
             const resultado30 = saldoInicial + ingresos30 - egresos30;
 
             // Fila 1 KPIs
@@ -3410,8 +3427,8 @@
             if (resultado30 > 0) { s30Box.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.02))'; s30Box.style.borderColor = 'rgba(36,166,96,0.2)'; }
             else if (resultado30 < 0) { s30Box.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02))'; s30Box.style.borderColor = 'rgba(192,57,43,0.2)'; }
 
-            // Fila 2 KPIs — Cobranza
-            const ingPending = next30Pending.filter(m => m.caja === 'Ingreso');
+            // Fila 2 KPIs — Cobranza (usa kpiMovs con lógica certeza)
+            const ingPending = kpiMovs.filter(m => m.caja === 'Ingreso');
             const totalIng30 = ingPending.reduce((s,m) => s + Math.abs(m.usd||0), 0);
             const cobConf = ingPending.filter(m => isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
             const cobNoConf = ingPending.filter(m => !isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
@@ -3444,8 +3461,8 @@
                 document.getElementById('pd_kpiCobNoConfBox').style.borderColor = ncBorder;
             }
 
-            // Fila 2 KPIs — Egresos confirmados
-            const egrPending = next30Pending.filter(m => m.caja === 'Egreso');
+            // Fila 2 KPIs — Egresos confirmados (usa kpiMovs con lógica certeza)
+            const egrPending = kpiMovs.filter(m => m.caja === 'Egreso');
             const totalEgr30 = egrPending.reduce((s,m) => s + Math.abs(m.usd||0), 0);
             const egrConf = egrPending.filter(m => isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
             const egrNoConf = egrPending.filter(m => !isConf(m)).reduce((s,m) => s + Math.abs(m.usd||0), 0);
@@ -3479,20 +3496,27 @@
             }
 
             // --- Calendar logic (same base as dashboard day-1) ---
-            const soloConf = pdEscenario === 'confirmados';
+            // soloConf already declared above for KPIs
 
-            // Separate overdue from future — same logic as dashboard
+            // Separate overdue from future — lógica certeza: conf 30d se desplazan +30 días
             let overdueIng = 0, overdueEgr = 0;
             const byDay = {};
+            const in30Str = in30.toISOString().split('T')[0];
             next30Pending.forEach(m => {
                 const amt = Math.abs(m.usd || 0);
-                const include = !soloConf || isConf(m);
-                if (!include) return;
-                if (m.fecha < todayStr) {
+                // Lógica certeza: en "Solo Confirmados", conf 30d usa fecha +30d
+                let fecha = m.fecha;
+                if (soloConf && !isConf(m)) {
+                    const shifted = new Date(new Date(m.fecha + 'T12:00:00').getTime() + 30*24*60*60*1000);
+                    fecha = shifted.toISOString().split('T')[0];
+                    // Si la fecha desplazada cae fuera del rango de 30 días, se omite
+                    if (fecha >= in30Str) return;
+                }
+                if (fecha < todayStr) {
                     if (m.caja === 'Ingreso') overdueIng += amt; else overdueEgr += amt;
                 } else {
-                    if (!byDay[m.fecha]) byDay[m.fecha] = [];
-                    byDay[m.fecha].push(m);
+                    if (!byDay[fecha]) byDay[fecha] = [];
+                    byDay[fecha].push(m);
                 }
             });
 
@@ -3794,21 +3818,21 @@
             if (container) container.innerHTML = html;
         }
 
-        let piEscenario = 'conservador';
+        let piEscenario = 'todos';
         function setPiEscenario(modo) {
             piEscenario = modo;
-            const btnC = document.getElementById('piToggleCons');
-            const btnO = document.getElementById('piToggleOpt');
-            if (modo === 'conservador') {
-                btnC.className = 'certeza-btn active-certeza'; btnO.className = 'certeza-btn';
+            const btnT = document.getElementById('piToggleTodos');
+            const btnC = document.getElementById('piToggleConf');
+            if (modo === 'todos') {
+                btnT.className = 'certeza-btn active-certeza'; btnC.className = 'certeza-btn';
             } else {
-                btnC.className = 'certeza-btn'; btnO.className = 'certeza-btn active-certeza';
+                btnT.className = 'certeza-btn'; btnC.className = 'certeza-btn active-certeza';
             }
             renderProyIng();
         }
         function renderProyIng() {
             const { today, todayStr, in30, next30Pending } = getBaseData();
-            const soloConf = piEscenario === 'conservador';
+            const soloConf = piEscenario === 'confirmados';
             const d30 = in30.toISOString().split('T')[0];
             const d60 = new Date(today.getTime() + 60*24*60*60*1000).toISOString().split('T')[0];
             const d90 = new Date(today.getTime() + 90*24*60*60*1000).toISOString().split('T')[0];
@@ -3822,7 +3846,7 @@
                 !m.hecho && m.caja === 'Ingreso'
             );
 
-            // Helper: get window label
+            // Helper: get window label based on date
             const getWindow = fecha => {
                 if (fecha <= d30) return '0-30d';
                 if (fecha <= d60) return '31-60d';
@@ -3831,14 +3855,21 @@
             };
 
             // Group by empresa for Clientes and Otros
+            // Lógica certeza: en "Solo Confirmados", conf 30d se desplaza +30 días
+            // y se asigna a la ventana correspondiente a la fecha desplazada
             const clientes = {};
             const otrosMap = {};
             const emptyWin = () => ({ '0-30d':{conf:0,noConf:0},'31-60d':{conf:0,noConf:0},'61-90d':{conf:0,noConf:0},'90d+':{conf:0,noConf:0} });
             pendingIngs.forEach(m => {
                 const cat = m.clase || m.categoria || empClaseMap[m.empresa] || '';
                 const usd = Math.abs(m.usd || 0);
-                const win = getWindow(m.fecha);
                 const conf = isConf(m);
+                // Lógica certeza: desplazar fecha +30d para conf 30d en modo Solo Confirmados
+                let winFecha = m.fecha;
+                if (soloConf && !conf) {
+                    winFecha = new Date(new Date(m.fecha + 'T12:00:00').getTime() + 30*24*60*60*1000).toISOString().split('T')[0];
+                }
+                const win = getWindow(winFecha);
                 if (cat === 'Cliente') {
                     if (!clientes[m.empresa]) clientes[m.empresa] = emptyWin();
                     if (conf) clientes[m.empresa][win].conf += usd; else clientes[m.empresa][win].noConf += usd;
@@ -3851,7 +3882,8 @@
             const windows = ['0-30d','31-60d','61-90d','90d+'];
 
             // === TABLA PIPELINE UNIFICADA ===
-            const cellVal = (c) => soloConf ? c.conf : (c.conf + c.noConf);
+            // En ambos modos se muestra conf + noConf (el total no cambia, solo la distribución entre ventanas)
+            const cellVal = (c) => c.conf + c.noConf;
             const cellTd = (val) => {
                 if (val === 0) return '<td style="text-align:right;padding:6px 10px;color:#c8cdd2;">—</td>';
                 return `<td style="text-align:right;padding:6px 10px;font-weight:600;color:#24a660;">${formatUSD(val)}</td>`;
@@ -4109,9 +4141,9 @@
             // Always regenerate empresa checkbox list (handles empresa renames/additions)
             const empList = document.getElementById('histEmpList');
             if (empList) {
-                // Keep "Todas" checkbox + divider, remove old emp-items
-                empList.querySelectorAll('.emp-item, label:not(:first-child)').forEach(el => el.remove());
+                // Read selected state BEFORE removing old checkboxes
                 const selectedBefore = getSelectedHistEmpresas();
+                empList.querySelectorAll('.emp-item, label:not(:first-child)').forEach(el => el.remove());
                 allEmpresas.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(e => {
                     const lbl = document.createElement('label');
                     const cb = document.createElement('input');
