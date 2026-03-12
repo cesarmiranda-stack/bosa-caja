@@ -1523,17 +1523,22 @@
                     <!-- Filtros -->
                     <div class="card" style="padding:14px 20px;">
                         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                            <select id="histPeriodo" class="f-sel" onchange="histSetPeriodo()">
+                                <option value="12m">Últimos 12 meses</option>
+                                <option value="custom" style="display:none;">Personalizado</option>
+                                <!-- años calendario se generan dinámicamente -->
+                            </select>
                             <select id="histFilterCat" class="f-sel" onchange="renderHistorial()">
                                 <option value="">Todas las categorías</option>
                                 <option value="Cliente">Cliente</option>
                                 <option value="Proveedor">Proveedor</option>
                                 <option value="Servicios">Servicios</option>
-                                        <option value="Otros">Otros</option>
+                                <option value="Otros">Otros</option>
                             </select>
                             <div class="emp-dd" id="histEmpDd">
                                 <button type="button" class="emp-dd-btn" id="histEmpBtn" onclick="toggleHistEmpDd()">Todas las empresas</button>
                                 <div class="emp-dd-list" id="histEmpList">
-                                    <label><input type="checkbox" id="histEmpAll" onchange="histEmpToggleAll(this)"> <strong>Todas</strong></label>
+                                    <label><input type="checkbox" id="histEmpAll" onchange="histEmpToggleAll()"> <strong>Todas</strong></label>
                                     <label><input type="checkbox" id="histEmpNone" onchange="histEmpToggleNone()"> <strong>Ninguna</strong></label>
                                     <hr class="emp-dd-divider">
                                     <!-- populated by renderHistorial() -->
@@ -1544,8 +1549,8 @@
                                 <option value="Ingreso">Solo Ingresos</option>
                                 <option value="Egreso">Solo Egresos</option>
                             </select>
-                            <input type="date" id="histFechaDesde" class="f-sel" onchange="renderHistorial()">
-                            <input type="date" id="histFechaHasta" class="f-sel" onchange="renderHistorial()">
+                            <input type="date" id="histFechaDesde" class="f-sel" onchange="histSetCustomPeriodo();renderHistorial()">
+                            <input type="date" id="histFechaHasta" class="f-sel" onchange="histSetCustomPeriodo();renderHistorial()">
                             <button class="btn btn-ghost btn-sm" onclick="limpiarFiltrosHistorial()" style="color:#b87400;">✕ Limpiar filtros</button>
                             <button class="btn btn-ghost btn-sm" id="histExportBtn" style="margin-left:auto;">📄 Exportar PDF</button>
                         </div>
@@ -3617,46 +3622,119 @@
             document.querySelector('[data-screen="sc-movimientos"]')?.click();
         }
 
+        // === HISTORIAL — Filtro empresas (reescrito) ===
+        // Estado interno: Set con nombres seleccionados. null = todas
+        let _histEmpSelection = null; // null = todas seleccionadas
+
         function getSelectedHistEmpresas() {
-            const boxes = document.querySelectorAll('#histEmpList input[type=checkbox].emp-item');
-            const checked = [...boxes].filter(b => b.checked).map(b => b.value);
-            return checked; // empty = all selected
+            if (_histEmpSelection === null) return []; // vacío = todas
+            return [..._histEmpSelection];
         }
 
         function toggleHistEmpDd() {
             document.getElementById('histEmpList').classList.toggle('open');
         }
 
-        function histEmpToggleAll(cb) {
-            document.querySelectorAll('#histEmpList input[type=checkbox].emp-item').forEach(b => { b.checked = cb.checked; });
-            const noneBox = document.getElementById('histEmpNone');
-            if (noneBox) noneBox.checked = false;
-            updateHistEmpBtn();
+        function histEmpToggleAll() {
+            _histEmpSelection = null;
+            _histEmpSyncUI();
             renderHistorial();
         }
 
         function histEmpToggleNone() {
-            document.querySelectorAll('#histEmpList input[type=checkbox].emp-item').forEach(b => { b.checked = false; });
-            const allBox = document.getElementById('histEmpAll');
-            if (allBox) allBox.checked = false;
-            const noneBox = document.getElementById('histEmpNone');
-            if (noneBox) noneBox.checked = false;
-            updateHistEmpBtn();
+            _histEmpSelection = new Set();
+            _histEmpSyncUI();
             renderHistorial();
         }
 
-        function updateHistEmpBtn() {
-            const boxes = document.querySelectorAll('#histEmpList input[type=checkbox].emp-item');
-            const checked = [...boxes].filter(b => b.checked);
+        function _histEmpToggleOne(nombre) {
+            // Si estaba en "todas", pasar a un Set con todas menos esta
+            if (_histEmpSelection === null) {
+                _histEmpSelection = new Set(allEmpresas.map(e => e.nombre));
+                _histEmpSelection.delete(nombre);
+            } else if (_histEmpSelection.has(nombre)) {
+                _histEmpSelection.delete(nombre);
+            } else {
+                _histEmpSelection.add(nombre);
+            }
+            // Si están todas seleccionadas, volver a null
+            if (_histEmpSelection.size === allEmpresas.length) _histEmpSelection = null;
+            _histEmpSyncUI();
+            renderHistorial();
+        }
+
+        function _histEmpSyncUI() {
+            const boxes = document.querySelectorAll('#histEmpList input.emp-item');
+            const allChecked = _histEmpSelection === null;
+            boxes.forEach(b => {
+                b.checked = allChecked || (_histEmpSelection && _histEmpSelection.has(b.value));
+            });
             const allCb = document.getElementById('histEmpAll');
-            if (allCb) allCb.checked = checked.length === boxes.length;
+            if (allCb) allCb.checked = allChecked;
+            const noneCb = document.getElementById('histEmpNone');
+            if (noneCb) noneCb.checked = false;
+            // Update button text
             const btn = document.getElementById('histEmpBtn');
             if (!btn) return;
-            if (checked.length === 0 || checked.length === boxes.length) {
+            if (allChecked) {
                 btn.textContent = 'Todas las empresas';
+            } else if (_histEmpSelection.size === 0) {
+                btn.textContent = 'Ninguna empresa';
+            } else if (_histEmpSelection.size === 1) {
+                btn.textContent = [..._histEmpSelection][0];
             } else {
-                btn.textContent = checked.length === 1 ? checked[0].value : `${checked.length} empresas`;
+                btn.textContent = _histEmpSelection.size + ' empresas';
             }
+        }
+
+        // === HISTORIAL — Selector de período ===
+        function histSetPeriodo() {
+            const sel = document.getElementById('histPeriodo');
+            const val = sel.value;
+            const desdeEl = document.getElementById('histFechaDesde');
+            const hastaEl = document.getElementById('histFechaHasta');
+            if (val === '12m') {
+                const hoy = new Date();
+                const hace12 = new Date(hoy.getFullYear() - 1, hoy.getMonth(), hoy.getDate());
+                desdeEl.value = hace12.toISOString().split('T')[0];
+                hastaEl.value = hoy.toISOString().split('T')[0];
+            } else if (val === 'custom') {
+                // No cambiar desde/hasta
+            } else {
+                // Año calendario (val = "2025", "2024", etc.)
+                const yr = parseInt(val);
+                desdeEl.value = yr + '-01-01';
+                hastaEl.value = yr + '-12-31';
+            }
+            renderHistorial();
+        }
+
+        function histSetCustomPeriodo() {
+            const sel = document.getElementById('histPeriodo');
+            const customOpt = sel.querySelector('option[value="custom"]');
+            if (customOpt) customOpt.style.display = '';
+            sel.value = 'custom';
+        }
+
+        function histPopulatePeriodos() {
+            const sel = document.getElementById('histPeriodo');
+            if (!sel) return;
+            // Encontrar años con movimientos
+            const years = new Set();
+            allMovimientos.forEach(m => {
+                if (m.hecho && m.fecha) years.add(parseInt(m.fecha.substring(0, 4)));
+            });
+            // Eliminar opciones de años anteriores (dejar solo 12m y custom si existe)
+            [...sel.options].forEach(opt => {
+                if (opt.value !== '12m' && opt.value !== 'custom') opt.remove();
+            });
+            // Agregar años ordenados descendente
+            [...years].sort((a, b) => b - a).forEach(yr => {
+                const opt = document.createElement('option');
+                opt.value = String(yr);
+                opt.textContent = 'Año ' + yr;
+                sel.appendChild(opt);
+            });
         }
 
         function getHistMovimientos() {
@@ -4100,36 +4178,43 @@
         function limpiarFiltrosHistorial() {
             document.getElementById('histFilterCat').value = '';
             document.getElementById('histFilterTipo').value = '';
-            document.getElementById('histFechaDesde').value = '';
-            document.getElementById('histFechaHasta').value = '';
-            // Reset empresa checkboxes
-            document.querySelectorAll('#histEmpList input[type=checkbox]').forEach(b => { b.checked = true; });
-            updateHistEmpBtn();
-            renderHistorial();
+            document.getElementById('histPeriodo').value = '12m';
+            // Reset empresas a todas
+            _histEmpSelection = null;
+            // Aplicar período y renderizar
+            histSetPeriodo();
         }
 
         function renderHistorial() {
             const activeTab = document.querySelector('#sc-historial .tab.active')?.dataset.tab || 'hist-mes';
-            // Always regenerate empresa checkbox list (handles empresa renames/additions)
+            // Populate período selector with available years
+            histPopulatePeriodos();
+            // Auto-apply default period on first render (dates empty)
+            if (!document.getElementById('histFechaDesde').value) {
+                const hoy = new Date();
+                const hace12 = new Date(hoy.getFullYear() - 1, hoy.getMonth(), hoy.getDate());
+                document.getElementById('histFechaDesde').value = hace12.toISOString().split('T')[0];
+                document.getElementById('histFechaHasta').value = hoy.toISOString().split('T')[0];
+            }
+            // Regenerate empresa checkbox list (handles empresa renames/additions)
             const empList = document.getElementById('histEmpList');
             if (empList) {
-                // Read selected state BEFORE removing old checkboxes
-                const selectedBefore = getSelectedHistEmpresas();
-                empList.querySelectorAll('.emp-item').forEach(el => el.parentElement.tagName === 'LABEL' ? el.parentElement.remove() : el.remove());
+                // Remove only dynamic empresa labels (keep Todas/Ninguna/divider)
+                empList.querySelectorAll('label.emp-item-lbl').forEach(el => el.remove());
                 allEmpresas.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(e => {
                     const lbl = document.createElement('label');
+                    lbl.className = 'emp-item-lbl';
                     const cb = document.createElement('input');
-                    cb.type = 'checkbox'; cb.value = e.nombre; cb.className = 'emp-item';
-                    // Re-check if it was checked before or if nothing was selected (all = default)
-                    cb.checked = selectedBefore.length === 0 || selectedBefore.includes(e.nombre);
-                    cb.onchange = () => { updateHistEmpBtn(); renderHistorial(); };
+                    cb.type = 'checkbox';
+                    cb.value = e.nombre;
+                    cb.className = 'emp-item';
+                    cb.checked = _histEmpSelection === null || _histEmpSelection.has(e.nombre);
+                    cb.onchange = () => _histEmpToggleOne(e.nombre);
                     lbl.appendChild(cb);
                     lbl.appendChild(document.createTextNode(' ' + e.nombre));
                     empList.appendChild(lbl);
                 });
-                const allCb = document.getElementById('histEmpAll');
-                const boxes = empList.querySelectorAll('.emp-item');
-                if (allCb) allCb.checked = [...boxes].every(b => b.checked);
+                _histEmpSyncUI();
             }
             if (activeTab === 'hist-mes') renderHistByMonth();
             else if (activeTab === 'hist-cat') renderHistByCategory();
