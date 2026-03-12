@@ -3978,10 +3978,11 @@
                 promHistMap[emp] = total / monthsSpan;
             });
 
-            // Pipeline total per client
+            // Pipeline total per client (always optimista = conf + noConf for performance)
+            const perfCellVal = (c) => c.conf + c.noConf;
             const pipelineTotalMap = {};
             Object.entries(clientes).forEach(([emp, wins]) => {
-                pipelineTotalMap[emp] = windows.reduce((s,w) => s + cellVal(wins[w]), 0);
+                pipelineTotalMap[emp] = windows.reduce((s,w) => s + perfCellVal(wins[w]), 0);
             });
 
             // Ritmo Mensual = Pipeline Total / months spanned by pipeline
@@ -3994,7 +3995,7 @@
                 let earliest = null, latest = null;
                 const winMonths = { '0-30d': 1, '31-60d': 2, '61-90d': 3, '90d+': 4 };
                 windows.forEach(w => {
-                    if (cellVal(wins[w]) > 0) {
+                    if (perfCellVal(wins[w]) > 0) {
                         if (earliest === null) earliest = winMonths[w];
                         latest = winMonths[w];
                     }
@@ -4341,10 +4342,13 @@
 
             // Pre-compute movement stats once (performance fix)
             const statsMap = {};
+            const firstDateMap = {};
+            const todayE = new Date();
             allMovimientos.forEach(m => {
                 if (!statsMap[m.empresa]) statsMap[m.empresa] = { count: 0, total: 0 };
                 statsMap[m.empresa].count++;
                 statsMap[m.empresa].total += getMovimientoAmount(m);
+                if (!firstDateMap[m.empresa] || m.fecha < firstDateMap[m.empresa]) firstDateMap[m.empresa] = m.fecha;
             });
 
             let filtered = allEmpresas.filter(emp => {
@@ -4357,8 +4361,9 @@
             const tbody = document.getElementById('empresasBody');
             tbody.innerHTML = filtered.map(emp => {
                 const stats = statsMap[emp.nombre] || { count: 0, total: 0 };
-                const monthCount = new Date().getMonth() + 1;
-                const prom = monthCount > 0 ? stats.total / monthCount : 0;
+                const first = firstDateMap[emp.nombre];
+                const monthCount = first ? Math.max(1, (todayE.getFullYear() - new Date(first+'T12:00:00').getFullYear()) * 12 + (todayE.getMonth() - new Date(first+'T12:00:00').getMonth()) + 1) : 1;
+                const prom = stats.total / monthCount;
 
                 return `<tr>
                     <td><strong>${emp.nombre}</strong></td>
