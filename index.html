@@ -1219,6 +1219,13 @@
                                 </select>
                             </div>
 
+                            <!-- Proyecto (solo visible para Clientes) -->
+                            <div class="form-group" id="nmProyectoRow" style="display:none;">
+                                <label>Proyecto</label>
+                                <input type="text" id="nmProyecto" list="nmProyectoList" placeholder="Nombre del proyecto (opcional)" style="width:100%;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;">
+                                <datalist id="nmProyectoList"></datalist>
+                            </div>
+
                             <!-- Monto -->
                             <div class="form-group">
                                 <label>Monto <span class="tip-icon" data-tip="Ingresá el importe siempre como positivo. Si usás pesos (UYU), el sistema los convierte automáticamente a dólares usando el tipo de cambio del día.">?</span></label>
@@ -1234,13 +1241,6 @@
                                 </div>
                                 <div style="font-size:11px;color:#9ba3ab;margin-top:5px;">TC del día tomado automáticamente de BCU · editable si es necesario</div>
                             </div>
-                            <!-- Proyecto (solo visible para Clientes) -->
-                            <div class="form-group" id="nmProyectoRow" style="display:none;">
-                                <label>Proyecto</label>
-                                <input type="text" id="nmProyecto" list="nmProyectoList" placeholder="Nombre del proyecto (opcional)" style="width:100%;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;">
-                                <datalist id="nmProyectoList"></datalist>
-                            </div>
-
                             <!-- Hidden fields for compatibility -->
                             <input type="hidden" id="nmPesos" value="0">
                             <input type="hidden" id="nmUSD" value="0">
@@ -1302,6 +1302,7 @@
                                 <option value="" selected>Estado: Todos</option>
                                 <option value="Realizados">Realizados</option>
                                 <option value="Pendientes">Pendientes</option>
+                                <option value="Atrasados">Atrasados</option>
                             </select>
                             <select id="movFilterEmpresa" class="f-sel" onchange="renderMovimientos()">
                                 <option value="">Empresa: Todas</option>
@@ -1322,6 +1323,14 @@
                                 <option value="fecha_desc">Orden: Fecha ↓</option>
                                 <option value="created_asc">Orden: Primer agregado</option>
                             </select>
+                        </div>
+
+                        <div id="movAtrasadasAlert" style="display:none;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:12px 18px;margin-bottom:14px;align-items:center;justify-content:space-between;gap:12px;">
+                            <div>
+                                <div style="font-weight:700;color:#b87400;font-size:13px;" id="movAtrasadasText"></div>
+                                <div style="font-size:12px;color:#9ba3ab;">Revisalas y marcalas como realizadas o ajustá las fechas.</div>
+                            </div>
+                            <button class="btn btn-ghost btn-sm" style="white-space:nowrap;" onclick="document.getElementById('movFilterEstado').value='Atrasados';renderMovimientos();">Filtrar atrasadas</button>
                         </div>
 
                         <div class="table-wrap">
@@ -1749,6 +1758,13 @@
                     </div>
                 </div>
 
+                <!-- Proyecto (solo visible para Clientes) -->
+                <div class="form-group" id="emProyectoRow" style="display:none;">
+                    <label>Proyecto</label>
+                    <input type="text" id="emProyecto" list="emProyectoList" placeholder="Nombre del proyecto (opcional)" style="width:100%;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;">
+                    <datalist id="emProyectoList"></datalist>
+                </div>
+
                 <!-- Dirección (Ingreso/Egreso) como botones toggle -->
                 <div class="form-group">
                     <label>Dirección</label>
@@ -1771,13 +1787,6 @@
                         <input type="number" id="emTC" placeholder="43.50" step="0.01" value="43.50" style="width:72px;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;display:none;" oninput="emCalcMonto()">
                         <span style="font-size:13px;color:#9ba3ab;white-space:nowrap;">= USD <strong id="emUSDEquiv" style="color:#252a2e;">0</strong></span>
                     </div>
-                </div>
-
-                <!-- Proyecto (solo visible para Clientes) -->
-                <div class="form-group" id="emProyectoRow" style="display:none;">
-                    <label>Proyecto</label>
-                    <input type="text" id="emProyecto" list="emProyectoList" placeholder="Nombre del proyecto (opcional)" style="width:100%;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;">
-                    <datalist id="emProyectoList"></datalist>
                 </div>
 
                 <!-- Detalle -->
@@ -2455,7 +2464,6 @@
             const mov = {
                 fecha: document.getElementById('nmFecha').value,
                 empresa: document.getElementById('nmEmpresa').value,
-                proyecto: proyVal || null,
                 caja: document.getElementById('nmCaja').value,
                 detalle: document.getElementById('nmDetalle').value,
                 documento: '',
@@ -2468,6 +2476,7 @@
                 hecho: isHecho
             };
 
+            if (proyVal) mov.proyecto = proyVal;
             const { error } = await supabaseClient.from('movimientos').insert([mov]);
             if (error) { alert('Error: ' + error.message); return; }
 
@@ -2516,9 +2525,11 @@
                         formatNumber(Math.abs(mov.pesos||0), 0).includes(searchTerm)
                     ));
                 
-                const matchEstado = !filterEstado || 
+                const todayStr_ = new Date().toISOString().slice(0,10);
+                const matchEstado = !filterEstado ||
                     (filterEstado === 'Realizados' && mov.hecho) ||
-                    (filterEstado === 'Pendientes' && !mov.hecho);
+                    (filterEstado === 'Pendientes' && !mov.hecho) ||
+                    (filterEstado === 'Atrasados' && !mov.hecho && mov.fecha < todayStr_);
                 
                 const matchEmpresa = !filterEmpresa || mov.empresa === filterEmpresa;
                 const matchCaja = !filterCaja || mov.caja === filterCaja;
@@ -2555,6 +2566,17 @@
                     <td><button class="btn btn-ghost btn-sm" onclick="abrirMovModal('${mov.id}')">Editar</button></td>
                 </tr>`;
             }).join('');
+
+            // Alerta de atrasados
+            const todayA = new Date().toISOString().slice(0,10);
+            const atrasadas = allMovimientos.filter(m => !m.hecho && m.fecha < todayA);
+            const alertEl = document.getElementById('movAtrasadasAlert');
+            if (atrasadas.length > 0 && filterEstado !== 'Atrasados') {
+                document.getElementById('movAtrasadasText').textContent = `${atrasadas.length} operación${atrasadas.length>1?'es':''} con fecha pasada sin confirmar`;
+                alertEl.style.display = 'flex';
+            } else {
+                alertEl.style.display = 'none';
+            }
         }
 
         async function toggleMovimientoDone(id, checked) {
@@ -2709,7 +2731,6 @@
             const mov = {
                 fecha: document.getElementById('emFecha').value,
                 empresa: document.getElementById('emEmpresa').value,
-                proyecto: emProyVal || null,
                 caja: document.getElementById('emCaja').value,
                 detalle: document.getElementById('emDetalle').value,
                 documento: document.getElementById('emDocumento').value || '',
@@ -2722,6 +2743,7 @@
                 hecho: isHecho
             };
 
+            if (emProyVal || document.getElementById('emProyectoRow').style.display !== 'none') mov.proyecto = emProyVal || null;
             const { error } = await supabaseClient
                 .from('movimientos')
                 .update(mov)
@@ -3686,6 +3708,7 @@
         }
 
         function verVencidas() {
+            document.getElementById('movFilterEstado').value = 'Atrasados';
             document.querySelector('[data-screen="sc-movimientos"]')?.click();
         }
 
