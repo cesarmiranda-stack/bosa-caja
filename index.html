@@ -1502,82 +1502,19 @@
 
                 <!-- PROYECCION INGRESOS SCREEN -->
                 <div id="sc-proyIng" class="screen">
-                    <!-- Toggle Pipeline / Performance -->
+                    <!-- Toggle Conservador / Optimista -->
                     <div class="certeza-toggle" style="margin-bottom:12px;">
-                        <button type="button" id="piTogglePipeline" class="certeza-btn active-certeza" onclick="setPiVista('pipeline')">Pipeline</button>
-                        <button type="button" id="piTogglePerformance" class="certeza-btn" onclick="setPiVista('performance')">Performance</button>
+                        <button type="button" id="piToggleCons" class="certeza-btn active-certeza" onclick="setPiEscenario('conservador')">Conservador</button>
+                        <button type="button" id="piToggleOpt" class="certeza-btn" onclick="setPiEscenario('optimista')">Optimista</button>
                     </div>
 
-                    <!-- VISTA PIPELINE -->
-                    <div id="piVistaPipeline">
-                        <!-- KPIs Pipeline -->
-                        <div class="kpi-grid" style="margin-bottom:16px;">
-                            <div class="kpi" id="piKpi30Box" style="background:linear-gradient(135deg,rgba(36,166,96,0.08),rgba(36,166,96,0.04));border:1px solid rgba(36,166,96,0.2);">
-                                <div class="kpi-lbl">A Cobrar 30d <span class="tip-icon" data-tip="Ingresos confirmados pendientes en los próximos 30 días (incluye atrasados). Coincide con Cobranza Confirmada del Dashboard.">?</span></div>
-                                <div class="kpi-val k-green" id="piKpi30">$0</div>
-                                <div class="kpi-sub">confirmados</div>
-                                <div id="piKpi30pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
-                            </div>
-                            <div class="kpi" id="piKpi90Box" style="background:linear-gradient(135deg,rgba(36,166,96,0.06),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.15);">
-                                <div class="kpi-lbl">A Cobrar 90d <span class="tip-icon" data-tip="Ingresos confirmados pendientes en los próximos 90 días.">?</span></div>
-                                <div class="kpi-val k-green" id="piKpi90">$0</div>
-                                <div class="kpi-sub">confirmados</div>
-                                <div id="piKpi90pm" style="font-size:11px;color:#b87400;font-weight:600;margin-top:2px;"></div>
-                            </div>
-                            <div class="kpi" style="background:linear-gradient(135deg,rgba(59,130,196,0.07),rgba(59,130,196,0.02));border:1px solid rgba(59,130,196,0.2);">
-                                <div class="kpi-lbl">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes (confirmados + sin confirmar) sin límite de fecha.">?</span></div>
-                                <div class="kpi-val" id="piKpiTotal" style="color:#3b82c4;">$0</div>
-                                <div class="kpi-sub">todos los pendientes</div>
-                            </div>
-                            <div class="kpi" id="piKpiSinCobrBox" style="background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.25);">
-                                <div class="kpi-lbl">Clientes Sin Actividad <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ingresos futuros registrados. Oportunidad para el equipo de ventas.">?</span></div>
-                                <div class="kpi-val" id="piKpiSinCobr" style="color:#b87400;">0</div>
-                                <div class="kpi-sub" style="color:#b87400;">clientes</div>
-                            </div>
-                        </div>
-                        <!-- Tablas pipeline -->
-                        <div id="piTablaClientes"></div>
-                        <div id="piTablaOtros"></div>
-                        <!-- Gráfico pipeline -->
-                        <div class="card">
-                            <div class="card-title">Pipeline por Período</div>
-                            <div class="chart-container" style="height:280px;">
-                                <canvas id="piChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Tabla Pipeline -->
+                    <div id="piTablaPipeline"></div>
 
-                    <!-- VISTA PERFORMANCE -->
-                    <div id="piVistaPerformance" style="display:none;">
-                        <!-- KPIs Performance -->
-                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px;">
-                            <div class="kpi" style="background:linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02));border:1px solid rgba(36,166,96,0.2);">
-                                <div class="kpi-lbl">Clientes Activos <span class="tip-icon" data-tip="Clientes con al menos un ingreso futuro registrado.">?</span></div>
-                                <div class="kpi-val k-green" id="perfKpiActivos">0</div>
-                                <div class="kpi-sub">con cobranza futura</div>
-                            </div>
-                            <div class="kpi" id="perfKpiInactivosBox" style="border:1px solid rgba(192,57,43,0.2);">
-                                <div class="kpi-lbl">Clientes Sin Actividad <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ningún ingreso futuro registrado.">?</span></div>
-                                <div class="kpi-val" id="perfKpiInactivos" style="color:#9ba3ab;">0</div>
-                                <div class="kpi-sub">sin ingresos futuros</div>
-                            </div>
-                            <div class="kpi" id="perfKpiRiesgoBox" style="border:1px solid rgba(192,57,43,0.2);">
-                                <div class="kpi-lbl">Ingreso Mensual en Riesgo <span class="tip-icon" data-tip="Suma del promedio mensual (12M) de los clientes sin actividad. Indica cuánto ingreso potencial no se está persiguiendo.">?</span></div>
-                                <div class="kpi-val" id="perfKpiRiesgo" style="color:#9ba3ab;">$0</div>
-                                <div class="kpi-sub">prom. mensual 12M</div>
-                            </div>
-                        </div>
-                        <!-- Tabla Clientes Activos -->
-                        <div class="card" style="margin-bottom:16px;">
-                            <div class="card-title">Clientes Activos</div>
-                            <div id="perfTablaActivos"></div>
-                        </div>
-                        <!-- Tabla Actividad de Clientes -->
-                        <div class="card" style="border-left:3px solid rgba(192,57,43,0.4);">
-                            <div class="card-title" style="color:#c0392b;">Actividad de Clientes</div>
-                            <div style="font-size:12px;color:#9ba3ab;margin-bottom:12px;">Clientes con historial de pagos pero sin actividad futura registrada.</div>
-                            <div id="perfTablaInactivos"></div>
-                        </div>
+                    <!-- Performance de Clientes -->
+                    <div class="card" style="margin-top:16px;">
+                        <div class="card-title">Performance de Clientes</div>
+                        <div id="piTablaPerformance"></div>
                     </div>
                 </div>
 
@@ -3857,25 +3794,21 @@
             if (container) container.innerHTML = html;
         }
 
-        let piVista = 'pipeline';
-        function setPiVista(vista) {
-            piVista = vista;
-            const btnP = document.getElementById('piTogglePipeline');
-            const btnF = document.getElementById('piTogglePerformance');
-            if (vista === 'pipeline') {
-                btnP.className = 'certeza-btn active-certeza'; btnF.className = 'certeza-btn';
-                document.getElementById('piVistaPipeline').style.display = '';
-                document.getElementById('piVistaPerformance').style.display = 'none';
+        let piEscenario = 'conservador';
+        function setPiEscenario(modo) {
+            piEscenario = modo;
+            const btnC = document.getElementById('piToggleCons');
+            const btnO = document.getElementById('piToggleOpt');
+            if (modo === 'conservador') {
+                btnC.className = 'certeza-btn active-certeza'; btnO.className = 'certeza-btn';
             } else {
-                btnP.className = 'certeza-btn'; btnF.className = 'certeza-btn active-certeza';
-                document.getElementById('piVistaPipeline').style.display = 'none';
-                document.getElementById('piVistaPerformance').style.display = '';
+                btnC.className = 'certeza-btn'; btnO.className = 'certeza-btn active-certeza';
             }
+            renderProyIng();
         }
-
-        let piChart = null;
         function renderProyIng() {
             const { today, todayStr, in30, next30Pending } = getBaseData();
+            const soloConf = piEscenario === 'conservador';
             const d30 = in30.toISOString().split('T')[0];
             const d60 = new Date(today.getTime() + 60*24*60*60*1000).toISOString().split('T')[0];
             const d90 = new Date(today.getTime() + 90*24*60*60*1000).toISOString().split('T')[0];
@@ -3897,7 +3830,7 @@
                 return '90d+';
             };
 
-            // Group by empresa for Clientes
+            // Group by empresa for Clientes and Otros
             const clientes = {};
             const otrosMap = {};
             const emptyWin = () => ({ '0-30d':{conf:0,noConf:0},'31-60d':{conf:0,noConf:0},'61-90d':{conf:0,noConf:0},'90d+':{conf:0,noConf:0} });
@@ -3916,244 +3849,247 @@
             });
 
             const windows = ['0-30d','31-60d','61-90d','90d+'];
-            const cellHtml = (c) => {
-                const total = c.conf + c.noConf;
-                if (total === 0) return '<td style="text-align:right;padding:6px 10px;color:#c8cdd2;">—</td>';
-                let inner = '';
-                if (c.conf > 0) inner += `<div style="color:#24a660;font-weight:600;">${formatUSD(c.conf)}</div>`;
-                if (c.noConf > 0) inner += `<div style="font-size:11px;color:#b87400;">+${formatUSD(c.noConf)} ±30d</div>`;
-                return `<td style="text-align:right;padding:6px 10px;background:${c.conf>0?'rgba(36,166,96,0.04)':'transparent'};">${inner}</td>`;
+
+            // === TABLA PIPELINE UNIFICADA ===
+            const cellVal = (c) => soloConf ? c.conf : (c.conf + c.noConf);
+            const cellTd = (val) => {
+                if (val === 0) return '<td style="text-align:right;padding:6px 10px;color:#c8cdd2;">—</td>';
+                return `<td style="text-align:right;padding:6px 10px;font-weight:600;color:#24a660;">${formatUSD(val)}</td>`;
             };
-            const buildTable = (dataMap, title, emptyMsg) => {
-                const rows = Object.entries(dataMap).sort((a,b) => {
-                    const ta = windows.reduce((s,w) => s+a[1][w].conf+a[1][w].noConf, 0);
-                    const tb = windows.reduce((s,w) => s+b[1][w].conf+b[1][w].noConf, 0);
-                    return tb - ta;
-                });
-                const totals = {'0-30d':{conf:0,noConf:0},'31-60d':{conf:0,noConf:0},'61-90d':{conf:0,noConf:0},'90d+':{conf:0,noConf:0}};
-                rows.forEach(([,v]) => windows.forEach(w => { totals[w].conf += v[w].conf; totals[w].noConf += v[w].noConf; }));
-                const grandTotal = windows.reduce((s,w) => s+totals[w].conf+totals[w].noConf, 0);
 
-                if (rows.length === 0) {
-                    return `<div class="card" style="margin-bottom:16px;">
-                        <div class="card-title">${title}</div>
-                        <div style="color:#9ba3ab;font-style:italic;font-size:13px;padding:8px 0;">${emptyMsg}</div>
-                    </div>`;
-                }
+            const cliRows = Object.entries(clientes).sort((a,b) => {
+                const ta = windows.reduce((s,w) => s + cellVal(a[1][w]), 0);
+                const tb = windows.reduce((s,w) => s + cellVal(b[1][w]), 0);
+                return tb - ta;
+            });
+            const otrosRows = Object.entries(otrosMap).sort((a,b) => {
+                const ta = windows.reduce((s,w) => s + cellVal(a[1][w]), 0);
+                const tb = windows.reduce((s,w) => s + cellVal(b[1][w]), 0);
+                return tb - ta;
+            });
+            const hasOtros = otrosRows.length > 0 && otrosRows.some(([,v]) => windows.some(w => cellVal(v[w]) > 0));
 
-                let html = `<div class="card" style="margin-bottom:16px;">
-                    <div class="card-title">${title}</div>
+            // Subtotals clientes
+            const subCli = {};
+            windows.forEach(w => { subCli[w] = cliRows.reduce((s,[,v]) => s + cellVal(v[w]), 0); });
+            const subCliTotal = windows.reduce((s,w) => s + subCli[w], 0);
+            // Subtotals otros
+            const subOtros = {};
+            windows.forEach(w => { subOtros[w] = otrosRows.reduce((s,[,v]) => s + cellVal(v[w]), 0); });
+            const subOtrosTotal = windows.reduce((s,w) => s + subOtros[w], 0);
+            // Grand total
+            const grandTotal = subCliTotal + subOtrosTotal;
+
+            const thS = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+
+            let pipHtml = '';
+            if (cliRows.length === 0 && !hasOtros) {
+                pipHtml = `<div class="card"><div class="card-title">Pipeline de Ingresos</div>
+                    <div style="color:#9ba3ab;font-style:italic;font-size:13px;padding:8px 0;">Sin ingresos pendientes registrados.</div></div>`;
+            } else {
+                pipHtml = `<div class="card"><div class="card-title">Pipeline de Ingresos</div>
                     <div style="overflow-x:auto;">
                     <table style="width:100%;border-collapse:collapse;font-size:13px;">
                     <thead><tr style="background:#f8f9fa;">
-                        <th style="text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">Cliente / Concepto</th>
-                        ${windows.map(w => `<th style="text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;">${w}</th>`).join('')}
-                        <th style="text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#252a2e;text-transform:uppercase;">Total</th>
+                        <th style="${thS}">Cliente / Concepto</th>
+                        ${windows.map(w => `<th style="${thR}">${w}</th>`).join('')}
+                        <th style="${thR}color:#252a2e;">Total</th>
                     </tr></thead><tbody>`;
-                rows.forEach(([emp, vals]) => {
-                    const total = windows.reduce((s,w) => s+vals[w].conf+vals[w].noConf, 0);
-                    html += `<tr style="border-top:1px solid #f0f2f4;">
+
+                // Client rows
+                cliRows.forEach(([emp, vals]) => {
+                    const total = windows.reduce((s,w) => s + cellVal(vals[w]), 0);
+                    if (total === 0) return;
+                    pipHtml += `<tr style="border-top:1px solid #f0f2f4;">
                         <td style="padding:6px 10px;font-weight:600;color:#252a2e;">${emp}</td>
-                        ${windows.map(w => cellHtml(vals[w])).join('')}
+                        ${windows.map(w => cellTd(cellVal(vals[w]))).join('')}
                         <td style="text-align:right;padding:6px 10px;font-weight:700;color:#252a2e;">${formatUSD(total)}</td>
                     </tr>`;
                 });
-                html += `<tr style="border-top:2px solid #e3e6e9;background:#f8f9fa;font-weight:700;">
-                    <td style="padding:8px 10px;color:#5a616b;">TOTAL</td>
-                    ${windows.map(w => { const t=totals[w].conf+totals[w].noConf; return `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${t>0?formatUSD(t):'—'}</td>`; }).join('')}
-                    <td style="text-align:right;padding:8px 10px;color:#24a660;font-size:15px;">${formatUSD(grandTotal)}</td>
-                </tr></tbody></table></div></div>`;
-                return html;
-            };
 
-            document.getElementById('piTablaClientes').innerHTML = buildTable(clientes, 'Pipeline de Clientes', 'Sin ingresos de clientes registrados.');
-            document.getElementById('piTablaOtros').innerHTML = buildTable(otrosMap, 'Otros Ingresos Esperados', 'Sin otros ingresos registrados (aportes, préstamos, etc.).');
-
-            // === KPIs Pipeline ===
-            // Coherente con dashboard: conf30 usa next30Pending (incluye atrasados)
-            const ingPending30 = next30Pending.filter(m => m.caja === 'Ingreso');
-            const conf30 = ingPending30.filter(m => isConf(m)).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const est30 = ingPending30.filter(m => !isConf(m)).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            // 90d y total usan pendingIngs (todos los pendientes sin límite)
-            const conf90 = pendingIngs.filter(m => isConf(m) && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const est90 = pendingIngs.filter(m => !isConf(m) && m.fecha <= d90).reduce((s,m) => s+Math.abs(m.usd||0), 0);
-            const allPipelineTotal = pendingIngs.reduce((s,m) => s+Math.abs(m.usd||0), 0);
-
-            document.getElementById('piKpi30').textContent = formatUSD(conf30);
-            document.getElementById('piKpi90').textContent = formatUSD(conf90);
-            document.getElementById('piKpiTotal').textContent = formatUSD(allPipelineTotal);
-            const el30pm = document.getElementById('piKpi30pm'); if (el30pm) el30pm.textContent = est30 > 0 ? `+${formatUSD(est30)} est. ±30d` : '';
-            const el90pm = document.getElementById('piKpi90pm'); if (el90pm) el90pm.textContent = est90 > 0 ? `+${formatUSD(est90)} est. ±30d` : '';
-
-            // Clientes con/sin cobranza futura
-            const clientesConFuturo = new Set(Object.keys(clientes));
-            const clientesConHistorial = new Set(allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase === 'Cliente' || m.categoria === 'Cliente' || empClaseMap[m.empresa] === 'Cliente')).map(m => m.empresa));
-            const sinCobranza = [...clientesConHistorial].filter(e => !clientesConFuturo.has(e));
-            document.getElementById('piKpiSinCobr').textContent = sinCobranza.length;
-            // Color dinámico: rojo si hay clientes sin cobranza
-            const scBox = document.getElementById('piKpiSinCobrBox');
-            if (scBox) {
-                if (sinCobranza.length > 0) {
-                    scBox.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.08),rgba(192,57,43,0.02))';
-                    scBox.style.borderColor = 'rgba(192,57,43,0.25)';
-                    document.getElementById('piKpiSinCobr').style.color = '#c0392b';
+                if (hasOtros) {
+                    // Subtotal Clientes
+                    pipHtml += `<tr style="border-top:2px solid #e3e6e9;background:#f8f9fa;font-weight:700;">
+                        <td style="padding:8px 10px;color:#5a616b;">SUBTOTAL CLIENTES</td>
+                        ${windows.map(w => `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${subCli[w]>0?formatUSD(subCli[w]):'—'}</td>`).join('')}
+                        <td style="text-align:right;padding:8px 10px;color:#252a2e;">${formatUSD(subCliTotal)}</td>
+                    </tr>`;
+                    // Otros rows
+                    otrosRows.forEach(([emp, vals]) => {
+                        const total = windows.reduce((s,w) => s + cellVal(vals[w]), 0);
+                        if (total === 0) return;
+                        pipHtml += `<tr style="border-top:1px solid #f0f2f4;">
+                            <td style="padding:6px 10px;font-weight:600;color:#5a616b;font-style:italic;">${emp}</td>
+                            ${windows.map(w => cellTd(cellVal(vals[w]))).join('')}
+                            <td style="text-align:right;padding:6px 10px;font-weight:700;color:#5a616b;">${formatUSD(total)}</td>
+                        </tr>`;
+                    });
+                    // TOTAL (clientes + otros)
+                    pipHtml += `<tr style="border-top:2px solid #e3e6e9;background:#f0f7f3;font-weight:700;">
+                        <td style="padding:8px 10px;color:#252a2e;">TOTAL</td>
+                        ${windows.map(w => { const t = subCli[w]+subOtros[w]; return `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${t>0?formatUSD(t):'—'}</td>`; }).join('')}
+                        <td style="text-align:right;padding:8px 10px;color:#24a660;font-size:15px;">${formatUSD(grandTotal)}</td>
+                    </tr>`;
                 } else {
-                    scBox.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
-                    scBox.style.borderColor = 'rgba(36,166,96,0.2)';
-                    document.getElementById('piKpiSinCobr').style.color = '#24a660';
+                    // Solo TOTAL (sin subtotales porque no hay otros)
+                    pipHtml += `<tr style="border-top:2px solid #e3e6e9;background:#f8f9fa;font-weight:700;">
+                        <td style="padding:8px 10px;color:#5a616b;">TOTAL</td>
+                        ${windows.map(w => `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${subCli[w]>0?formatUSD(subCli[w]):'—'}</td>`).join('')}
+                        <td style="text-align:right;padding:8px 10px;color:#24a660;font-size:15px;">${formatUSD(subCliTotal)}</td>
+                    </tr>`;
                 }
+                pipHtml += '</tbody></table></div></div>';
             }
+            document.getElementById('piTablaPipeline').innerHTML = pipHtml;
 
-            // === Chart Pipeline ===
-            const topEmps = Object.entries(clientes).sort((a,b) => {
-                const ta = windows.reduce((s,w) => s+a[1][w], 0);
-                const tb = windows.reduce((s,w) => s+b[1][w], 0);
-                return tb - ta;
-            }).slice(0, 6).map(([e]) => e);
+            // === TABLA PERFORMANCE UNIFICADA ===
+            // Collect all clients with history (entire history, not limited to 12 months)
+            const allHistClientes = allMovimientos.filter(m =>
+                m.hecho && m.caja === 'Ingreso' &&
+                (m.clase === 'Cliente' || m.categoria === 'Cliente' || empClaseMap[m.empresa] === 'Cliente')
+            );
 
-            const colors = ['rgba(36,166,96,0.8)','rgba(59,130,196,0.8)','rgba(245,166,35,0.8)','rgba(192,57,43,0.8)','rgba(139,92,246,0.8)','rgba(16,185,129,0.8)'];
-            const chartCtx = document.getElementById('piChart');
-            if (piChart) piChart.destroy();
-            if (chartCtx && topEmps.length > 0) {
-                piChart = new Chart(chartCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: windows,
-                        datasets: topEmps.map((emp, i) => ({
-                            label: emp,
-                            data: windows.map(w => { const c = clientes[emp]?.[w]; return c ? c.conf + c.noConf : 0; }),
-                            backgroundColor: colors[i % colors.length],
-                            borderRadius: 3
-                        }))
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': ' + formatUSD(c.raw) } } },
-                        scales: {
-                            x: { stacked: true },
-                            y: { stacked: true, ticks: { callback: v => '$' + formatNumber(v, 0) } }
-                        }
+            // Total historical per client (entire history)
+            const histTotalMap = {};
+            // First cobro date per client
+            const firstCobroMap = {};
+            // Last cobro date per client
+            const lastCobroMap = {};
+            // Distinct months per client (for regularidad)
+            const distinctMonthsMap = {};
+
+            allHistClientes.forEach(m => {
+                const emp = m.empresa;
+                const usd = Math.abs(getMovimientoAmount(m));
+                if (!histTotalMap[emp]) histTotalMap[emp] = 0;
+                histTotalMap[emp] += usd;
+                if (!firstCobroMap[emp] || m.fecha < firstCobroMap[emp]) firstCobroMap[emp] = m.fecha;
+                if (!lastCobroMap[emp] || m.fecha > lastCobroMap[emp]) lastCobroMap[emp] = m.fecha;
+                if (!distinctMonthsMap[emp]) distinctMonthsMap[emp] = new Set();
+                distinctMonthsMap[emp].add(m.fecha.substring(0, 7)); // YYYY-MM
+            });
+
+            // Prom. Histórico = total / months from first cobro to today
+            const promHistMap = {};
+            Object.entries(histTotalMap).forEach(([emp, total]) => {
+                const firstDate = new Date(firstCobroMap[emp] + 'T12:00:00');
+                const monthsSpan = Math.max(1, (today.getFullYear() - firstDate.getFullYear()) * 12 + (today.getMonth() - firstDate.getMonth()) + 1);
+                promHistMap[emp] = total / monthsSpan;
+            });
+
+            // Pipeline total per client
+            const pipelineTotalMap = {};
+            Object.entries(clientes).forEach(([emp, wins]) => {
+                pipelineTotalMap[emp] = windows.reduce((s,w) => s + cellVal(wins[w]), 0);
+            });
+
+            // Ritmo Mensual = Pipeline Total / months spanned by pipeline
+            // We need to find the pipeline span per client
+            const ritmoMap = {};
+            Object.entries(clientes).forEach(([emp, wins]) => {
+                const pTotal = pipelineTotalMap[emp] || 0;
+                if (pTotal === 0) { ritmoMap[emp] = 0; return; }
+                // Find earliest and latest window with amount
+                let earliest = null, latest = null;
+                const winMonths = { '0-30d': 1, '31-60d': 2, '61-90d': 3, '90d+': 4 };
+                windows.forEach(w => {
+                    if (cellVal(wins[w]) > 0) {
+                        if (earliest === null) earliest = winMonths[w];
+                        latest = winMonths[w];
                     }
                 });
-            } else if (chartCtx) {
-                const ctx2 = chartCtx.getContext('2d');
-                ctx2.clearRect(0, 0, chartCtx.width, chartCtx.height);
-            }
-
-            // === VISTA PERFORMANCE ===
-            const hace12m = new Date(today.getFullYear()-1, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-            const histClientes = allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase==='Cliente'||m.categoria==='Cliente'||empClaseMap[m.empresa]==='Cliente') && m.fecha >= hace12m);
-
-            const histMap = {};
-            histClientes.forEach(m => {
-                if (!histMap[m.empresa]) histMap[m.empresa] = 0;
-                histMap[m.empresa] += Math.abs(getMovimientoAmount(m));
-            });
-            const promMap = {};
-            Object.entries(histMap).forEach(([emp, total]) => { promMap[emp] = total / 12; });
-
-            const lastCobroMap = {};
-            allMovimientos.filter(m => m.hecho && m.caja === 'Ingreso' && (m.clase==='Cliente'||m.categoria==='Cliente'||empClaseMap[m.empresa]==='Cliente')).forEach(m => {
-                if (!lastCobroMap[m.empresa] || m.fecha > lastCobroMap[m.empresa]) lastCobroMap[m.empresa] = m.fecha;
+                const span = (latest && earliest) ? Math.max(1, latest - earliest + 1) : 1;
+                ritmoMap[emp] = pTotal / span;
             });
 
-            // KPIs Performance
-            const activosCount = clientesConFuturo.size;
-            const inactivosCount = sinCobranza.length;
-            const ingresoRiesgo = sinCobranza.reduce((s, emp) => s + (promMap[emp] || 0), 0);
-            document.getElementById('perfKpiActivos').textContent = activosCount;
-            document.getElementById('perfKpiInactivos').textContent = inactivosCount;
-            const inactivosBox = document.getElementById('perfKpiInactivosBox');
-            if (inactivosCount > 0) {
-                document.getElementById('perfKpiInactivos').style.color = '#c0392b';
-                inactivosBox.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
-                inactivosBox.style.borderColor = 'rgba(192,57,43,0.25)';
-            } else {
-                document.getElementById('perfKpiInactivos').style.color = '#24a660';
-                inactivosBox.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
-                inactivosBox.style.borderColor = 'rgba(36,166,96,0.2)';
-            }
-            document.getElementById('perfKpiRiesgo').textContent = formatUSD(ingresoRiesgo);
-            const riesgoBox = document.getElementById('perfKpiRiesgoBox');
-            if (ingresoRiesgo > 0) {
-                document.getElementById('perfKpiRiesgo').style.color = '#c0392b';
-                riesgoBox.style.background = 'linear-gradient(135deg,rgba(192,57,43,0.07),rgba(192,57,43,0.02))';
-                riesgoBox.style.borderColor = 'rgba(192,57,43,0.25)';
-            } else {
-                document.getElementById('perfKpiRiesgo').style.color = '#24a660';
-                riesgoBox.style.background = 'linear-gradient(135deg,rgba(36,166,96,0.07),rgba(36,166,96,0.02))';
-                riesgoBox.style.borderColor = 'rgba(36,166,96,0.2)';
-            }
+            // Regularidad: count distinct months with cobro
+            const getRegularidad = (emp) => {
+                const months = distinctMonthsMap[emp] ? distinctMonthsMap[emp].size : 0;
+                if (months >= 5) return { label: 'Regular', color: '#24a660', bg: 'rgba(36,166,96,0.1)', order: 1 };
+                if (months >= 3) return { label: 'Frecuente', color: '#b87400', bg: 'rgba(184,116,0,0.1)', order: 2 };
+                return { label: 'Esporádico', color: '#c0392b', bg: 'rgba(192,57,43,0.1)', order: 3 };
+            };
 
-            // Tabla Clientes Activos
-            const thStyle = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
-            const thStyleR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
-            const thStyleC = 'text-align:center;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            // Union of all clients: those with pipeline + those with history only
+            const clientesConFuturo = new Set(Object.keys(clientes));
+            const clientesConHistorial = new Set(Object.keys(histTotalMap));
+            const allClients = new Set([...clientesConFuturo, ...clientesConHistorial]);
 
-            let activosHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
-                <thead><tr style="background:#f8f9fa;">
-                    <th style="${thStyle}">Cliente</th>
-                    <th style="${thStyleR}">Próx. 90d</th>
-                    <th style="${thStyleR}">Prom. Mensual 12M</th>
-                    <th style="${thStyleC}">Tendencia</th>
-                    <th style="${thStyleR}">Último Cobro</th>
-                </tr></thead><tbody>`;
-
-            const cliTotal = (emp, wins) => wins.reduce((s,w) => { const c = clientes[emp]?.[w]; return s + (c ? c.conf + c.noConf : 0); }, 0);
-            [...clientesConFuturo].sort((a,b) => cliTotal(b, windows) - cliTotal(a, windows)).forEach(emp => {
-                const proj90 = cliTotal(emp, windows);
-                const prom = promMap[emp] || 0;
-                const mensualizado = proj90 / 3;
-                let tendencia = '—', tendColor = '#9ba3ab';
-                if (prom > 0) {
-                    const pct = Math.round(((mensualizado - prom) / prom) * 100);
-                    tendencia = pct >= 0 ? `▲ +${pct}%` : `▼ ${pct}%`;
-                    tendColor = pct >= 0 ? '#24a660' : '#b87400';
+            // Build performance rows
+            const perfRows = [...allClients].map(emp => {
+                const pTotal = pipelineTotalMap[emp] || 0;
+                const ritmo = ritmoMap[emp] || 0;
+                const promHist = promHistMap[emp] || 0;
+                const reg = getRegularidad(emp);
+                const lastAct = lastCobroMap[emp] || null;
+                let vsProm = null;
+                if (promHist > 0 && pTotal > 0) {
+                    vsProm = ((ritmo / promHist) - 1) * 100;
                 }
-                const lastCobro = lastCobroMap[emp];
-                const lastCobroFmt = lastCobro ? new Date(lastCobro + 'T12:00:00').toLocaleDateString('es-UY') : '—';
-                activosHtml += `<tr style="border-top:1px solid #f0f2f4;">
-                    <td style="padding:8px 10px;font-weight:600;color:#252a2e;">${emp}</td>
-                    <td style="text-align:right;padding:8px 10px;color:#24a660;font-weight:600;">${proj90>0?formatUSD(proj90):'—'}</td>
-                    <td style="text-align:right;padding:8px 10px;">${prom>0?formatUSD(prom):'—'}</td>
-                    <td style="text-align:center;padding:8px 10px;font-weight:700;color:${tendColor};">${tendencia}</td>
-                    <td style="text-align:right;padding:8px 10px;color:#9ba3ab;">${lastCobroFmt}</td>
-                </tr>`;
+                return { emp, pTotal, ritmo, promHist, vsProm, reg, lastAct };
             });
-            if (clientesConFuturo.size === 0) activosHtml += '<tr><td colspan="5" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Sin clientes activos con cobranza futura</td></tr>';
-            activosHtml += '</tbody></table>';
-            document.getElementById('perfTablaActivos').innerHTML = activosHtml;
 
-            // Tabla Actividad de Clientes
-            let inactivosHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
-                <thead><tr style="background:#f8f9fa;">
-                    <th style="${thStyle}">Cliente</th>
-                    <th style="${thStyleR}">Prom. Mensual 12M</th>
-                    <th style="${thStyleR}">Último Cobro</th>
-                    <th style="${thStyleC}">Días sin cobro</th>
-                </tr></thead><tbody>`;
+            // Sort: by regularidad level (green > yellow > red), then by última actividad most recent first
+            perfRows.sort((a, b) => {
+                if (a.reg.order !== b.reg.order) return a.reg.order - b.reg.order;
+                return (b.lastAct || '').localeCompare(a.lastAct || '');
+            });
 
             const todayMs = today.getTime();
-            sinCobranza.sort((a,b) => (lastCobroMap[b]||'').localeCompare(lastCobroMap[a]||'')).forEach(emp => {
-                const prom = promMap[emp] || 0;
-                const lastCobro = lastCobroMap[emp];
-                const lastCobroFmt = lastCobro ? new Date(lastCobro + 'T12:00:00').toLocaleDateString('es-UY') : '—';
-                let diasSinCobro = '—', diasColor = '#9ba3ab';
-                if (lastCobro) {
-                    const dias = Math.round((todayMs - new Date(lastCobro + 'T12:00:00').getTime()) / (24*60*60*1000));
-                    diasSinCobro = `${dias} días`;
-                    diasColor = dias > 60 ? '#c0392b' : dias > 30 ? '#b87400' : '#24a660';
-                }
-                inactivosHtml += `<tr style="border-top:1px solid #f0f2f4;">
-                    <td style="padding:8px 10px;font-weight:600;color:#252a2e;">${emp}</td>
-                    <td style="text-align:right;padding:8px 10px;font-weight:600;">${prom>0?formatUSD(prom):'—'}</td>
-                    <td style="text-align:right;padding:8px 10px;color:#9ba3ab;">${lastCobroFmt}</td>
-                    <td style="text-align:center;padding:8px 10px;font-weight:700;color:${diasColor};">${diasSinCobro}</td>
-                </tr>`;
-            });
-            if (sinCobranza.length === 0) inactivosHtml += '<tr><td colspan="4" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Todos los clientes tienen cobranza futura registrada</td></tr>';
-            inactivosHtml += '</tbody></table>';
-            document.getElementById('perfTablaInactivos').innerHTML = inactivosHtml;
+            const thPerf = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thPerfR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thPerfC = 'text-align:center;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+
+            let perfHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead><tr style="background:#f8f9fa;">
+                    <th style="${thPerf}">Cliente</th>
+                    <th style="${thPerfR}">Pipeline Total</th>
+                    <th style="${thPerfR}">Ritmo Mensual</th>
+                    <th style="${thPerfR}">Prom. Histórico</th>
+                    <th style="${thPerfC}">vs Promedio</th>
+                    <th style="${thPerfC}">Regularidad</th>
+                    <th style="${thPerfR}">Última Actividad</th>
+                </tr></thead><tbody>`;
+
+            if (perfRows.length === 0) {
+                perfHtml += '<tr><td colspan="7" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Sin datos de clientes</td></tr>';
+            } else {
+                perfRows.forEach(r => {
+                    // vs Promedio display
+                    let vsHtml = '', vsColor = '#9ba3ab';
+                    if (r.pTotal === 0) {
+                        vsHtml = '<span style="font-size:11px;color:#9ba3ab;">Sin pipeline</span>';
+                    } else if (r.vsProm !== null) {
+                        const pct = Math.round(r.vsProm);
+                        vsColor = pct >= 0 ? '#24a660' : '#c0392b';
+                        vsHtml = `<span style="font-weight:700;color:${vsColor};">${pct >= 0 ? '▲ +' : '▼ '}${Math.abs(pct)}%</span>`;
+                    } else {
+                        vsHtml = '<span style="font-size:11px;color:#9ba3ab;">—</span>';
+                    }
+                    // Última actividad
+                    let lastActFmt = '—', diasStr = '';
+                    if (r.lastAct) {
+                        lastActFmt = new Date(r.lastAct + 'T12:00:00').toLocaleDateString('es-UY');
+                        const dias = Math.round((todayMs - new Date(r.lastAct + 'T12:00:00').getTime()) / (24*60*60*1000));
+                        if (dias > 0) diasStr = `<div style="font-size:10px;color:#9ba3ab;">${dias}d sin actividad</div>`;
+                    }
+
+                    perfHtml += `<tr style="border-top:1px solid #f0f2f4;">
+                        <td style="padding:6px 10px;font-weight:600;color:#252a2e;">${r.emp}</td>
+                        <td style="text-align:right;padding:6px 10px;font-weight:600;color:${r.pTotal>0?'#24a660':'#9ba3ab'};">${r.pTotal>0?formatUSD(r.pTotal):'—'}</td>
+                        <td style="text-align:right;padding:6px 10px;">${r.ritmo>0?formatUSD(r.ritmo):'—'}</td>
+                        <td style="text-align:right;padding:6px 10px;">${r.promHist>0?formatUSD(r.promHist):'—'}</td>
+                        <td style="text-align:center;padding:6px 10px;">${vsHtml}</td>
+                        <td style="text-align:center;padding:6px 10px;">
+                            <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;color:${r.reg.color};background:${r.reg.bg};">${r.reg.label}</span>
+                        </td>
+                        <td style="text-align:right;padding:6px 10px;color:#5a616b;">${lastActFmt}${diasStr}</td>
+                    </tr>`;
+                });
+            }
+            perfHtml += '</tbody></table>';
+            document.getElementById('piTablaPerformance').innerHTML = perfHtml;
         }
 
         function limpiarFiltrosHistorial() {
