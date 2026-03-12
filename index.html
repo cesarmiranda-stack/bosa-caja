@@ -2759,7 +2759,8 @@
                 .filter(m => m.caja === 'Egreso')
                 .reduce((sum, m) => sum + Math.abs(m.usd || 0), 0);
 
-            const resultado30 = saldoInicial + ingresos30 - egresos30;
+            const disponibleHoyDash = saldoInicial + overdraftLimit;
+            const resultado30 = disponibleHoyDash + ingresos30 - egresos30;
 
             document.getElementById('kpiIngresos30').textContent = formatUSD(ingresos30);
             document.getElementById('kpiEgresos30').textContent = formatUSD(egresos30);
@@ -3072,7 +3073,7 @@
                     const fecha = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
                     toInsert.push({
                         fecha, empresa: lastMov.empresa, caja: lastMov.caja,
-                        clase: lastMov.clase || null, detalle: lastMov.detalle || '',
+                        detalle: lastMov.detalle || '',
                         documento: '', comentarios: '',
                         pesos: lastMov.pesos || 0, tc: lastMov.tc || 43.5,
                         usd: lastMov.usd || 0, historico_usd: null,
@@ -3402,7 +3403,7 @@
             }) : next30Pending;
             const ingresos30 = kpiMovs.filter(m => m.caja === 'Ingreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
             const egresos30 = kpiMovs.filter(m => m.caja === 'Egreso').reduce((s,m) => s + Math.abs(m.usd||0), 0);
-            const resultado30 = saldoInicial + ingresos30 - egresos30;
+            const resultado30 = disponibleHoy + ingresos30 - egresos30;
 
             // Fila 1 KPIs
             document.getElementById('pd_kpiDispHoy').textContent = formatUSD(disponibleHoy);
@@ -3593,7 +3594,13 @@
         }
 
         function abrirDayModal(fecha) {
-            const dayMovs = allMovimientos.filter(m => m.fecha === fecha && !m.hecho);
+            const dayMovs = allMovimientos.filter(m => m.fecha === fecha && !m.hecho)
+                .sort((a, b) => {
+                    // Ingresos primero, egresos después
+                    const ca = a.caja === 'Ingreso' ? 0 : 1;
+                    const cb = b.caja === 'Ingreso' ? 0 : 1;
+                    return ca - cb;
+                });
             const fmtDate = new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', { weekday:'long', day:'numeric', month:'long' });
             document.getElementById('dayMovTitle').textContent = fmtDate;
             if (dayMovs.length === 0) {
@@ -3603,14 +3610,15 @@
                     const amt = Math.abs(m.usd||0);
                     const color = m.caja === 'Ingreso' ? '#24a660' : '#c0392b';
                     const prefix = m.caja === 'Ingreso' ? '+' : '−';
-                    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e3e6e9;">
-                        <div>
-                            <div style="font-weight:600;color:#252a2e;font-size:14px;">${m.empresa||'-'}</div>
-                            ${m.detalle ? `<div style="font-size:12px;color:#9ba3ab;">${m.detalle}</div>` : ''}
+                    const confBadge = !isConf(m) ? '<span style="display:inline-block;font-size:9px;font-weight:700;color:#b87400;background:rgba(245,166,35,0.15);padding:1px 5px;border-radius:3px;margin-left:6px;">±30d</span>' : '';
+                    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f2f4f6;">
+                        <div style="min-width:0;flex:1;">
+                            <div style="font-weight:600;color:#252a2e;font-size:13px;line-height:1.2;">${m.empresa||'-'}${confBadge}</div>
+                            ${m.detalle ? `<div style="font-size:11px;color:#9ba3ab;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.detalle}</div>` : ''}
                         </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <span style="color:${color};font-weight:700;">${prefix}$${formatNumber(amt,0)}</span>
-                            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('dayMovModal').classList.remove('active');abrirMovModal('${m.id}')">Editar</button>
+                        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+                            <span style="color:${color};font-weight:700;font-size:13px;">${prefix}$${formatNumber(amt,0)}</span>
+                            <button class="btn btn-ghost btn-sm" style="padding:2px 6px;font-size:11px;" onclick="document.getElementById('dayMovModal').classList.remove('active');abrirMovModal('${m.id}')">Editar</button>
                         </div>
                     </div>`;
                 }).join('');
@@ -4526,17 +4534,15 @@
                 return;
             }
 
-            // Propagar cambios a todos los movimientos de esta empresa (pendientes e históricos)
-            if (editingEmpId !== null && editingEmpNombreAnterior) {
-                const updateMov = { clase: emp.clase };
-                // Si el nombre cambió, actualizar también el campo empresa en los movimientos
-                if (emp.nombre !== editingEmpNombreAnterior) {
-                    updateMov.empresa = emp.nombre;
+            // Propagar rename a todos los movimientos de esta empresa (pendientes e históricos)
+            if (editingEmpId !== null && editingEmpNombreAnterior && emp.nombre !== editingEmpNombreAnterior) {
+                const movCount = allMovimientos.filter(m => m.empresa === editingEmpNombreAnterior).length;
+                if (movCount > 0 && confirm(`Se actualizarán ${movCount} movimiento${movCount>1?'s':''} de "${editingEmpNombreAnterior}" a "${emp.nombre}". ¿Continuar?`)) {
+                    await supabaseClient
+                        .from('movimientos')
+                        .update({ empresa: emp.nombre })
+                        .eq('empresa', editingEmpNombreAnterior);
                 }
-                await supabaseClient
-                    .from('movimientos')
-                    .update(updateMov)
-                    .eq('empresa', editingEmpNombreAnterior);
             }
 
             cerrarEmpModal();
