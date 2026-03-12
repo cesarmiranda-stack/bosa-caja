@@ -2913,10 +2913,10 @@
             const dEgrConf = sortedDays.map(d => dailyData[d].egrConf);
             const dEgrNoConf = sortedDays.map(d => dailyData[d].egrNoConf);
 
-            // Cumulative balance line — arranca de saldo bancos, acumula día a día
+            // Cumulative balance line — arranca de disponible (bancos + sobregiro), acumula día a día
             const overdueIng = overdueIngConf + overdueIngNoConf;
             const overdueEgr = overdueEgrConf + overdueEgrNoConf;
-            let cum = saldoInicial + overdueIng - overdueEgr;
+            let cum = saldoInicial + overdraftLimit + overdueIng - overdueEgr;
             const cumulativeData = sortedDays.map((d, i) => {
                 const dd = dailyData[d];
                 const totalIng = dd.ingConf + dd.ingNoConf;
@@ -3486,8 +3486,8 @@
                 }
             });
 
-            // Running balance: start from saldoInicial + overdue (same as dashboard)
-            let runBal = saldoInicial + overdueIng - overdueEgr;
+            // Running balance: start from disponible (saldoInicial + sobregiro) + overdue
+            let runBal = saldoInicial + overdraft + overdueIng - overdueEgr;
             const saldoByDay = {};
             let dayCur = new Date(today);
             const rangeEnd = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
