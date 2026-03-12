@@ -192,11 +192,12 @@
         }
 
         .sidebar-logo {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 800;
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 1px solid rgba(255,255,255,.2);
+            letter-spacing: 2px;
         }
 
         .sidebar-nav {
@@ -972,17 +973,6 @@
                     </svg>
                     Caja y Bancos
                 </div>
-                <div class="sb-item" data-screen="sc-flujo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="8" y1="6" x2="21" y2="6"></line>
-                        <line x1="8" y1="12" x2="21" y2="12"></line>
-                        <line x1="8" y1="18" x2="21" y2="18"></line>
-                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                    </svg>
-                    Flujo de Caja
-                </div>
                 <div class="sb-item" data-screen="sc-empresas">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -995,6 +985,17 @@
 
                 <!-- INFORMES -->
                 <div class="sb-section-label">Informes</div>
+                <div class="sb-item" data-screen="sc-flujo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    Flujo de Caja
+                </div>
                 <div class="sb-item" data-screen="sc-proyDia">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
@@ -1529,7 +1530,7 @@
                                 <div class="kpi-sub">todos los pendientes</div>
                             </div>
                             <div class="kpi" id="piKpiSinCobrBox" style="background:linear-gradient(135deg,rgba(245,166,35,0.08),rgba(245,166,35,0.02));border:1px solid rgba(245,166,35,0.25);">
-                                <div class="kpi-lbl">Sin Cobranza Futura <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ingresos futuros registrados. Oportunidad para el equipo de ventas.">?</span></div>
+                                <div class="kpi-lbl">Clientes Sin Actividad <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ingresos futuros registrados. Oportunidad para el equipo de ventas.">?</span></div>
                                 <div class="kpi-val" id="piKpiSinCobr" style="color:#b87400;">0</div>
                                 <div class="kpi-sub" style="color:#b87400;">clientes</div>
                             </div>
@@ -1556,12 +1557,12 @@
                                 <div class="kpi-sub">con cobranza futura</div>
                             </div>
                             <div class="kpi" id="perfKpiInactivosBox" style="border:1px solid rgba(192,57,43,0.2);">
-                                <div class="kpi-lbl">Clientes Sin Cobranza <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ningún ingreso futuro registrado.">?</span></div>
+                                <div class="kpi-lbl">Clientes Sin Actividad <span class="tip-icon" data-tip="Clientes con historial de pagos pero sin ningún ingreso futuro registrado.">?</span></div>
                                 <div class="kpi-val" id="perfKpiInactivos" style="color:#9ba3ab;">0</div>
                                 <div class="kpi-sub">sin ingresos futuros</div>
                             </div>
                             <div class="kpi" id="perfKpiRiesgoBox" style="border:1px solid rgba(192,57,43,0.2);">
-                                <div class="kpi-lbl">Ingreso Mensual en Riesgo <span class="tip-icon" data-tip="Suma del promedio mensual (12M) de los clientes sin cobranza futura. Indica cuánto ingreso potencial no se está persiguiendo.">?</span></div>
+                                <div class="kpi-lbl">Ingreso Mensual en Riesgo <span class="tip-icon" data-tip="Suma del promedio mensual (12M) de los clientes sin actividad. Indica cuánto ingreso potencial no se está persiguiendo.">?</span></div>
                                 <div class="kpi-val" id="perfKpiRiesgo" style="color:#9ba3ab;">$0</div>
                                 <div class="kpi-sub">prom. mensual 12M</div>
                             </div>
@@ -1571,10 +1572,10 @@
                             <div class="card-title">Clientes Activos</div>
                             <div id="perfTablaActivos"></div>
                         </div>
-                        <!-- Tabla Sin Cobranza -->
+                        <!-- Tabla Actividad de Clientes -->
                         <div class="card" style="border-left:3px solid rgba(192,57,43,0.4);">
-                            <div class="card-title" style="color:#c0392b;">Sin Cobranza — Acción Ventas</div>
-                            <div style="font-size:12px;color:#9ba3ab;margin-bottom:12px;">Estos clientes tienen historial de pagos pero no tienen cobranza futura registrada.</div>
+                            <div class="card-title" style="color:#c0392b;">Actividad de Clientes</div>
+                            <div style="font-size:12px;color:#9ba3ab;margin-bottom:12px;">Clientes con historial de pagos pero sin actividad futura registrada.</div>
                             <div id="perfTablaInactivos"></div>
                         </div>
                     </div>
@@ -3779,11 +3780,16 @@
             const disponibleInicial = rawBal + odLimit;
             const todayFmt = new Date().toLocaleDateString('es-UY', {day:'2-digit', month:'2-digit', year:'numeric'});
 
-            // Pending: overdue first (oldest→newest), then future (oldest→newest)
+            // Pending: fecha ascendente, mismo día ingresos antes que egresos
             const allPending = allMovimientos.filter(m => !m.hecho);
-            const overdue = allPending.filter(m => m.fecha < todayStr).sort((a,b) => a.fecha.localeCompare(b.fecha));
-            const future  = allPending.filter(m => m.fecha >= todayStr).sort((a,b) => a.fecha.localeCompare(b.fecha));
-            let sorted  = [...overdue, ...future];
+            let sorted = allPending.sort((a,b) => {
+                const fc = a.fecha.localeCompare(b.fecha);
+                if (fc !== 0) return fc;
+                // Mismo día: Ingreso (0) antes que Egreso (1)
+                const ca = a.caja === 'Ingreso' ? 0 : 1;
+                const cb = b.caja === 'Ingreso' ? 0 : 1;
+                return ca - cb;
+            });
             
             const flujoSearch = (document.getElementById('flujoSearchInput')?.value || '').toLowerCase();
             if (flujoSearch) {
@@ -4015,7 +4021,7 @@
                         labels: windows,
                         datasets: topEmps.map((emp, i) => ({
                             label: emp,
-                            data: windows.map(w => clientes[emp]?.[w] || 0),
+                            data: windows.map(w => { const c = clientes[emp]?.[w]; return c ? c.conf + c.noConf : 0; }),
                             backgroundColor: colors[i % colors.length],
                             borderRadius: 3
                         }))
@@ -4093,12 +4099,9 @@
                     <th style="${thStyleR}">Último Cobro</th>
                 </tr></thead><tbody>`;
 
-            [...clientesConFuturo].sort((a,b) => {
-                const ta = windows.reduce((s,w) => s+(clientes[a]?.[w]||0), 0);
-                const tb = windows.reduce((s,w) => s+(clientes[b]?.[w]||0), 0);
-                return tb - ta;
-            }).forEach(emp => {
-                const proj90 = windows.reduce((s,w) => s+(clientes[emp]?.[w]||0), 0);
+            const cliTotal = (emp, wins) => wins.reduce((s,w) => { const c = clientes[emp]?.[w]; return s + (c ? c.conf + c.noConf : 0); }, 0);
+            [...clientesConFuturo].sort((a,b) => cliTotal(b, windows) - cliTotal(a, windows)).forEach(emp => {
+                const proj90 = cliTotal(emp, windows);
                 const prom = promMap[emp] || 0;
                 const mensualizado = proj90 / 3;
                 let tendencia = '—', tendColor = '#9ba3ab';
@@ -4121,7 +4124,7 @@
             activosHtml += '</tbody></table>';
             document.getElementById('perfTablaActivos').innerHTML = activosHtml;
 
-            // Tabla Sin Cobranza — Acción Ventas
+            // Tabla Actividad de Clientes
             let inactivosHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
                 <thead><tr style="background:#f8f9fa;">
                     <th style="${thStyle}">Cliente</th>
@@ -4131,7 +4134,7 @@
                 </tr></thead><tbody>`;
 
             const todayMs = today.getTime();
-            sinCobranza.sort((a,b) => (promMap[b]||0) - (promMap[a]||0)).forEach(emp => {
+            sinCobranza.sort((a,b) => (lastCobroMap[b]||'').localeCompare(lastCobroMap[a]||'')).forEach(emp => {
                 const prom = promMap[emp] || 0;
                 const lastCobro = lastCobroMap[emp];
                 const lastCobroFmt = lastCobro ? new Date(lastCobro + 'T12:00:00').toLocaleDateString('es-UY') : '—';
