@@ -2448,7 +2448,7 @@
             const monto = Math.abs(montoRaw); // siempre positivo
             const tc = parseFloat(document.getElementById('nmTC').value) || 43.5;
             let usd, pesos;
-            if (nmCurrency === 'USD') { usd = monto; pesos = monto * tc; }
+            if (nmCurrency === 'USD') { usd = monto; pesos = 0; }
             else { pesos = monto; usd = monto / tc; }
             const isConfiable = document.getElementById('nmCerteza').value === 'confirmado';
             const isHecho = document.getElementById('nmHecho').checked;
@@ -2468,8 +2468,9 @@
                 detalle: document.getElementById('nmDetalle').value,
                 documento: '',
                 comentarios: '',
-                pesos: Math.round(pesos * 100) / 100,
-                tc: tc,
+                moneda: nmCurrency === 'USD' ? 'USD' : 'UYU',
+                pesos: nmCurrency === 'UYU' ? Math.round(pesos * 100) / 100 : 0,
+                tc: nmCurrency === 'UYU' ? tc : 0,
                 usd: Math.round(usd * 100) / 100,
                 historico_usd: isHecho ? Math.round(usd * 100) / 100 : null,
                 confiable: isConfiable,
@@ -2553,7 +2554,7 @@
                 const amountClass = mov.caja === 'Ingreso' ? 't-ing' : 't-egr';
                 const estadoBadge = mov.hecho ? '<span class="badge b-green">Realizado</span>' : '<span class="badge b-gray">Pendiente</span>';
                 const confBadge = isConf(mov) ? '<span class="badge" style="background:rgba(59,130,196,0.1);color:#3b82c4;">Conf.</span>' : '<span class="badge" style="background:rgba(184,116,0,0.1);color:#b87400;">±30d</span>';
-                const fueEnPesos = Math.abs(mov.pesos || 0) > 0 && (mov.tc || 0) > 0;
+                const fueEnPesos = mov.moneda === 'UYU';
                 const pesosLine = fueEnPesos ? `<div style="font-size:11px;color:#9ba3ab;line-height:1.1;">$${formatNumber(Math.abs(mov.pesos),0)} UYU · TC ${formatNumber(mov.tc,2)}</div>` : '';
 
                 return `<tr>
@@ -2692,7 +2693,7 @@
             document.getElementById('emHecho').checked = mov.hecho || false;
 
             // Detect original currency: if pesos != 0 and tc != 0, was entered in UYU
-            const fueEnPesos = Math.abs(mov.pesos || 0) > 0 && (mov.tc || 0) > 0;
+            const fueEnPesos = mov.moneda === 'UYU';
             const usdAbs = Math.abs(mov.usd || 0);
             const pesosAbs = Math.abs(mov.pesos || 0);
             document.getElementById('emTC').value = (mov.tc || 43.5).toFixed(2);
@@ -2748,8 +2749,9 @@
                 detalle: document.getElementById('emDetalle').value,
                 documento: document.getElementById('emDocumento').value || '',
                 comentarios: document.getElementById('emComentarios').value || '',
-                pesos: Math.round(pesosVal * 100) / 100,
-                tc: tcVal,
+                moneda: emCurrencyState === 'USD' ? 'USD' : 'UYU',
+                pesos: emCurrencyState === 'UYU' ? Math.round(pesosVal * 100) / 100 : 0,
+                tc: emCurrencyState === 'UYU' ? tcVal : 0,
                 usd: Math.round(usdVal * 100) / 100,
                 historico_usd: isHecho ? Math.round(usdVal * 100) / 100 : null,
                 confiable: isConfiable,
