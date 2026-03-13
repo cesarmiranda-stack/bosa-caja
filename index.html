@@ -2553,12 +2553,14 @@
                 const amountClass = mov.caja === 'Ingreso' ? 't-ing' : 't-egr';
                 const estadoBadge = mov.hecho ? '<span class="badge b-green">Realizado</span>' : '<span class="badge b-gray">Pendiente</span>';
                 const confBadge = isConf(mov) ? '<span class="badge" style="background:rgba(59,130,196,0.1);color:#3b82c4;">Conf.</span>' : '<span class="badge" style="background:rgba(184,116,0,0.1);color:#b87400;">±30d</span>';
+                const fueEnPesos = Math.abs(mov.pesos || 0) > 0 && (mov.tc || 0) > 0;
+                const pesosLine = fueEnPesos ? `<div style="font-size:11px;color:#9ba3ab;line-height:1.1;">$${formatNumber(Math.abs(mov.pesos),0)} UYU · TC ${formatNumber(mov.tc,2)}</div>` : '';
 
                 return `<tr>
                     <td>${new Date(mov.fecha + 'T12:00:00').toLocaleDateString('es-UY')}</td>
                     <td>${displayEmpresa(mov)}</td>
                     <td><span class="${amountClass}">${mov.caja === 'Ingreso' ? 'Ingreso' : 'Egreso'}</span></td>
-                    <td class="text-right">${formatUSD(Math.abs(amount))}</td>
+                    <td class="text-right">${formatUSD(Math.abs(amount))}${pesosLine}</td>
                     <td>${estadoBadge} ${confBadge}</td>
                     <td>
                         <input type="checkbox" ${mov.hecho ? 'checked' : ''} onchange="toggleMovimientoDone('${mov.id}', this.checked)">
@@ -2689,19 +2691,30 @@
             document.getElementById('emComentarios').value = mov.comentarios || '';
             document.getElementById('emHecho').checked = mov.hecho || false;
 
-            // Set monto in USD (editing always shows USD)
+            // Detect original currency: if pesos != 0 and tc != 0, was entered in UYU
+            const fueEnPesos = Math.abs(mov.pesos || 0) > 0 && (mov.tc || 0) > 0;
             const usdAbs = Math.abs(mov.usd || 0);
-            document.getElementById('emMonto').value = usdAbs > 0 ? usdAbs.toFixed(2) : '';
-            document.getElementById('emUSD').value = usdAbs.toFixed(2);
-            document.getElementById('emPesos').value = (mov.pesos || 0).toFixed ? Math.abs(mov.pesos || 0).toFixed(2) : '0';
+            const pesosAbs = Math.abs(mov.pesos || 0);
             document.getElementById('emTC').value = (mov.tc || 43.5).toFixed(2);
             document.getElementById('emUSDHistorico').value = mov.historico_usd || '';
+
+            if (fueEnPesos) {
+                // Show in pesos mode with original amount
+                document.getElementById('emMonto').value = pesosAbs > 0 ? pesosAbs.toFixed(2) : '';
+                document.getElementById('emUSD').value = usdAbs.toFixed(2);
+                document.getElementById('emPesos').value = pesosAbs.toFixed(2);
+                emCurrencyState = 'UYU';
+                setEmCurrency('UYU');
+            } else {
+                // Show in USD mode
+                document.getElementById('emMonto').value = usdAbs > 0 ? usdAbs.toFixed(2) : '';
+                document.getElementById('emUSD').value = usdAbs.toFixed(2);
+                document.getElementById('emPesos').value = '0';
+                emCurrencyState = 'USD';
+                setEmCurrency('USD');
+            }
             const emEquiv = document.getElementById('emUSDEquiv');
             if (emEquiv) emEquiv.textContent = formatNumber(usdAbs, 0);
-
-            // Currency mode — siempre USD por defecto
-            emCurrencyState = 'USD';
-            setEmCurrency('USD');
 
             // Direction toggle
             setEmCaja(mov.caja || 'Ingreso');
