@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOSA Caja - Proyección de Ingresos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #f2f4f6;
+            color: #252a2e;
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+        }
+
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #656c70 0%, #5a616b 100%);
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.15);
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .login-logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #656c70;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: #252a2e;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e3e6e9;
+            border-radius: 6px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #656c70;
+            box-shadow: 0 0 0 3px rgba(101, 108, 112, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Work Sans', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background-color: #656c70;
+            color: #ffffff;
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+
+        .btn-primary:hover {
+            background-color: #5a616b;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: #656c70;
+            border: 1px solid #e3e6e9;
+        }
+
+        .btn-ghost:hover {
+            background-color: #f2f4f6;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+
+        .error-message {
+            color: #c0392b;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            display: none;
+        }
+
+        .app-container.active {
+            display: flex;
+        }
+
+        .top-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e3e6e9;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+        }
+
+        .top-bar-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #252a2e;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar-user {
+            font-size: 13px;
+            color: #5a616b;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .kpi {
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 10px 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,.06);
+        }
+
+        .kpi-lbl {
+            font-size: 10px;
+            font-weight: 600;
+            color: #5a616b;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ── Tooltips de ayuda ── */
+        .tip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(90,97,107,0.18);
+            color: #5a616b;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: default;
+            position: relative;
+            font-style: normal;
+            line-height: 1;
+            user-select: none;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .tip-icon::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100% + 9px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #252a2e;
+            color: #e8eaec;
+            padding: 9px 13px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 400;
+            white-space: normal;
+            width: 230px;
+            text-align: left;
+            line-height: 1.55;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s;
+            z-index: 9100;
+            text-transform: none;
+            letter-spacing: 0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+        }
+        .tip-icon::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #252a2e;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s;
+            z-index: 9100;
+        }
+        .tip-icon:hover::after,
+        .tip-icon:hover::before { opacity: 1; }
+        /* Tooltip hacia abajo: para KPIs de fila superior que se cortan con el borde */
+        .tip-down::after {
+            top: calc(100% + 9px);
+            bottom: auto;
+        }
+        .tip-down::before {
+            top: calc(100% + 4px);
+            bottom: auto;
+            border-top-color: transparent;
+            border-bottom-color: #252a2e;
+        }
+
+        .kpi-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: #252a2e;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .kpi-sub {
+            font-size: 10px;
+            color: #9ba3ab;
+        }
+
+        .k-green { color: #24a660; }
+        .k-blue { color: #3b82c4; }
+        .k-gray { color: #5a616b; }
+        .k-red { color: #c0392b; }
+
+        .card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #252a2e;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .b-green { background-color: rgba(36, 166, 96, 0.1); color: #24a660; }
+        .b-blue { background-color: rgba(59, 130, 196, 0.1); color: #3b82c4; }
+        .b-gray { background-color: rgba(90, 97, 107, 0.1); color: #5a616b; }
+        .b-red { background-color: rgba(192, 57, 43, 0.1); color: #c0392b; }
+
+        .t-ing { color: #3b82c4; font-weight: 600; }
+        .t-egr { color: #5a616b; font-weight: 600; }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background-color: #f2f4f6;
+        }
+
+        th {
+            padding: 6px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #5a616b;
+            border-bottom: 1px solid #e3e6e9;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            padding: 6px 12px;
+            border-bottom: 1px solid #e3e6e9;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .f-sel {
+            padding: 10px 12px;
+            border: 1px solid #e3e6e9;
+            border-radius: 6px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 13px;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+
+        .f-sel:focus {
+            outline: none;
+            border-color: #656c70;
+        }
+
+        .certeza-toggle { display:flex; gap:8px; }
+        .certeza-btn { padding:8px 18px; border:2px solid #e3e6e9; border-radius:6px; background:#fff; font-family:'Work Sans',sans-serif; font-size:13px; font-weight:600; cursor:pointer; color:#5a616b; transition:all 0.2s; }
+        .certeza-btn.active-certeza { border-color:#3b82c4; background:rgba(59,130,196,0.08); color:#3b82c4; }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .pos { color: #24a660; }
+        .neg { color: #c0392b; }
+
+        input[type="text"] {
+            padding: 10px 12px;
+            border: 1px solid #e3e6e9;
+            border-radius: 6px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #656c70;
+        }
+
+        .text-muted {
+            color: #9ba3ab;
+        }
+
+        .font-sm {
+            font-size: 13px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+
+        .gap-10 {
+            gap: 10px;
+        }
+
+        .gap-20 {
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-logo">BOSA</div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">Ingresar</button>
+                <div class="error-message" id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="appContainer" class="app-container">
+        <div class="top-bar">
+            <div class="top-bar-title">BOSA Caja — Proyección de Ingresos</div>
+            <div class="top-bar-right">
+                <div class="top-bar-user" id="userEmail"></div>
+                <button class="btn btn-ghost btn-sm" onclick="handleLogout()">Salir</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Proyección de Ingresos Screen -->
+            <div id="sc-proyIng">
+                <!-- Toggle Todos / Solo Confirmados -->
+                <div class="certeza-toggle" style="margin-bottom:12px;">
+                    <button type="button" id="piToggleTodos" class="certeza-btn active-certeza" onclick="setPiEscenario('todos')">Todos</button>
+                    <button type="button" id="piToggleConf" class="certeza-btn" onclick="setPiEscenario('confirmados')">Solo Confirmados</button>
+                </div>
+
+                <!-- Tabla Pipeline -->
+                <div id="piTablaPipeline"></div>
+
+                <!-- Performance de Clientes -->
+                <div class="card" style="margin-top:16px;">
+                    <div class="card-title">Performance de Clientes</div>
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+                        <select id="piPerfFilterEstado" class="f-sel" style="min-width:140px;" onchange="renderProyIng()">
+                            <option value="">Todos</option>
+                            <option value="activos">Activos</option>
+                            <option value="inactivos">Inactivos</option>
+                        </select>
+                        <input type="text" id="piPerfBuscar" placeholder="Buscar cliente..." style="flex:1;min-width:150px;max-width:280px;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;" oninput="renderProyIng()">
+                    </div>
+                    <div id="piTablaPerformance"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPA_URL = 'https://xnkgidodjttmljmpqldv.supabase.co';
+        const SUPA_KEY = 'sb_publishable_2l0WJ4zUKz0-Tqo7n_vWiQ_arjBXJVZ';
+
+        const { createClient } = window.supabase;
+        const supabaseClient = createClient(SUPA_URL, SUPA_KEY);
+
+        let currentUser = null;
+        let allMovimientos = [];
+        let allEmpresas = [];
+        let appInitialized = false;
+        let piEscenario = 'todos';
+
+        // Helper: confiable is stored as STRING "true"/"false" in Supabase
+        function isConf(m) { return m.confiable === true || m.confiable === 'true'; }
+
+        // Helper: display empresa concatenada con proyecto
+        function displayEmpresa(m) {
+            if (m.proyecto) return (m.empresa || '—') + ' · ' + m.proyecto;
+            return m.empresa || '—';
+        }
+
+        // LOGIN
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            try {
+                errorDiv.classList.remove('show');
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                currentUser = data.user;
+                initApp();
+            } catch (err) {
+                errorDiv.textContent = err.message || 'Error al iniciar sesión';
+                errorDiv.classList.add('show');
+            }
+        });
+
+        async function initApp() {
+            if (appInitialized) return;
+            appInitialized = true;
+
+            // Load data from Supabase
+            await loadData();
+            await loadConfig();
+
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').classList.add('active');
+            document.getElementById('userEmail').textContent = currentUser.email;
+
+            // Render the proyIng screen
+            renderProyIng();
+        }
+
+        async function loadData() {
+            const [movRes, empRes] = await Promise.all([
+                supabaseClient.from('movimientos').select('*').order('fecha', { ascending: false }),
+                supabaseClient.from('empresas').select('*').order('nombre')
+            ]);
+
+            if (movRes.data) allMovimientos = movRes.data;
+            if (empRes.data) allEmpresas = empRes.data;
+        }
+
+        async function loadConfig() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('configuracion')
+                    .select('*')
+                    .eq('id', 'bosa')
+                    .single();
+                if (!error && data) {
+                    if (data.saldo_historial?.length)
+                        localStorage.setItem('saldoHistorial', JSON.stringify(data.saldo_historial));
+                    if (data.bancos_limites && Object.keys(data.bancos_limites).length)
+                        localStorage.setItem('bancosLimites', JSON.stringify(data.bancos_limites));
+                    if (data.bancos_limites_historial?.length)
+                        localStorage.setItem('bancosLimitesHistorial', JSON.stringify(data.bancos_limites_historial));
+                    if (data.tc_default)
+                        localStorage.setItem('tcDefault', data.tc_default.toString());
+                    if (data.config_alertas && Object.keys(data.config_alertas).length)
+                        localStorage.setItem('configAlertas', JSON.stringify(data.config_alertas));
+                }
+            } catch(e) { /* tabla no existe aún → usa localStorage local */ }
+        }
+
+        function formatNumber(num, decimals = 2) {
+            if (!num) num = 0;
+            const factor = Math.pow(10, decimals);
+            const rounded = Math.round(num * factor) / factor;
+            const parts = rounded.toFixed(decimals).split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            return parts.join(',');
+        }
+
+        function formatUSD(num, showSign = false) {
+            if (!num) num = 0;
+            const isNegative = num < 0;
+            const absNum = Math.abs(num);
+            let formatted = 'USD ' + formatNumber(absNum, 0);
+            if (showSign) {
+                formatted = (isNegative ? '−' : '+') + formatted;
+            }
+            return formatted;
+        }
+
+        function getMovimientoAmount(mov) {
+            const amount = Math.abs(mov.hecho ? (mov.historico_usd || 0) : (mov.usd || 0));
+            return mov.caja === 'Ingreso' ? amount : -amount;
+        }
+
+        function getBaseData() {
+            const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
+            const saldoHist = JSON.parse(localStorage.getItem('saldoHistorial') || '[]');
+            const limites = JSON.parse(localStorage.getItem('bancosLimites') || '{}');
+
+            let saldoInicial = 0;
+            if (saldoHist.length > 0) {
+                const h = saldoHist[0];
+                saldoInicial = (h.itauUSD||0) + (h.hsbcUSD||0)
+                             + ((h.itauPesos||0)/tc) + ((h.hsbcPesos||0)/tc)
+                             + (h.efectivoUSD||0) + ((h.efectivoPesos||0)/tc)
+                             + (h.chequesCobrosUSD||0) + ((h.chequesCobroPesos||0)/tc);
+            }
+
+            const overdraftLimit = (limites.itauUSD||0) + (limites.hsbcUSD||0)
+                                 + ((limites.itauPesos||0)/tc) + ((limites.hsbcPesos||0)/tc);
+
+            const today = new Date(); today.setHours(0,0,0,0);
+            const todayStr = today.toISOString().split('T')[0];
+            const in30 = new Date(today.getTime() + 30*24*60*60*1000);
+
+            const next30Pending = allMovimientos.filter(m =>
+                !m.hecho && new Date(m.fecha + 'T12:00:00') < in30
+            );
+
+            return { tc, saldoHist, limites, saldoInicial, overdraftLimit,
+                     today, todayStr, in30, next30Pending };
+        }
+
+        function setPiEscenario(modo) {
+            piEscenario = modo;
+            const btnT = document.getElementById('piToggleTodos');
+            const btnC = document.getElementById('piToggleConf');
+            if (modo === 'todos') {
+                btnT.className = 'certeza-btn active-certeza'; btnC.className = 'certeza-btn';
+            } else {
+                btnT.className = 'certeza-btn'; btnC.className = 'certeza-btn active-certeza';
+            }
+            renderProyIng();
+        }
+
+        function renderProyIng() {
+            const { today, todayStr, in30, next30Pending } = getBaseData();
+            const soloConf = piEscenario === 'confirmados';
+            const d30 = in30.toISOString().split('T')[0];
+            const d60 = new Date(today.getTime() + 60*24*60*60*1000).toISOString().split('T')[0];
+            const d90 = new Date(today.getTime() + 90*24*60*60*1000).toISOString().split('T')[0];
+
+            // Build clase lookup from empresas (fallback for movements without clase field)
+            const empClaseMap = {};
+            allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || ''; });
+
+            // Pending income: future + overdue (coherent with dashboard)
+            const pendingIngs = allMovimientos.filter(m =>
+                !m.hecho && m.caja === 'Ingreso'
+            );
+
+            // Helper: get window label based on date
+            const getWindow = fecha => {
+                if (fecha <= d30) return '0-30d';
+                if (fecha <= d60) return '31-60d';
+                if (fecha <= d90) return '61-90d';
+                return '90d+';
+            };
+
+            // Group by empresa for Clientes and Otros
+            // Lógica certeza: en "Solo Confirmados", conf 30d se desplaza +30 días
+            // y se asigna a la ventana correspondiente a la fecha desplazada
+            const clientes = {};
+            const clienteProyectos = {}; // { empresa: { proyecto: emptyWin() } }
+            const otrosMap = {};
+            const emptyWin = () => ({ '0-30d':{conf:0,noConf:0},'31-60d':{conf:0,noConf:0},'61-90d':{conf:0,noConf:0},'90d+':{conf:0,noConf:0} });
+            pendingIngs.forEach(m => {
+                const cat = m.clase || m.categoria || empClaseMap[m.empresa] || '';
+                const usd = Math.abs(m.usd || 0);
+                const conf = isConf(m);
+                // Lógica certeza: desplazar fecha +30d para conf 30d en modo Solo Confirmados
+                let winFecha = m.fecha;
+                if (soloConf && !conf) {
+                    winFecha = new Date(new Date(m.fecha + 'T12:00:00').getTime() + 30*24*60*60*1000).toISOString().split('T')[0];
+                }
+                const win = getWindow(winFecha);
+                if (cat === 'Cliente') {
+                    if (!clientes[m.empresa]) clientes[m.empresa] = emptyWin();
+                    if (conf) clientes[m.empresa][win].conf += usd; else clientes[m.empresa][win].noConf += usd;
+                    // Track por proyecto
+                    if (m.proyecto) {
+                        if (!clienteProyectos[m.empresa]) clienteProyectos[m.empresa] = {};
+                        if (!clienteProyectos[m.empresa][m.proyecto]) clienteProyectos[m.empresa][m.proyecto] = emptyWin();
+                        if (conf) clienteProyectos[m.empresa][m.proyecto][win].conf += usd;
+                        else clienteProyectos[m.empresa][m.proyecto][win].noConf += usd;
+                    }
+                } else if (cat === 'Otros') {
+                    if (!otrosMap[m.empresa]) otrosMap[m.empresa] = emptyWin();
+                    if (conf) otrosMap[m.empresa][win].conf += usd; else otrosMap[m.empresa][win].noConf += usd;
+                }
+            });
+
+            const windows = ['0-30d','31-60d','61-90d','90d+'];
+
+            // === TABLA PIPELINE UNIFICADA ===
+            // En ambos modos se muestra conf + noConf (el total no cambia, solo la distribución entre ventanas)
+            const cellVal = (c) => c.conf + c.noConf;
+            const cellTd = (val) => {
+                if (val === 0) return '<td style="text-align:right;padding:6px 10px;color:#c8cdd2;">—</td>';
+                return `<td style="text-align:right;padding:6px 10px;font-weight:600;color:#24a660;">${formatUSD(val)}</td>`;
+            };
+
+            const cliRows = Object.entries(clientes).sort((a,b) => {
+                const ta = windows.reduce((s,w) => s + cellVal(a[1][w]), 0);
+                const tb = windows.reduce((s,w) => s + cellVal(b[1][w]), 0);
+                return tb - ta;
+            });
+            const otrosRows = Object.entries(otrosMap).sort((a,b) => {
+                const ta = windows.reduce((s,w) => s + cellVal(a[1][w]), 0);
+                const tb = windows.reduce((s,w) => s + cellVal(b[1][w]), 0);
+                return tb - ta;
+            });
+            const hasOtros = otrosRows.length > 0 && otrosRows.some(([,v]) => windows.some(w => cellVal(v[w]) > 0));
+
+            // Subtotals clientes
+            const subCli = {};
+            windows.forEach(w => { subCli[w] = cliRows.reduce((s,[,v]) => s + cellVal(v[w]), 0); });
+            const subCliTotal = windows.reduce((s,w) => s + subCli[w], 0);
+            // Subtotals otros
+            const subOtros = {};
+            windows.forEach(w => { subOtros[w] = otrosRows.reduce((s,[,v]) => s + cellVal(v[w]), 0); });
+            const subOtrosTotal = windows.reduce((s,w) => s + subOtros[w], 0);
+            // Grand total
+            const grandTotal = subCliTotal + subOtrosTotal;
+
+            const thS = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+
+            let pipHtml = '';
+            if (cliRows.length === 0 && !hasOtros) {
+                pipHtml = `<div class="card"><div class="card-title">Pipeline de Ingresos</div>
+                    <div style="color:#9ba3ab;font-style:italic;font-size:13px;padding:8px 0;">Sin ingresos pendientes registrados.</div></div>`;
+            } else {
+                pipHtml = `<div class="card"><div class="card-title">Pipeline de Ingresos</div>
+                    <div style="overflow-x:auto;">
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                    <thead><tr style="background:#f8f9fa;">
+                        <th style="${thS}">Cliente / Concepto</th>
+                        ${windows.map(w => `<th style="${thR}">${w}</th>`).join('')}
+                        <th style="${thR}color:#252a2e;">Total</th>
+                    </tr></thead><tbody>`;
+
+                // Client rows with optional project breakdown
+                cliRows.forEach(([emp, vals]) => {
+                    const total = windows.reduce((s,w) => s + cellVal(vals[w]), 0);
+                    if (total === 0) return;
+                    const proyData = clienteProyectos[emp];
+                    const proyKeys = proyData ? Object.keys(proyData).sort() : [];
+                    const hasMultiProy = proyKeys.length > 1;
+                    pipHtml += `<tr style="border-top:1px solid #f0f2f4;">
+                        <td style="padding:6px 10px;font-weight:600;color:#252a2e;">${emp}</td>
+                        ${windows.map(w => cellTd(cellVal(vals[w]))).join('')}
+                        <td style="text-align:right;padding:6px 10px;font-weight:700;color:#252a2e;">${formatUSD(total)}</td>
+                    </tr>`;
+                    // Breakdown por proyecto si hay más de uno
+                    if (hasMultiProy) {
+                        proyKeys.forEach(proy => {
+                            const pVals = proyData[proy];
+                            const pTotal = windows.reduce((s,w) => s + cellVal(pVals[w]), 0);
+                            if (pTotal === 0) return;
+                            pipHtml += `<tr style="border-top:1px solid #f8f9fa;">
+                                <td style="padding:3px 10px 3px 28px;font-size:12px;color:#9ba3ab;font-style:italic;">↳ ${proy}</td>
+                                ${windows.map(w => { const v = cellVal(pVals[w]); return v === 0 ? '<td style="text-align:right;padding:3px 10px;color:#d5d8db;font-size:12px;">—</td>' : `<td style="text-align:right;padding:3px 10px;font-size:12px;color:#5a616b;">${formatUSD(v)}</td>`; }).join('')}
+                                <td style="text-align:right;padding:3px 10px;font-size:12px;color:#5a616b;">${formatUSD(pTotal)}</td>
+                            </tr>`;
+                        });
+                    }
+                });
+
+                if (hasOtros) {
+                    // Subtotal Clientes
+                    pipHtml += `<tr style="border-top:2px solid #e3e6e9;background:#f8f9fa;font-weight:700;">
+                        <td style="padding:8px 10px;color:#5a616b;">SUBTOTAL CLIENTES</td>
+                        ${windows.map(w => `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${subCli[w]>0?formatUSD(subCli[w]):'—'}</td>`).join('')}
+                        <td style="text-align:right;padding:8px 10px;color:#252a2e;">${formatUSD(subCliTotal)}</td>
+                    </tr>`;
+                    // Otros rows
+                    otrosRows.forEach(([emp, vals]) => {
+                        const total = windows.reduce((s,w) => s + cellVal(vals[w]), 0);
+                        if (total === 0) return;
+                        pipHtml += `<tr style="border-top:1px solid #f0f2f4;">
+                            <td style="padding:6px 10px;font-weight:600;color:#5a616b;font-style:italic;">${emp}</td>
+                            ${windows.map(w => cellTd(cellVal(vals[w]))).join('')}
+                            <td style="text-align:right;padding:6px 10px;font-weight:700;color:#5a616b;">${formatUSD(total)}</td>
+                        </tr>`;
+                    });
+                    // TOTAL (clientes + otros)
+                    pipHtml += `<tr style="border-top:2px solid #e3e6e9;background:#f0f7f3;font-weight:700;">
+                        <td style="padding:8px 10px;color:#252a2e;">TOTAL</td>
+                        ${windows.map(w => { const t = subCli[w]+subOtros[w]; return `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${t>0?formatUSD(t):'—'}</td>`; }).join('')}
+                        <td style="text-align:right;padding:8px 10px;color:#24a660;font-size:15px;">${formatUSD(grandTotal)}</td>
+                    </tr>`;
+                } else {
+                    // Solo TOTAL (sin subtotales porque no hay otros)
+                    pipHtml += `<tr style="border-top:2px solid #e3e6e9;background:#f8f9fa;font-weight:700;">
+                        <td style="padding:8px 10px;color:#5a616b;">TOTAL</td>
+                        ${windows.map(w => `<td style="text-align:right;padding:8px 10px;color:#252a2e;">${subCli[w]>0?formatUSD(subCli[w]):'—'}</td>`).join('')}
+                        <td style="text-align:right;padding:8px 10px;color:#24a660;font-size:15px;">${formatUSD(subCliTotal)}</td>
+                    </tr>`;
+                }
+                pipHtml += '</tbody></table></div></div>';
+            }
+            document.getElementById('piTablaPipeline').innerHTML = pipHtml;
+
+            // === TABLA PERFORMANCE UNIFICADA ===
+            // Collect all clients with history (entire history, not limited to 12 months)
+            const allHistClientes = allMovimientos.filter(m =>
+                m.hecho && m.caja === 'Ingreso' &&
+                (m.clase === 'Cliente' || m.categoria === 'Cliente' || empClaseMap[m.empresa] === 'Cliente')
+            );
+
+            // Total historical per client (entire history)
+            const histTotalMap = {};
+            // First cobro date per client
+            const firstCobroMap = {};
+            // Last cobro date per client
+            const lastCobroMap = {};
+            // Distinct months per client (for regularidad)
+            const distinctMonthsMap = {};
+
+            allHistClientes.forEach(m => {
+                const emp = m.empresa;
+                const usd = Math.abs(getMovimientoAmount(m));
+                if (!histTotalMap[emp]) histTotalMap[emp] = 0;
+                histTotalMap[emp] += usd;
+                if (!firstCobroMap[emp] || m.fecha < firstCobroMap[emp]) firstCobroMap[emp] = m.fecha;
+                if (!lastCobroMap[emp] || m.fecha > lastCobroMap[emp]) lastCobroMap[emp] = m.fecha;
+                if (!distinctMonthsMap[emp]) distinctMonthsMap[emp] = new Set();
+                distinctMonthsMap[emp].add(m.fecha.substring(0, 7)); // YYYY-MM
+            });
+
+            // Prom. Histórico = total / months from first cobro to today
+            const promHistMap = {};
+            Object.entries(histTotalMap).forEach(([emp, total]) => {
+                const firstDate = new Date(firstCobroMap[emp] + 'T12:00:00');
+                const monthsSpan = Math.max(1, (today.getFullYear() - firstDate.getFullYear()) * 12 + (today.getMonth() - firstDate.getMonth()) + 1);
+                promHistMap[emp] = total / monthsSpan;
+            });
+
+            // Pipeline total per client (always optimista = conf + noConf for performance)
+            const perfCellVal = (c) => c.conf + c.noConf;
+            const pipelineTotalMap = {};
+            Object.entries(clientes).forEach(([emp, wins]) => {
+                pipelineTotalMap[emp] = windows.reduce((s,w) => s + perfCellVal(wins[w]), 0);
+            });
+
+            // Ritmo Mensual = Pipeline Total / months spanned by pipeline
+            // We need to find the pipeline span per client
+            const ritmoMap = {};
+            Object.entries(clientes).forEach(([emp, wins]) => {
+                const pTotal = pipelineTotalMap[emp] || 0;
+                if (pTotal === 0) { ritmoMap[emp] = 0; return; }
+                // Find earliest and latest window with amount
+                let earliest = null, latest = null;
+                const winMonths = { '0-30d': 1, '31-60d': 2, '61-90d': 3, '90d+': 4 };
+                windows.forEach(w => {
+                    if (perfCellVal(wins[w]) > 0) {
+                        if (earliest === null) earliest = winMonths[w];
+                        latest = winMonths[w];
+                    }
+                });
+                const span = (latest && earliest) ? Math.max(1, latest - earliest + 1) : 1;
+                ritmoMap[emp] = pTotal / span;
+            });
+
+            // Regularidad: count distinct months with cobro
+            const getRegularidad = (emp) => {
+                const months = distinctMonthsMap[emp] ? distinctMonthsMap[emp].size : 0;
+                if (months >= 5) return { label: 'Regular', color: '#24a660', bg: 'rgba(36,166,96,0.1)', order: 1 };
+                if (months >= 3) return { label: 'Frecuente', color: '#b87400', bg: 'rgba(184,116,0,0.1)', order: 2 };
+                return { label: 'Esporádico', color: '#c0392b', bg: 'rgba(192,57,43,0.1)', order: 3 };
+            };
+
+            // Union of all clients: those with pipeline + those with history only
+            const clientesConFuturo = new Set(Object.keys(clientes));
+            const clientesConHistorial = new Set(Object.keys(histTotalMap));
+            const allClients = new Set([...clientesConFuturo, ...clientesConHistorial]);
+
+            // Build performance rows
+            const perfRows = [...allClients].map(emp => {
+                const pTotal = pipelineTotalMap[emp] || 0;
+                const ritmo = ritmoMap[emp] || 0;
+                const promHist = promHistMap[emp] || 0;
+                const reg = getRegularidad(emp);
+                const lastAct = lastCobroMap[emp] || null;
+                let vsProm = null;
+                if (promHist > 0 && pTotal > 0) {
+                    vsProm = ((ritmo / promHist) - 1) * 100;
+                }
+                return { emp, pTotal, ritmo, promHist, vsProm, reg, lastAct };
+            });
+
+            // Sort: alphabetical by client name
+            perfRows.sort((a, b) => a.emp.localeCompare(b.emp));
+
+            // Filter by estado and search
+            const perfFilterEstado = (document.getElementById('piPerfFilterEstado')?.value) || '';
+            const perfBuscar = (document.getElementById('piPerfBuscar')?.value || '').toLowerCase().trim();
+            const todayMs = today.getTime();
+            const hace30dStr = new Date(todayMs - 30*24*60*60*1000).toISOString().split('T')[0];
+
+            const filteredRows = perfRows.filter(r => {
+                // Activo = tiene pipeline O cobró en el último mes
+                const esActivo = r.pTotal > 0 || (r.lastAct && r.lastAct >= hace30dStr);
+                if (perfFilterEstado === 'activos' && !esActivo) return false;
+                if (perfFilterEstado === 'inactivos' && esActivo) return false;
+                if (perfBuscar && !r.emp.toLowerCase().includes(perfBuscar)) return false;
+                return true;
+            });
+            const thPerf = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thPerfR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+            const thPerfC = 'text-align:center;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
+
+            let perfHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead><tr style="background:#f8f9fa;">
+                    <th style="${thPerf}">Cliente</th>
+                    <th style="${thPerfR}">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro de este cliente, sin límite de fecha. Incluye confirmados y no confirmados.">?</span></th>
+                    <th style="${thPerfR}">Ritmo Mensual <span class="tip-icon" data-tip="Pipeline Total dividido por la cantidad de meses que abarca. Indica la velocidad de facturación proyectada de este cliente.">?</span></th>
+                    <th style="${thPerfR}">Prom. Histórico <span class="tip-icon" data-tip="Promedio mensual real cobrado desde el primer cobro hasta hoy. Refleja el ritmo histórico real del cliente.">?</span></th>
+                    <th style="${thPerfC}">vs Promedio <span class="tip-icon" data-tip="Compara el Ritmo Mensual proyectado contra el Promedio Histórico. Verde = por encima del promedio, rojo = por debajo.">?</span></th>
+                    <th style="${thPerfC}">Regularidad <span class="tip-icon" data-tip="Frecuencia de cobros en los últimos 12 meses. Regular = 5+ meses con cobros, Frecuente = 3-4 meses, Esporádico = 0-2 meses.">?</span></th>
+                    <th style="${thPerfR}">Última Actividad <span class="tip-icon" data-tip="Fecha del último cobro realizado y días transcurridos sin actividad.">?</span></th>
+                </tr></thead><tbody>`;
+
+            if (filteredRows.length === 0) {
+                perfHtml += '<tr><td colspan="7" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Sin datos de clientes</td></tr>';
+            } else {
+                filteredRows.forEach(r => {
+                    // vs Promedio display
+                    let vsHtml = '', vsColor = '#9ba3ab';
+                    if (r.pTotal === 0) {
+                        vsHtml = '<span style="font-size:11px;color:#9ba3ab;">Sin pipeline</span>';
+                    } else if (r.vsProm !== null) {
+                        const pct = Math.round(r.vsProm);
+                        vsColor = pct >= 0 ? '#24a660' : '#c0392b';
+                        vsHtml = `<span style="font-weight:700;color:${vsColor};">${pct >= 0 ? '▲ +' : '▼ '}${Math.abs(pct)}%</span>`;
+                    } else {
+                        vsHtml = '<span style="font-size:11px;color:#9ba3ab;">—</span>';
+                    }
+                    // Última actividad
+                    let lastActFmt = '—', diasStr = '';
+                    if (r.lastAct) {
+                        lastActFmt = new Date(r.lastAct + 'T12:00:00').toLocaleDateString('es-UY');
+                        const dias = Math.round((todayMs - new Date(r.lastAct + 'T12:00:00').getTime()) / (24*60*60*1000));
+                        if (dias > 0) diasStr = `<div style="font-size:10px;color:#9ba3ab;">${dias}d sin actividad</div>`;
+                    }
+
+                    perfHtml += `<tr style="border-top:1px solid #f0f2f4;">
+                        <td style="padding:6px 10px;font-weight:600;color:#252a2e;">${r.emp}</td>
+                        <td style="text-align:right;padding:6px 10px;font-weight:600;color:${r.pTotal>0?'#24a660':'#9ba3ab'};">${r.pTotal>0?formatUSD(r.pTotal):'—'}</td>
+                        <td style="text-align:right;padding:6px 10px;">${r.ritmo>0?formatUSD(r.ritmo):'—'}</td>
+                        <td style="text-align:right;padding:6px 10px;">${r.promHist>0?formatUSD(r.promHist):'—'}</td>
+                        <td style="text-align:center;padding:6px 10px;">${vsHtml}</td>
+                        <td style="text-align:center;padding:6px 10px;">
+                            <span style="display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;color:${r.reg.color};background:${r.reg.bg};">${r.reg.label}</span>
+                        </td>
+                        <td style="text-align:right;padding:6px 10px;color:#5a616b;">${lastActFmt}${diasStr}</td>
+                    </tr>`;
+                });
+            }
+            perfHtml += '</tbody></table>';
+            document.getElementById('piTablaPerformance').innerHTML = perfHtml;
+        }
+
+        async function handleLogout() {
+            appInitialized = false;
+            await supabaseClient.auth.signOut();
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
