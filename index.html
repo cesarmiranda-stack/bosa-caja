@@ -4303,8 +4303,8 @@
             const hace30dStr = new Date(todayMs - 30*24*60*60*1000).toISOString().split('T')[0];
 
             const filteredRows = perfRows.filter(r => {
-                // Activo = tiene pipeline Y último cobro en el último mes
-                const esActivo = r.pTotal > 0 && r.lastAct && r.lastAct >= hace30dStr;
+                // Activo = tiene pipeline O cobró en el último mes
+                const esActivo = r.pTotal > 0 || (r.lastAct && r.lastAct >= hace30dStr);
                 if (perfFilterEstado === 'activos' && !esActivo) return false;
                 if (perfFilterEstado === 'inactivos' && esActivo) return false;
                 if (perfBuscar && !r.emp.toLowerCase().includes(perfBuscar)) return false;
