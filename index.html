@@ -1204,6 +1204,7 @@
                                     <select id="nmEmpresa" required class="f-sel" onchange="nmAutoFillEmpresa()">
                                         <option value="">Seleccionar...</option>
                                     </select>
+                                    <div id="nmUltimoMonto" style="font-size:11px;color:#9ba3ab;margin-top:4px;display:none;"></div>
                                 </div>
                             </div>
 
@@ -1234,10 +1235,13 @@
                                         <button type="button" id="nmCurrUSDBtn" style="padding:10px 14px;border:none;background:rgba(59,130,196,0.1);color:#3b82c4;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;" onclick="setNmCurrency('USD')">USD</button>
                                         <button type="button" id="nmCurrPesosBtn" style="padding:10px 14px;border:none;background:#fff;color:#9ba3ab;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;" onclick="setNmCurrency('UYU')">$</button>
                                     </div>
-                                    <input type="number" id="nmMonto" placeholder="0.00" step="0.01" min="0" style="flex:1;min-width:120px;padding:10px 12px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:14px;" oninput="nmCalcMonto()">
+                                    <div style="flex:1;min-width:120px;position:relative;">
+                                        <span id="nmMonedaLabel" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#3b82c4;pointer-events:none;">USD</span>
+                                        <input type="number" id="nmMonto" placeholder="0.00" step="0.01" min="0" style="width:100%;padding:10px 12px 10px 42px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:14px;box-sizing:border-box;" oninput="nmCalcMonto()">
+                                    </div>
                                     <span id="nmTCLabel" style="font-size:13px;color:#9ba3ab;display:none;">TC</span>
                                     <input type="number" id="nmTC" placeholder="43.50" step="0.01" value="43.50" style="width:80px;padding:10px 12px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;display:none;" oninput="nmCalcMonto()">
-                                    <span style="font-size:13px;color:#9ba3ab;white-space:nowrap;">= USD <strong id="nmUSDEquiv" style="color:#252a2e;">0</strong></span>
+                                    <span id="nmEquivWrap" style="font-size:13px;color:#9ba3ab;white-space:nowrap;display:none;">= USD <strong id="nmUSDEquiv" style="color:#252a2e;">0</strong></span>
                                 </div>
                                 <div style="font-size:11px;color:#9ba3ab;margin-top:5px;">TC del día tomado automáticamente de BCU · editable si es necesario</div>
                             </div>
@@ -1527,9 +1531,17 @@
                     <!-- Tabla Pipeline -->
                     <div id="piTablaPipeline"></div>
 
-                    <!-- Performance de Clientes -->
+                    <!-- Análisis Ingresos -->
                     <div class="card" style="margin-top:16px;">
-                        <div class="card-title">Performance de Clientes</div>
+                        <div class="card-title">Análisis Ingresos</div>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+                            <select id="piPerfFilterEstado" class="f-sel" style="min-width:140px;" onchange="renderProyIng()">
+                                <option value="">Todos</option>
+                                <option value="activos">Activos</option>
+                                <option value="inactivos">Inactivos</option>
+                            </select>
+                            <input type="text" id="piPerfBuscar" placeholder="Buscar cliente..." style="flex:1;min-width:150px;max-width:280px;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;" oninput="renderProyIng()">
+                        </div>
                         <div id="piTablaPerformance"></div>
                     </div>
                 </div>
@@ -1751,6 +1763,7 @@
                         <select id="emEmpresa" required class="f-sel" onchange="emUpdateHeader()">
                             <option value="">Seleccionar...</option>
                         </select>
+                        <div id="emUltimoMonto" style="font-size:11px;color:#9ba3ab;margin-top:4px;display:none;"></div>
                     </div>
                     <div class="form-group">
                         <label>Fecha</label>
@@ -1782,10 +1795,13 @@
                             <button type="button" id="emCurrUSDBtn" style="padding:8px 12px;border:none;background:rgba(59,130,196,0.1);color:#3b82c4;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;" onclick="setEmCurrency('USD')">USD</button>
                             <button type="button" id="emCurrPesosBtn" style="padding:8px 12px;border:none;background:#fff;color:#9ba3ab;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;" onclick="setEmCurrency('UYU')">$</button>
                         </div>
-                        <input type="number" id="emMonto" placeholder="0.00" step="0.01" min="0" style="flex:1;min-width:100px;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:14px;" oninput="emCalcMonto()">
+                        <div style="flex:1;min-width:100px;position:relative;">
+                            <span id="emMonedaLabel" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:#3b82c4;pointer-events:none;">USD</span>
+                            <input type="number" id="emMonto" placeholder="0.00" step="0.01" min="0" style="width:100%;padding:8px 10px 8px 42px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:14px;box-sizing:border-box;" oninput="emCalcMonto()">
+                        </div>
                         <span id="emTCLabel" style="font-size:13px;color:#9ba3ab;display:none;">TC</span>
                         <input type="number" id="emTC" placeholder="43.50" step="0.01" value="43.50" style="width:72px;padding:8px 10px;border:1px solid #e3e6e9;border-radius:6px;font-family:inherit;font-size:13px;display:none;" oninput="emCalcMonto()">
-                        <span style="font-size:13px;color:#9ba3ab;white-space:nowrap;">= USD <strong id="emUSDEquiv" style="color:#252a2e;">0</strong></span>
+                        <span id="emEquivWrap" style="font-size:13px;color:#9ba3ab;white-space:nowrap;display:none;">= USD <strong id="emUSDEquiv" style="color:#252a2e;">0</strong></span>
                     </div>
                 </div>
 
@@ -2192,7 +2208,7 @@
             if (!num) num = 0;
             const isNegative = num < 0;
             const absNum = Math.abs(num);
-            let formatted = '$' + formatNumber(absNum, 0);
+            let formatted = 'USD ' + formatNumber(absNum, 0);
             if (showSign) {
                 formatted = (isNegative ? '−' : '+') + formatted;
             }
@@ -2332,6 +2348,12 @@
             const tcLabel = document.getElementById('nmTCLabel');
             if (tcEl) tcEl.style.display = curr === 'UYU' ? '' : 'none';
             if (tcLabel) tcLabel.style.display = curr === 'UYU' ? '' : 'none';
+            // Update moneda label in input
+            const nmMonLabel = document.getElementById('nmMonedaLabel');
+            if (nmMonLabel) nmMonLabel.textContent = curr === 'USD' ? 'USD' : 'UYU';
+            // Show equiv only in UYU mode
+            const nmEquivWrap = document.getElementById('nmEquivWrap');
+            if (nmEquivWrap) nmEquivWrap.style.display = curr === 'UYU' ? '' : 'none';
             nmCalcMonto();
         }
 
@@ -2385,6 +2407,25 @@
                 document.getElementById('nmProyecto').value = '';
                 if (subEl) subEl.textContent = 'Seleccioná una empresa para auto-detectar la dirección';
             }
+            showUltimoMonto(empNombre, 'nmUltimoMonto');
+        }
+
+        function showUltimoMonto(empresa, targetId) {
+            const el = document.getElementById(targetId);
+            if (!el) return;
+            if (!empresa) { el.style.display = 'none'; return; }
+            // Find last movement for this empresa (sorted by fecha desc)
+            const movs = allMovimientos.filter(m => m.empresa === empresa);
+            if (movs.length === 0) { el.style.display = 'none'; return; }
+            movs.sort((a, b) => (b.fecha || '').localeCompare(a.fecha || ''));
+            const last = movs[0];
+            const isUYU = last.moneda === 'UYU';
+            const montoFmt = isUYU
+                ? `UYU ${formatNumber(Math.abs(last.pesos || 0), 0)}`
+                : `USD ${formatNumber(Math.abs(last.hecho ? (last.historico_usd || 0) : (last.usd || 0)), 0)}`;
+            const fechaFmt = last.fecha ? new Date(last.fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'numeric',month:'short',year:'numeric'}) : '';
+            el.textContent = `Último: ${montoFmt} · ${fechaFmt}`;
+            el.style.display = '';
         }
 
         function populateProyectoDatalist(listId, empNombre) {
@@ -2440,6 +2481,8 @@
             setNmCurrency('USD');
             const tc = parseFloat(localStorage.getItem('tcDefault')) || 43.5;
             document.getElementById('nmTC').value = tc.toFixed(2);
+            const nmUlt = document.getElementById('nmUltimoMonto');
+            if (nmUlt) nmUlt.style.display = 'none';
         }
 
         async function handleSaveMovimiento(e) {
@@ -2555,7 +2598,7 @@
                 const estadoBadge = mov.hecho ? '<span class="badge b-green">Realizado</span>' : '<span class="badge b-gray">Pendiente</span>';
                 const confBadge = isConf(mov) ? '<span class="badge" style="background:rgba(59,130,196,0.1);color:#3b82c4;">Conf.</span>' : '<span class="badge" style="background:rgba(184,116,0,0.1);color:#b87400;">±30d</span>';
                 const fueEnPesos = mov.moneda === 'UYU';
-                const pesosLine = fueEnPesos ? `<div style="font-size:11px;color:#9ba3ab;line-height:1.1;">$${formatNumber(Math.abs(mov.pesos),0)} UYU · TC ${formatNumber(mov.tc,2)}</div>` : '';
+                const pesosLine = fueEnPesos ? `<div style="font-size:11px;color:#9ba3ab;line-height:1.1;">UYU ${formatNumber(Math.abs(mov.pesos),0)} · TC ${formatNumber(mov.tc,2)}</div>` : '';
 
                 return `<tr>
                     <td>${new Date(mov.fecha + 'T12:00:00').toLocaleDateString('es-UY')}</td>
@@ -2642,6 +2685,12 @@
             const tcLabel = document.getElementById('emTCLabel');
             if (tcEl) tcEl.style.display = curr === 'UYU' ? '' : 'none';
             if (tcLabel) tcLabel.style.display = curr === 'UYU' ? '' : 'none';
+            // Update moneda label in input
+            const emMonLabel = document.getElementById('emMonedaLabel');
+            if (emMonLabel) emMonLabel.textContent = curr === 'USD' ? 'USD' : 'UYU';
+            // Show equiv only in UYU mode
+            const emEquivWrap = document.getElementById('emEquivWrap');
+            if (emEquivWrap) emEquivWrap.style.display = curr === 'UYU' ? '' : 'none';
             emCalcMonto();
         }
 
@@ -2666,6 +2715,7 @@
             const fechaFmt = fecha ? new Date(fecha + 'T12:00:00').toLocaleDateString('es-UY', {day:'numeric',month:'short'}) : '';
             const ctx = document.getElementById('emHeaderCtx');
             if (ctx) ctx.textContent = `${empresa} · ${caja || '—'} · USD ${formatNumber(usd,0)} · ${fechaFmt}`;
+            showUltimoMonto(empresa, 'emUltimoMonto');
         }
 
         function abrirMovModal(id) {
@@ -4243,13 +4293,23 @@
                 return { emp, pTotal, ritmo, promHist, vsProm, reg, lastAct };
             });
 
-            // Sort: by regularidad level (green > yellow > red), then by última actividad most recent first
-            perfRows.sort((a, b) => {
-                if (a.reg.order !== b.reg.order) return a.reg.order - b.reg.order;
-                return (b.lastAct || '').localeCompare(a.lastAct || '');
-            });
+            // Sort: alphabetical by client name
+            perfRows.sort((a, b) => a.emp.localeCompare(b.emp));
 
+            // Filter by estado and search
+            const perfFilterEstado = (document.getElementById('piPerfFilterEstado')?.value) || '';
+            const perfBuscar = (document.getElementById('piPerfBuscar')?.value || '').toLowerCase().trim();
             const todayMs = today.getTime();
+            const hace30dStr = new Date(todayMs - 30*24*60*60*1000).toISOString().split('T')[0];
+
+            const filteredRows = perfRows.filter(r => {
+                // Activo = tiene pipeline Y último cobro en el último mes
+                const esActivo = r.pTotal > 0 && r.lastAct && r.lastAct >= hace30dStr;
+                if (perfFilterEstado === 'activos' && !esActivo) return false;
+                if (perfFilterEstado === 'inactivos' && esActivo) return false;
+                if (perfBuscar && !r.emp.toLowerCase().includes(perfBuscar)) return false;
+                return true;
+            });
             const thPerf = 'text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
             const thPerfR = 'text-align:right;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
             const thPerfC = 'text-align:center;padding:8px 10px;font-size:11px;font-weight:700;color:#5a616b;text-transform:uppercase;';
@@ -4257,18 +4317,18 @@
             let perfHtml = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
                 <thead><tr style="background:#f8f9fa;">
                     <th style="${thPerf}">Cliente</th>
-                    <th style="${thPerfR}">Pipeline Total</th>
-                    <th style="${thPerfR}">Ritmo Mensual</th>
-                    <th style="${thPerfR}">Prom. Histórico</th>
-                    <th style="${thPerfC}">vs Promedio</th>
-                    <th style="${thPerfC}">Regularidad</th>
-                    <th style="${thPerfR}">Última Actividad</th>
+                    <th style="${thPerfR}">Pipeline Total <span class="tip-icon" data-tip="Suma de todos los ingresos pendientes de cobro de este cliente, sin límite de fecha. Incluye confirmados y no confirmados.">?</span></th>
+                    <th style="${thPerfR}">Ritmo Mensual <span class="tip-icon" data-tip="Pipeline Total dividido por la cantidad de meses que abarca. Indica la velocidad de facturación proyectada de este cliente.">?</span></th>
+                    <th style="${thPerfR}">Prom. Histórico <span class="tip-icon" data-tip="Promedio mensual real cobrado desde el primer cobro hasta hoy. Refleja el ritmo histórico real del cliente.">?</span></th>
+                    <th style="${thPerfC}">vs Promedio <span class="tip-icon" data-tip="Compara el Ritmo Mensual proyectado contra el Promedio Histórico. Verde = por encima del promedio, rojo = por debajo.">?</span></th>
+                    <th style="${thPerfC}">Regularidad <span class="tip-icon" data-tip="Frecuencia de cobros en los últimos 12 meses. Regular = 5+ meses con cobros, Frecuente = 3-4 meses, Esporádico = 0-2 meses.">?</span></th>
+                    <th style="${thPerfR}">Última Actividad <span class="tip-icon" data-tip="Fecha del último cobro realizado y días transcurridos sin actividad.">?</span></th>
                 </tr></thead><tbody>`;
 
-            if (perfRows.length === 0) {
+            if (filteredRows.length === 0) {
                 perfHtml += '<tr><td colspan="7" style="padding:16px;text-align:center;color:#9ba3ab;font-style:italic;">Sin datos de clientes</td></tr>';
             } else {
-                perfRows.forEach(r => {
+                filteredRows.forEach(r => {
                     // vs Promedio display
                     let vsHtml = '', vsColor = '#9ba3ab';
                     if (r.pTotal === 0) {
