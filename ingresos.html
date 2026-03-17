@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOSA Caja - Proyección de Ingresos</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -111,12 +114,12 @@
 
         .btn-ghost {
             background-color: transparent;
-            color: #656c70;
-            border: 1px solid #e3e6e9;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
         .btn-ghost:hover {
-            background-color: #f2f4f6;
+            background-color: rgba(255,255,255,0.15);
         }
 
         .btn-sm {
@@ -148,19 +151,27 @@
         }
 
         .top-bar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e3e6e9;
-            padding: 20px 30px;
+            background-color: #656c70;
+            border-bottom: 1px solid #555b5f;
+            padding: 14px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,.08);
+            box-shadow: 0 1px 3px rgba(0,0,0,.15);
         }
 
         .top-bar-title {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 600;
-            color: #252a2e;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-bar-title img {
+            height: 36px;
+            width: auto;
         }
 
         .top-bar-right {
@@ -171,7 +182,7 @@
 
         .top-bar-user {
             font-size: 13px;
-            color: #5a616b;
+            color: #d0d4d8;
         }
 
         .content {
@@ -460,7 +471,7 @@
 
     <div id="appContainer" class="app-container">
         <div class="top-bar">
-            <div class="top-bar-title">BOSA Caja — Proyección de Ingresos</div>
+            <div class="top-bar-title"><img src="data:image/png;base64,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" alt="BOSA"> Proyección de Ingresos</div>
             <div class="top-bar-right">
                 <div class="top-bar-user" id="userEmail"></div>
                 <button class="btn btn-ghost btn-sm" onclick="handleLogout()">Salir</button>
