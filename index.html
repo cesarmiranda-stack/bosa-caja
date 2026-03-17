@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOSA Caja - Gestión de Efectivo</title>
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD4ElEQVR4nMVXTWhUVxT+zv17M8loKtKVWCgKpmlBFKm0GmhoA82mka66dPUobXeCaNyXqeA2tFm14KboJotioLgIxAYxSgMa0ECrWQTbRCxjJu/Nu/fd08XMG6clmfcSpvZsZjH33e8753znu/dSGIZ6amrKfn7+/Fipv3+Cmd+zSUJEJNDDYGavjWEimo/r9a+/vXz5RhiGmgDgiwsXPtbl8jQxmyRJmIiol+AdJNgYQ0yU2Cgan6xWZ+jLS5c+kFr/7NNU+jT1RCT/C/AOEqmQUggp09TaUcHAFQLUqwAHACJqJgooBq4opdRx2yx7V/BuPeFdkLBJwkrr48pZ6/MEx8zwvD0MEYGIIIQAM4O7rO34hpy1XhUB10pBKbXt/6n3SJIEm1GEwBgopYqSEFvv2gopBGr1Oj4ZHcXYyAhS7yGFyJDBANI0RRTHWH/+HL89eYJf7t7F2rNnCIwpRKIrgSxDrRRKQQDG1lqo9Pfj9f378dbhw3j/xAl8d/Uqfl9ZgSlAopDZcEe2nVlHcYzEWgCAZ4ZzDvsGBvDp2FhbD3mRW4EsqEWEACwuLeGH69eb/ZYSo8PDGDl1CiQlmBlvHDiAvZUKahsbuXrYld1a51Db2MDG5iZWnz7FjdlZOOeQGagQAnIb0f47ClegM7RS2FupIDAGr+3Zg4+Gh6GUgvceQgj8ub6OWq0G2apIzwiI1gQcHRpC9eJFAICUEkZrAE0/+GNtDT9OT8OmKYzWvSWQhZQSZfnSODMQIsL9hw+x/PgxlJRAARHuSgPZFMRxjLjRaDuh9x4fnj6Nr86eBREVsugdVcC3jGhxaQnfX7uGwBgQEd48eBCfjY9j38AAUu/xzuAg3j12DLPz86j09SH1fts9d1UB5xw2owibUYQoinBrYQFzt2+3STIzBg8danpBzl69u/W0RpDQ1EJgTO+noP2RUugrl9stePvIEQyfPNkmwsyovXgBa23uJBQmwEBbWEeHhvDNxETzXCBCKQgAAKn3TfUD+PXBg/bYdk2mCDgRgdAcv+y3cwyzyE7Kn27exP1Hj1AKAvguAixEgIhgnUPcaPzjOM7OBQZgrcVftRpWVlexsLiIpeXlQiaUSyD1Hn2lEmbn53Hrzp1t13nvYZ1DFMegVkuKgOcSAF5WIDt2u63rK5eBnOvbjglkm4suT4UMLq/fWxJg5txLaSdIL4OZvVBaCy7asN6Cs9JaCOfcPW0MMXP6CsFTbQw55+4JAs4x4ISU4lWQyJ5mDDgCzv3vj1MRhqGerFZnGvX6GRDNaWM8M+9czvngXhvjQTTXqNfPTFarM2EY6r8BBu8CIjZwHwEAAAAASUVORK5CYII=">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -192,9 +193,8 @@
         }
 
         .sidebar-logo {
-            font-size: 28px;
-            font-weight: 800;
             margin-bottom: 30px;
+            text-align: center;
             padding-bottom: 20px;
             border-bottom: 1px solid rgba(255,255,255,.2);
             letter-spacing: 2px;
@@ -936,7 +936,7 @@
 
     <div id="appContainer" class="app-container">
         <div class="sidebar">
-            <div class="sidebar-logo">BOSA</div>
+            <div class="sidebar-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAAA8CAYAAADha7EVAAAILElEQVR4nO2deaxdRR2Av1/7SluhtBSkgiAQwlIFBAWNYZGohRJwgSCiCZsJ4ILBYAyQiBCUgBFiUJaAkojIJrggUNGqNYVaNhEhohIKiKy1rBYovMLnH3MJl9sz951z7+ty++ZLmqYzv+2cM/fMzJnfTKFQKBQKhUKhUCgUCoVCoVAoFAq1WO3HsxVGRj2CdITcfODpiLhzNYc0agxqOlZjTJnNx1txesIAMAOYS1qxKOf8FQqjxcB0waY9uNdHxO1tZQeTEktnR8SBXWSmA5cA10bEgR12xwPXdbj7TUSc36pbQSejOwwsBm4Gro6I4U79Vlc6CxgP/Am4tKXXzf91pOzrC1o2DgImRcQVps34RwM7tez8BbgkIrLbGdY0BikZ4SZS8kD7XoZZwJmt8m4yZ4xgezjXyGow3Gr8k4AtSA1iMvDvRxAt6PfWxJg5txLaSdIL4OZvVBaCy7asN6Cs9JaCOfcPW0MMXP6CsFTbQw55+4JAs4x4ISU4lWQyJ5mDDgCzv3vj1MRhqGerFZnGvX6GRDNaWM8M+9czvngXhvjQTTXqNfPTFarM2EY6r8BBu8CIjZwHwEAAAAASUVORK5CYII=" alt="BOSA" style="max-width:130px;height:auto;"></div>
             <div class="sidebar-nav">
                 <!-- OPERATIVAS -->
                 <div class="sb-item active" data-screen="sc-dashboard">
