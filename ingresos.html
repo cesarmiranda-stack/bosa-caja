@@ -609,6 +609,21 @@
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (error) throw error;
                 currentUser = data.user;
+
+                // Verificar permiso de acceso a Proyección de Ingresos
+                const { data: roleData } = await supabaseClient
+                    .from('user_roles')
+                    .select('puede_ver_ingresos')
+                    .eq('email', currentUser.email)
+                    .single();
+                if (roleData && roleData.puede_ver_ingresos === false) {
+                    await supabaseClient.auth.signOut();
+                    currentUser = null;
+                    errorDiv.textContent = 'No tenés acceso a esta sección.';
+                    errorDiv.classList.add('show');
+                    return;
+                }
+
                 initApp();
             } catch (err) {
                 errorDiv.textContent = err.message || 'Error al iniciar sesión';
