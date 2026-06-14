@@ -4600,15 +4600,17 @@
 
             // Build CSV with BOM for Excel UTF-8 compatibility
             const BOM = '﻿';
-            const headers = ['Fecha','Concepto','Empresa','Proyecto','Categoría','Tipo','Fijo/Variable','Moneda','Monto USD','Monto UYU','Notas'];
+            const headers = ['Fecha','Concepto','Empresa','Proyecto','Categoría','Tipo','Fijo/Variable','Moneda','Monto USD','Monto UYU','TC','Eq USD','Notas'];
             const rows = movs.map(m => {
                 const esUYU = m.moneda === 'UYU';
                 const usdAbs = Math.abs(m.historico_usd || m.usd || 0);
-                const montoUYU = esUYU ? (m.usd ? Math.abs(m.usd) * (m.tc || 1) : '') : '';
-                const montoUSD = !esUYU ? usdAbs : '';
                 const tipo = m.caja === 'Ingreso' ? 'Ingreso' : 'Egreso';
                 const signo = m.caja === 'Egreso' ? -1 : 1;
                 const fijoVar = tipo === 'Egreso' ? (empTipoMap[m.empresa] || '') : '';
+                const tc = m.tc ? Number(m.tc).toFixed(2) : '';
+                const eqUSD = esUYU
+                    ? (m.tc ? ((Math.abs(m.pesos || 0) / m.tc) * signo).toFixed(2) : '')
+                    : (usdAbs * signo).toFixed(2);
                 return [
                     m.fecha || '',
                     m.concepto || '',
@@ -4620,6 +4622,8 @@
                     m.moneda || 'USD',
                     esUYU ? '' : (usdAbs * signo).toFixed(2),
                     esUYU ? ((Math.abs(m.pesos || 0)) * signo).toFixed(2) : '',
+                    tc,
+                    eqUSD,
                     m.notas || ''
                 ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
             });
