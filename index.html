@@ -4619,7 +4619,7 @@
                     fijoVar,
                     m.moneda || 'USD',
                     esUYU ? '' : (usdAbs * signo).toFixed(2),
-                    esUYU ? ((Math.abs(m.usd || 0)) * signo).toFixed(2) : '',
+                    esUYU ? ((Math.abs(m.pesos || 0)) * signo).toFixed(2) : '',
                     m.notas || ''
                 ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
             });
