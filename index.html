@@ -1700,7 +1700,7 @@
                             <input type="date" id="histFechaDesde" class="f-sel" onchange="histSetCustomPeriodo();renderHistorial()">
                             <input type="date" id="histFechaHasta" class="f-sel" onchange="histSetCustomPeriodo();renderHistorial()">
                             <button class="btn btn-ghost btn-sm" onclick="limpiarFiltrosHistorial()" style="color:#b87400;">✕ Limpiar filtros</button>
-                            <button class="btn btn-ghost btn-sm" id="histExportBtn" style="margin-left:auto;">📄 Exportar PDF</button>
+                            <button class="btn btn-ghost btn-sm" id="histExportBtn" style="margin-left:auto;">⬇ Exportar CSV</button>
                         </div>
                     </div>
 
@@ -2009,19 +2009,20 @@
         </div>
     </div>
 
-    <!-- EXPORT PDF MODAL -->
+    <!-- EXPORT CSV MODAL -->
     <div id="exportModal" class="modal">
         <div class="modal-content" style="max-width:440px;">
-            <div class="modal-header">Exportar PDF</div>
+            <div class="modal-header">Exportar historial a CSV</div>
             <div style="padding:20px 0; color:#5a616b; font-size:14px; line-height:1.7;">
-                <p>La exportación directa a PDF estará disponible próximamente.</p>
+                <p>Se van a exportar todos los movimientos del historial con los filtros aplicados actualmente.</p>
                 <p style="margin-top:10px; font-size:13px; color:#9ba3ab;">
-                    💡 Por ahora podés usar la función de impresión del navegador<br>
-                    (<strong>Ctrl+P</strong> / <strong>Cmd+P</strong>) y elegir <em>"Guardar como PDF"</em>.
+                    Compatible con Excel, Google Sheets y cualquier hoja de cálculo.
                 </p>
+                <div id="exportCsvInfo" style="margin-top:12px; font-size:13px; font-weight:600; color:#252a2e;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-ghost" onclick="document.getElementById('exportModal').classList.remove('active')">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="exportarHistorialCSV()">⬇ Descargar CSV</button>
             </div>
         </div>
     </div>
@@ -2353,6 +2354,8 @@
             });
 
             document.getElementById('histExportBtn').addEventListener('click', () => {
+                const movs = getHistMovimientos();
+                document.getElementById('exportCsvInfo').textContent = `${movs.length} movimiento${movs.length !== 1 ? 's' : ''} a exportar`;
                 document.getElementById('exportModal').classList.add('active');
             });
 
@@ -4583,6 +4586,53 @@
             _histEmpSelection = null;
             // Aplicar período y renderizar
             histSetPeriodo();
+        }
+
+        function exportarHistorialCSV() {
+            const movs = getHistMovimientos();
+            if (movs.length === 0) {
+                alert('No hay movimientos para exportar con los filtros actuales.');
+                return;
+            }
+            const empClaseMap = {};
+            allEmpresas.forEach(e => { empClaseMap[e.nombre] = e.clase || 'Otros'; });
+
+            // Build CSV with BOM for Excel UTF-8 compatibility
+            const BOM = '﻿';
+            const headers = ['Fecha','Concepto','Empresa','Proyecto','Categoría','Tipo','Moneda','Monto USD','Monto UYU','Notas'];
+            const rows = movs.map(m => {
+                const esUYU = m.moneda === 'UYU';
+                const usdAbs = Math.abs(m.historico_usd || m.usd || 0);
+                const montoUYU = esUYU ? (m.usd ? Math.abs(m.usd) * (m.tc || 1) : '') : '';
+                const montoUSD = !esUYU ? usdAbs : '';
+                const tipo = m.caja === 'Ingreso' ? 'Ingreso' : 'Egreso';
+                const signo = m.caja === 'Egreso' ? -1 : 1;
+                return [
+                    m.fecha || '',
+                    m.concepto || '',
+                    m.empresa || '',
+                    m.proyecto || '',
+                    empClaseMap[m.empresa] || '',
+                    tipo,
+                    m.moneda || 'USD',
+                    esUYU ? '' : (usdAbs * signo).toFixed(2),
+                    esUYU ? ((Math.abs(m.usd || 0)) * signo).toFixed(2) : '',
+                    m.notas || ''
+                ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(',');
+            });
+
+            const csv = BOM + headers.join(',') + '\n' + rows.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const desde = document.getElementById('histFechaDesde')?.value || '';
+            const hasta = document.getElementById('histFechaHasta')?.value || '';
+            const fechaStr = desde && hasta ? `_${desde}_${hasta}` : '';
+            a.href = url;
+            a.download = `bosa_historial${fechaStr}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            document.getElementById('exportModal').classList.remove('active');
         }
 
         function renderHistorial() {
